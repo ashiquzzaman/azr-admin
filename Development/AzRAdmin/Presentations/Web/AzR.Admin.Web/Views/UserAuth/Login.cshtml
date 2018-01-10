@@ -1,0 +1,88 @@
+﻿@model LoginViewModel
+    @{ Layout = null;}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BASIC Bank Blog</title>
+    @Styles.Render("~/Content/app-css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/app-js")
+
+</head>
+<body>
+    <div class="azr-blue">
+
+        <div class="azr-container app-login">
+            <div class="flex-center">
+                <div class="app-header"></div>
+                <div class="app-body">
+                    <div class="loader-container text-center">
+                        <div class="icon">
+                            <div class="sk-folding-cube">
+                                <div class="sk-cube1 sk-cube"></div>
+                                <div class="sk-cube2 sk-cube"></div>
+                                <div class="sk-cube4 sk-cube"></div>
+                                <div class="sk-cube3 sk-cube"></div>
+                            </div>
+                        </div>
+                        <div class="title">Logging in...</div>
+                    </div>
+                    <div class="app-block">
+                        <div class="app-form">
+                            <div class="form-header">
+                                <div class="app-brand">
+                                    <span class="highlight">Log</span> in
+                                </div>
+                            </div>
+                            @using (Html.BeginForm("Login", "UserAuth", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "loginform" }))
+                            { 
+                                @Html.AntiForgeryToken()
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group date dtp">
+                                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                            @Html.TextBoxFor(m => m.UserName, new {@class = "form-control", @placeholder = "username or email"})
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.UserName, "", new {@class = "text-danger"})
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <div class="input-group date dtp">
+                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                                            @Html.PasswordFor(m => m.Password, new {@class = "form-control", @placeholder = "password"})
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.Password, "", new {@class = "text-danger"})
+                                    </div>
+                                </div>
+                                
+                                <div class="text-center">
+                                    <input type="submit" class="btn btn-success btn-submit" value="Log in">
+                                </div>
+
+                                <div class="form-line">
+                                    <div class="title">OR</div>
+                                </div>
+                               
+                            }
+                            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+                          
+                        </div>
+                    </div>
+                </div>
+                <div class="app-footer">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+</body>
+</html>
+

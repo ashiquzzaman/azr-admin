@@ -1,0 +1,44 @@
+﻿@using VelocityWorkFlow.Web.Heplers
+@using VelocityWorkFlow.Web.ViewPag
+@{
+    var ajaxOptions = new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "mainContent",
+        OnBegin = "Spiner.show()",
+        OnSuccess = "OnAjaxRequestSuccess(this)",
+        OnComplete = "Spiner.hide()"
+    };
+}
+<li>
+    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Document</span>", "Index", "Help", new { Area = "HelpPage", type = "POST" }, ajaxOptions, new { })
+</li>
+
+@*<li class="panel panel-default dropdown">
+    <a data-toggle="collapse" href="#dropdown-icon">
+        <span class="icon fa fa-gears"></span><span class="title">Setting</span>
+    </a>
+    <div id="dropdown-icon" class="panel-collapse collapse">
+        <div class="panel-body">
+            <ul class="nav navbar-nav main-nav">
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-university'></span><span class='title'>Bank Account</span>", "Index", "BankAccount", new { Area = "General" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-user'></span><span class='title'>User</span>", "Index", "User", new { Area = "General" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-wrench'></span><span class='title'>Global Setting</span>", "Index", "GeneralConfig", new { Area = "General" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-sitemap'></span><span class='title'>Organization</span>", "Index", "Organization", new { Area = "General" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-question-circle'></span><span class='title'>FAQ</span>", "Index", "Faq", new { Area = "SiteConfig", type = "" }, ajaxOptions, new { })
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</li>*@

@@ -1,0 +1,16 @@
+﻿<div id="splash-page" class="page-splash" style="display: none;">
+    <p id="loading" class="page-splash-message">
+        Retrieving data
+    </p>
+</div>
+<div id="side-alert" class="alert alert-success fade in" style="display: none;">
+    @*<a href="#" class="close" data-dismiss="alert">&times;</a>*@
+    <span></span>
+</div>
+<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content" id="modelContent"></div>
+    </div>
+</div>
+@using (Html.BeginForm("LogOff", "UserAuth", new { area = "" }, FormMethod.Post, new { id = "logoutForm" }))
+{@Html.AntiForgeryToken()}

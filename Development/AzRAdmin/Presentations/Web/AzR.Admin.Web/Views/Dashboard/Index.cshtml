@@ -1,0 +1,24 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@section menu{
+    <ul class="nav navbar-nav main-nav">
+        @if (User.IsInRole("ADMIN"))
+        {
+            Html.RenderPartial("_AdminMenu");
+        }
+ 
+       
+    </ul>
+}
+
+<div id="mainContent">
+    @*@{Html.RenderPartial("GraphReport");}*@
+</div>
+@{Html.RenderPartial("_Modal");}
+@section scripts
+{
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryunobtrusive")
+}

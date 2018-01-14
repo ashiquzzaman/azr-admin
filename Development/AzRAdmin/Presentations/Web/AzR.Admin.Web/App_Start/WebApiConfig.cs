@@ -1,9 +1,9 @@
 ﻿using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using VelocityWorkFlow.Web.Handlers;
+using AzR.Admin.Web.Handlers;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public static class WebApiConfig
     {

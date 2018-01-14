@@ -7,9 +7,9 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using VelocityWorkFlow.Web.Providers;
+using AzR.Admin.Web.Providers;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public partial class Startup
     {

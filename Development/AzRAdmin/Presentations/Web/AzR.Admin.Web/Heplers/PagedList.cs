@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PagedList;
 
-namespace VelocityWorkFlow.Web.Heplers
+namespace AzR.Admin.Web.Heplers
 {
     public class AsyncPagedList<T> : BasePagedList<T>
     {

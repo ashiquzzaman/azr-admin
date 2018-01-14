@@ -1,10 +1,10 @@
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
-using VelocityWorkFlow.Web.Areas.HelpPage.ModelDescriptions;
-using VelocityWorkFlow.Web.Areas.HelpPage.Models;
+using AzR.Admin.Web.Areas.HelpPage.ModelDescriptions;
+using AzR.Admin.Web.Areas.HelpPage.Models;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.Controllers
+namespace AzR.Admin.Web.Areas.HelpPage.Controllers
 {
     /// <summary>
     /// The controller that will handle requests for the help page.

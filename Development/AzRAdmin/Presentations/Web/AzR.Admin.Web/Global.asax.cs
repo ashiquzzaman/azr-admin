@@ -3,9 +3,9 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using VelocityWorkFlow.Web.Caching;
+using AzR.Admin.Web.Caching;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class WebApiApplication : System.Web.HttpApplication
     {

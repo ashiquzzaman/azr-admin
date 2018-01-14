@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class FilterConfig
     {

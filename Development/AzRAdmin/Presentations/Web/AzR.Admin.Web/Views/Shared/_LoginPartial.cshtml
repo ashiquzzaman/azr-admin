@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNet.Identity
+@using AzR.Admin.Web.ViewPage
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "UserAuth", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))

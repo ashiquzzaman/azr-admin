@@ -1,6 +1,6 @@
 using System;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.SampleGeneration
+namespace AzR.Admin.Web.Areas.HelpPage.SampleGeneration
 {
     /// <summary>
     /// This represents a preformatted text sample on the help page. There's a display template named TextSample associated with this class.

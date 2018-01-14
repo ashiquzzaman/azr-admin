@@ -5,7 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class RecycleConfig
     {

@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-using AzR.Core.Business;
+﻿using AzR.Core.Business;
+using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web.Controllers.Mvc
+namespace AzR.Admin.Web.Controllers.Mvc
 {
     [Authorize]
     public class DashboardController : BaseController

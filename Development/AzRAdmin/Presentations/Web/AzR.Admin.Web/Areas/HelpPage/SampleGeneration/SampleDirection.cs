@@ -1,4 +1,4 @@
-namespace VelocityWorkFlow.Web.Areas.HelpPage.SampleGeneration
+namespace AzR.Admin.Web.Areas.HelpPage.SampleGeneration
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

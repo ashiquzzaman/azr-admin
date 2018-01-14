@@ -3,7 +3,7 @@ using System.Text;
 using System.Web;
 using System.Web.Http.Description;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage
+namespace AzR.Admin.Web.Areas.HelpPage
 {
     public static class ApiDescriptionExtensions
     {

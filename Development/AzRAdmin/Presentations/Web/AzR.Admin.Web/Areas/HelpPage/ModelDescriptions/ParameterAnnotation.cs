@@ -1,6 +1,6 @@
 using System;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.ModelDescriptions
+namespace AzR.Admin.Web.Areas.HelpPage.ModelDescriptions
 {
     public class ParameterAnnotation
     {

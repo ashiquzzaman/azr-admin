@@ -1,8 +1,8 @@
 using System.Web.Http;
 using System.Web.Mvc;
-using VelocityWorkFlow.Web.Areas.HelpPage.App_Start;
+using AzR.Admin.Web.Areas.HelpPage.App_Start;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage
+namespace AzR.Admin.Web.Areas.HelpPage
 {
     public class HelpPageAreaRegistration : AreaRegistration
     {

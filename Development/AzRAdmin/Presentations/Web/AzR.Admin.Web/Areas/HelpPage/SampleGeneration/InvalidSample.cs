@@ -1,6 +1,6 @@
 using System;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.SampleGeneration
+namespace AzR.Admin.Web.Areas.HelpPage.SampleGeneration
 {
     /// <summary>
     /// This represents an invalid sample on the help page. There's a display template named InvalidSample associated with this class.

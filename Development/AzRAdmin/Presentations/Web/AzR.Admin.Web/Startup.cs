@@ -1,10 +1,10 @@
 ﻿using Microsoft.Owin;
 using Owin;
-using VelocityWorkFlow.Web;
+using AzR.Admin.Web;
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public partial class Startup
     {

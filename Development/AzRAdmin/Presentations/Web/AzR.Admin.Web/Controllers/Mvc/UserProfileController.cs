@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AzR.Core.Business;
+using AzR.Core.IdentityConfig;
+using AzR.Core.MvcAuth;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AzR.Core.Business;
-using AzR.Core.IdentityConfig;
-using AzR.Core.MvcAuth;
 
-namespace VelocityWorkFlow.Web.Controllers.Mvc
+namespace AzR.Admin.Web.Controllers.Mvc
 {
     [Authorize]
     public class UserProfileController : BaseController

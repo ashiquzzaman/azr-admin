@@ -1,6 +1,6 @@
 ﻿using System.Web.Optimization;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class BundleConfig
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 
-namespace VelocityWorkFlow.Web.Controllers.Api
+namespace AzR.Admin.Web.Controllers.Api
 {
     [Authorize]
     public class ValuesController : ApiController

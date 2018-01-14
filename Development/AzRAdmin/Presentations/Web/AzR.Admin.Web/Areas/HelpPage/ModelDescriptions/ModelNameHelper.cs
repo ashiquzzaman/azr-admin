@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.ModelDescriptions
+namespace AzR.Admin.Web.Areas.HelpPage.ModelDescriptions
 {
     internal static class ModelNameHelper
     {

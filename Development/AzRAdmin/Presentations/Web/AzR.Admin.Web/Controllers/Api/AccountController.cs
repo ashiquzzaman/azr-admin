@@ -13,10 +13,10 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using VelocityWorkFlow.Web.Providers;
-using VelocityWorkFlow.Web.Results;
+using AzR.Admin.Web.Providers;
+using AzR.Admin.Web.Results;
 
-namespace VelocityWorkFlow.Web.Controllers.Api
+namespace AzR.Admin.Web.Controllers.Api
 {
     [Authorize]
     [RoutePrefix("api/Account")]

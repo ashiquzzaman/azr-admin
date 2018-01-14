@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http.Headers;
 using System.Web.Http.Description;
-using VelocityWorkFlow.Web.Areas.HelpPage.ModelDescriptions;
+using AzR.Admin.Web.Areas.HelpPage.ModelDescriptions;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage.Models
+namespace AzR.Admin.Web.Areas.HelpPage.Models
 {
     /// <summary>
     /// The model that represents an API displayed on the help page.

@@ -11,11 +11,11 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Description;
-using VelocityWorkFlow.Web.Areas.HelpPage.ModelDescriptions;
-using VelocityWorkFlow.Web.Areas.HelpPage.Models;
-using VelocityWorkFlow.Web.Areas.HelpPage.SampleGeneration;
+using AzR.Admin.Web.Areas.HelpPage.ModelDescriptions;
+using AzR.Admin.Web.Areas.HelpPage.Models;
+using AzR.Admin.Web.Areas.HelpPage.SampleGeneration;
 
-namespace VelocityWorkFlow.Web.Areas.HelpPage
+namespace AzR.Admin.Web.Areas.HelpPage
 {
     public static class HelpPageConfigurationExtensions
     {

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using AzR.Core.ModelConfig;
+using AzR.Core.Utilities;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
-using AzR.Core.ModelConfig;
-using AzR.Core.Utilities;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class CookieAuthConfig
     {

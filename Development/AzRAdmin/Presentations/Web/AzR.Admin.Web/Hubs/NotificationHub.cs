@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNet.SignalR;
 using Microsoft.AspNet.SignalR.Hubs;
 
-namespace VelocityWorkFlow.Web.Hubs
+namespace AzR.Admin.Web.Hubs
 {
     [HubName("notification")]
     public class NotificationHub : Hub

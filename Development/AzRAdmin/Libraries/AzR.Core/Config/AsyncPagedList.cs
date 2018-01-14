@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using PagedList;
 
 namespace AzR.Core.Config
 {

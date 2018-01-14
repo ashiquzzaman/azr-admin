@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web.Controllers.Mvc
+namespace AzR.Admin.Web.Controllers.Mvc
 {
     [Authorize]
     public class UserAuthController : BaseController

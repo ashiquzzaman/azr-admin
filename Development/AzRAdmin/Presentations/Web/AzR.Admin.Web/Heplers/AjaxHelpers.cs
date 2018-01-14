@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-namespace VelocityWorkFlow.Web.Heplers
+namespace AzR.Admin.Web.Heplers
 {
     public static class AjaxHelpers
     {

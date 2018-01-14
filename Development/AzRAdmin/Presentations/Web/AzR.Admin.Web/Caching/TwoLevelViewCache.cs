@@ -2,7 +2,7 @@
 using System.Web;
 using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web.Caching
+namespace AzR.Admin.Web.Caching
 {
     public class TwoLevelViewCache : IViewLocationCache
     {

@@ -1,7 +1,7 @@
-﻿using System.Web.Mvc;
-using AzR.Core.ModelConfig;
+﻿using AzR.Core.ModelConfig;
+using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web.ViewPag
+namespace AzR.Admin.Web.ViewPage
 {
     public abstract class BaseViewPage : WebViewPage
     {

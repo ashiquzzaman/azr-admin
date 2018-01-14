@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace VelocityWorkFlow.Web.Handlers
+namespace AzR.Admin.Web.Handlers
 {
     public class PreflightRequestsHandler : DelegatingHandler
     {

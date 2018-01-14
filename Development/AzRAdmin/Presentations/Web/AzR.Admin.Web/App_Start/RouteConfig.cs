@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public class RouteConfig
     {

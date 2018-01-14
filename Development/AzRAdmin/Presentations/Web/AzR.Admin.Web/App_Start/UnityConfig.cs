@@ -4,13 +4,13 @@ using Microsoft.Practices.Unity;
 using System.Data.Entity;
 using System.Web.Http;
 using System.Web.Mvc;
-using AzR.Core.Business;
-using AzR.Core.Config;
-using AzR.Core.Repositories;
 using Unity.Mvc5;
-using VelocityWorkFlow.Web.Controllers.Mvc;
+using VelocityWorkFlow.Entities.Config;
+using VelocityWorkFlow.Repositoies;
+using VelocityWorkFlow.Services;
+using AzR.Admin.Web.Controllers.Mvc;
 
-namespace VelocityWorkFlow.Web
+namespace AzR.Admin.Web
 {
     public static class UnityConfig
     {

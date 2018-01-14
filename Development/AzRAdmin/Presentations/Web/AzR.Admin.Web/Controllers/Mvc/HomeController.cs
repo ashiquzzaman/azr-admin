@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace VelocityWorkFlow.Web.Controllers.Mvc
+namespace AzR.Admin.Web.Controllers.Mvc
 {
     public class HomeController : Controller
     {

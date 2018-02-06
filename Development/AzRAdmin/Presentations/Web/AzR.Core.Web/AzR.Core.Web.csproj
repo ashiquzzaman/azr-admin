@@ -7,8 +7,8 @@
     <ProjectGuid>{12810B1B-8E15-4B89-A661-338A193A4987}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AzR.Web.Root</RootNamespace>
-    <AssemblyName>AzR.Web.Root</AssemblyName>
+    <RootNamespace>AzR.Core.Web</RootNamespace>
+    <AssemblyName>AzR.Core.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

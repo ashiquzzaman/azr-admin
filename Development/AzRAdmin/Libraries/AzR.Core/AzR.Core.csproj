@@ -120,10 +120,6 @@
     <Compile Include="IdentityConfig\ApplicationUserRole.cs" />
     <Compile Include="IdentityConfig\IdentityRoleConfig.cs" />
     <Compile Include="IdentityConfig\IdentityUserConfig.cs" />
-    <Compile Include="Migrations\201709251113144_initial.cs" />
-    <Compile Include="Migrations\201709251113144_initial.Designer.cs">
-      <DependentUpon>201709251113144_initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfig\CheckboxHelper.cs" />
     <Compile Include="ModelConfig\CmsUserViewModel.cs" />
@@ -173,11 +169,6 @@
     <Compile Include="Utilities\PcUniqueNumber.cs" />
     <Compile Include="Utilities\QueryableExtensions.cs" />
     <Compile Include="Utilities\TransactionWrapper.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201709251113144_initial.resx">
-      <DependentUpon>201709251113144_initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

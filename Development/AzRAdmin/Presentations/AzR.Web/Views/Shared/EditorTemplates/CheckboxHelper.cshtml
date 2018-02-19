@@ -1,0 +1,6 @@
+﻿@model AzR.Core.HelperModels.CheckboxHelper
+<div>
+    @Html.CheckBoxFor(x => x.IsChecked)
+    @Html.LabelFor(x => x.IsChecked, Model.Name)
+    @Html.HiddenFor(x => x.Name)
+</div>

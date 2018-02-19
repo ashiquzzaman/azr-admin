@@ -11,11 +11,12 @@ namespace AzR.Core.IdentityConfig
         {
             Name = name;
         }
-
-        [StringLength(128)]
-        public string DisplayName { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string RoleCode { get; set; }
         [StringLength(250)]
         public string Description { get; set; }
-        public bool Active { get; set; }
+        public bool IsDisplay { get; set; }
+        public bool IsActive { get; set; }
     }
 }

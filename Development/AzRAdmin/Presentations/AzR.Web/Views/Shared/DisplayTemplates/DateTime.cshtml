@@ -1,0 +1,3 @@
+﻿@model DateTime?
+@Html.Label("", Model.HasValue ? Model.Value.ToString("dd/MM/yyyy") : string.Empty,new {@style= "font-weight: 500;" })
+

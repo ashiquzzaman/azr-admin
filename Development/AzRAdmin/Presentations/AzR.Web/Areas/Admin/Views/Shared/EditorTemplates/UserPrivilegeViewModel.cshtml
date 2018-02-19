@@ -1,0 +1,54 @@
+﻿@using AzR.Core.Enumerations
+@model AzR.Core.ViewModels.Admin.UserPrivilegeViewModel
+
+<tr class="dataItem" data-tr-id="@Model.MenuId" data-tr-parent-id="@Model.ParentId">
+
+    @Html.HiddenFor(model => model.Id)
+    @Html.HiddenFor(item => item.UserId)
+
+    <td>
+
+        @if (Model.MenuType == MenuType.Module)
+        {
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true">&nbsp;</span>
+        }
+        else if (Model.MenuType == MenuType.Menu)
+        {
+            <span style="padding-left: 30px;" class="glyphicon glyphicon-link" aria-hidden="true">&nbsp;</span>
+        }
+        else if (Model.MenuType == MenuType.Tab)
+        {
+            <span style="padding-left: 65px;" class="glyphicon glyphicon-tag" aria-hidden="true">&nbsp;</span>
+        }
+        @Html.DisplayFor(item => item.MenuName)
+        @Html.HiddenFor(item => item.MenuId)
+
+    </td>
+
+    <td>
+       @Html.CheckBoxFor(item => item.FullPermission, htmlAttributes: new {@class = "chkFullPermissionAll "+ Model.MenuType.ToString().ToLower() , @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Full" })
+
+        @*@if (@Settings.RoleId != 10){*@
+    <td>
+        @Html.CheckBoxFor(item => item.ViewPermission, htmlAttributes: new { @class = "chkViewAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "View" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.AddPermission, htmlAttributes: new { @class = "chkAddAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Add" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.EditPermission, htmlAttributes: new { @class = "chkEditAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Edit" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.DeletePermission, htmlAttributes: new { @class = "chkDeleteAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Delete" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.DetailViewPermission, htmlAttributes: new { @class = "chkDetailsAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Details" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.ReportViewPermission, htmlAttributes: new {@class = "chkReportAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Report" })
+    </td>
+    <td>
+        @Html.CheckBoxFor(item => item.IsActive, htmlAttributes: new { @class = "chkActiveAll " + Model.MenuType.ToString().ToLower(), @data_id = Model.MenuId, @data_parent_id = Model.ParentId, @data_type = "Active" })
+    </td>
+    @*}*@
+</tr>

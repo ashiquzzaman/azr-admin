@@ -1,0 +1,66 @@
+﻿@model IPagedList<AzR.Core.ViewModels.Admin.MenuViewModel>
+@{
+    var count = Model.FirstItemOnPage;
+}
+
+<div class="clearfix"></div>
+
+<div class="box">
+    <h3 class="box-title">
+        <span class="btn btn-sm btn-info btnCreate" onclick="createModal('@Url.Action("Create", "Menu")', @Model.PageCount) ">
+            <i class="glyphicon glyphicon-plus"></i>Create New
+        </span>
+    </h3>    @if (Model.Any())
+    {
+        <div class="box-body" id="divList">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th style="width: 50px;">SL#</th>
+                        <th>@Html.DisplayNameFor(model => model.First().DisplayName)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().RoleName)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().Url)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().ParentName)</th>
+                        <th>@Html.DisplayNameFor(model => model.First().IsActive)</th>
+                        <th style="width: 150px;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="dataItem">
+                            <td>@(count++)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DisplayName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RoleName)</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Url)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ParentName)
+                            </td>   
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive,"ActiveInActive")
+                            </td>
+                            <td>
+                                @{Html.RenderPartial("_eddIcon", item.Id);}
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="box-footer">
+            @Html.PaginationFor(Model, page => Url.Action("Index", new {area = "Admin", searchItem = ViewBag.SearchData, page, pageSize =Model.PageSize}))
+        </div>
+    }
+    else
+    {
+        <div class="no-data">
+            <hr/>
+            <h3>No Data Found!!!</h3>
+            <hr/>
+        </div>
+    }
+</div>

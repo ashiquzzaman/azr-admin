@@ -1,0 +1,121 @@
+﻿@using AzR.Core.HelperModels
+@model AzR.Core.ViewModels.Admin.UserViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+    </button>
+    <h4 class="modal-title">
+        @{Html.RenderPartial("_SaveBoxTitel", "User");}
+    </h4>
+</div>
+<div class="modal-body">
+    @using (Ajax.BeginForm(CurrentAction, "User", new {area = "Admin"}, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "SubmitOnSuccess",
+        OnBegin = "Spiner.show()",
+        OnComplete = "Spiner.hide()"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+        @Html.Hidden("page")
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            
+            <div class="form-group">
+                @Html.LabelFor(model => model.EmployeeId, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.EmployeeId, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.EmployeeId, "", new {@class = "text-danger"})
+                </div>
+            </div> 
+            <div class="form-group">
+                @Html.LabelFor(model => model.FullName, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.FullName, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.FullName, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.UserName, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.UserName, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+                <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.PhoneNumber, htmlAttributes: new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.NewPassword, htmlAttributes: new {@class = "control-label col-md-3"})
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.NewPassword, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.NewPassword, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group">
+                @Html.LabelFor(model => model.RoleNameList, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.ComboBoxFor(model => model.RoleNameList, Model.RoleList,"" ,htmlAttributes: new {@class = "form-control select2-select", @multiple = true })
+                    @Html.ValidationMessageFor(model => model.RoleNameList, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                @Html.LabelFor(model => model.OrgId, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.ComboBoxFor(model => model.OrgId, Model.OrgList, "--Select--", htmlAttributes: new {@class = "form-control"})
+                    @Html.ValidationMessageFor(model => model.OrgId, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Active, htmlAttributes: new {@class = "control-label col-md-3"})
+                    <div class="col-md-9">
+                        @Html.BooleanRadioButtonFor(model => model.Active, RadioButtonHelper.ActiveInActive)
+                        @Html.ValidationMessageFor(model => model.Active, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.InVacation, htmlAttributes: new {@class = "control-label col-md-3"})
+                    <div class="col-md-9">
+                        @Html.BooleanRadioButtonFor(model => model.InVacation, RadioButtonHelper.YesNo)
+                        @Html.ValidationMessageFor(model => model.InVacation, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-dropbox"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    var list = "@Model.RoleNames";
+    if (list.length > 0) {
+        var selectedArray = list.split(',');
+        $("#RoleNameList").val(selectedArray).trigger("change");
+    }
+    var action = '@CurrentAction';
+
+    if (action === "edit") {
+        $("label[for='NewPassword']").text('New Password');
+    }
+
+
+</script>

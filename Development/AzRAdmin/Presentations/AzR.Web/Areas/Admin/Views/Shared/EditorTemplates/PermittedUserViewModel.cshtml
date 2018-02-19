@@ -1,0 +1,19 @@
+﻿@model AzR.Core.ViewModels.Admin.PermittedUserViewModel
+
+<tr class="dataItem">
+
+    @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.RoleId)
+    @Html.HiddenFor(model => model.ReviewLevel)
+    @Html.HiddenFor(model => model.RoleName)
+    @Html.HiddenFor(model => model.ModuleName)
+    @Html.HiddenFor(model => model.UserName)
+    @Html.HiddenFor(model => model.FullName)
+
+    <td class="edit-js">
+        @Html.CheckBoxFor(item => item.IsPermitted, new {@class = "checkBoxClass"})
+    </td>
+    <td>
+        @(Model.FullName+" (" +Model.UserName+")")
+    </td>
+</tr>

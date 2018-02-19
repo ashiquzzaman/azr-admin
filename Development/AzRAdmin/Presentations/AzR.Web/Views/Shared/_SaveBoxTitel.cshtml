@@ -1,0 +1,9 @@
+﻿@model string
+@if (CurrentAction.ToLower() == "edit")
+{
+    @:Edit @Model
+}
+else
+{
+    @:Add @Model
+}

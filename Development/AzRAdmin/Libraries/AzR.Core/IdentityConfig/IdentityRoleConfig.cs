@@ -1,7 +1,7 @@
-﻿using AzR.Core.Config;
+﻿using System.Data.Entity;
+using AzR.Core.AppContexts;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Data.Entity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 

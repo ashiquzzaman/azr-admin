@@ -1,0 +1,129 @@
+﻿@using AzR.Core
+@model AzR.Core.ViewModels.MvcAuth.LoginViewModel
+@{Layout = null;}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>@AppIdentity.AppName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @Styles.Render("~/Content/app-css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    <style>
+        body, html, .login-page, .register-page {
+            height: 100%;
+            background-repeat: no-repeat;
+            font-family: 'Oxygen', sans-serif;
+            /*background: -moz-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%),-moz-linear-gradient(top, rgba(57,173,219,.25) 0%, rgba(42,60,87,.4) 100%), -moz-linear-gradient(-45deg, #3b7cab 0%, #092756 100%);
+            background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -webkit-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -webkit-linear-gradient(-45deg, #3b7cab 0%,#092756 100%);
+            background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg, #3b7cab 0%,#092756 100%);
+            background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg, #3b7cab 0%,#092756 100%);*/
+            background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom, rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg, #3b7cab 0%,#092756 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3b7cab', endColorstr='#092756',GradientType=1 );
+        }
+
+        .main {
+            margin-top: 70px;
+        }
+
+        h1.title {
+            font-family: 'Passion One', cursive;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+
+        hr {
+            width: 10%;
+            color: #fff;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            margin-bottom: 15px;
+        }
+
+        input,
+        input::-webkit-input-placeholder {
+            font-size: 11px;
+            padding-top: 3px;
+        }
+
+        .main-login {
+            background-color: #fff;
+            /* shadows and rounded borders */
+            -moz-border-radius: 2px;
+            -webkit-border-radius: 2px;
+            border-radius: 2px;
+            -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .main-center {
+            margin-top: 30px;
+            margin: 0 auto;
+            max-width: 330px;
+            padding: 40px 40px;
+        }
+
+        .login-button {
+            margin-top: 5px;
+        }
+
+        .login-register {
+            font-size: 13px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body class="flat-blue login-page">
+
+    <div class="container">
+        <div class="row main">
+            <div class="panel-heading">
+                <div class="panel-title text-center">
+                    <h1 class="title">@AppIdentity.AppName</h1>
+                    <hr />
+                </div>
+            </div>
+            <div class="main-login main-center">
+                @using (Html.BeginForm("Login", "UserAuth", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-signin", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Enter your UserName" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your Password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Login">
+                    </div>
+                    <div class="login-register">
+                        <a href="@Url.Action("ForgotPassword", "UserAuth", new {area = ""})">reset password</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryunobtrusive")
+</body>
+
+</html>
+

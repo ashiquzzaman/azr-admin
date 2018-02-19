@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AzR.Core")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("AzR")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("AzR")]
 [assembly: AssemblyProduct("AzR.Core")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © AzR  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("406c1491-0444-4ca5-bb6d-1985841192b8")]
+[assembly: Guid("57e267e8-629d-42f1-99f8-c233b76d4a7d")]
 
 // Version information for an assembly consists of the following four values:
 //

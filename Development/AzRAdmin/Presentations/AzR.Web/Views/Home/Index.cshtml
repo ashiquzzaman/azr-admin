@@ -1,0 +1,29 @@
+﻿@section menu{
+    <ul class="nav navbar-nav main-nav">
+        @if (User.IsInRole("ADMIN"))
+        {
+            Html.RenderPartial("_AdminMenu");
+        }
+ 
+       
+    </ul>
+}
+
+<div id="mainContent">
+</div>
+@{Html.RenderPartial("_Modal");}
+@section scripts
+{
+
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jqueryunobtrusive")
+
+    <script>
+        $(function () {
+            $(document).ajaxComplete(function() {
+                $.validator.unobtrusive.parse(document);
+            });
+            colorReplace("#0069a6", "#000000");
+        });
+    </script>
+}

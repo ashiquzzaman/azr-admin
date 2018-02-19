@@ -1,0 +1,406 @@
+﻿@model List<AzR.Core.ViewModels.Admin.UserPrivilegeViewModel>
+<div class="clearfix"></div>
+<div class="box">
+    <div class="box-body">
+        @if (Model.Count > 0)
+        {
+            using (Ajax.BeginForm("AddEditPrivilege", "UserPrivilege", new { area = "Admin" },
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnSuccess = "handleOnSuccess",
+                    OnBegin = "Spiner.show()",
+                    OnComplete = "Spiner.hide()"
+                }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="table-responsive">
+                        <table id="dataTable" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Menu</th>
+                                    <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkFullPermissionAll" class="header"/>&nbsp;Full Permission</label></th>
+
+                                    @*@if (Settings.RoleId != 10){*@
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkViewAll" class="header"/>&nbsp;View</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkAddAll" class="header" />&nbsp;Add</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkEditAll" class="header" />&nbsp;Edit</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkDeleteAll" class="header" />&nbsp;Delete</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkDetailsAll" class="header" />&nbsp;Details</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkReportAll" class="header"/>&nbsp;Report</label></th>
+                                        <th style="text-align: left;"><label class="control-label" style="cursor: pointer;"><input type="checkbox" id="chkActiveAll" class="header" />&nbsp;IsActive</label></th>
+                                    @*}*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @Html.EditorForModel()
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 pull-right">
+                        <input type="submit" value="Update" class="btn btn-primary pull-right"  onclick = "return confirmBox('update');"/>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <strong>No data found!</strong>
+        }
+        <div class="row">
+            @*@Html.PagedListPager(Model, page => Url.Action("NewAlert", new { page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded }, new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "newAlert" }))*@
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+
+        //$("#chkFullPermissionAll").click(function () {
+        //    $(".chkFullPermissionAll").prop('checked', $(this).prop('checked'));
+        //});
+        //$("#chkViewAll").click(function () {
+        //    $(".chkViewAll").prop('checked', $(this).prop('checked'));
+        //});
+  
+
+        //Check All Checkbox on that column which is selected
+        $(".header").click(function (e) {
+            var idAsClass = e.target.getAttribute("id");
+            //*************** ------ NOTE: Always keep the class name same as ID in 'UserPrivilegeViewModel.cshtml', otherwise it wont work!!!! 
+            //*************** ------ Here assumed that 'Class' and 'Id' both having the same name.
+            $("." + idAsClass).prop('checked', $(this).prop('checked'));
+        });
+
+
+        // CHECK ALL Chckboxes when FullPermission on Header is checked
+        $("#chkFullPermissionAll").click(function (e) {
+            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"]'), function (thisRowIndex, thisRowItem) {
+                thisRowItem["checked"] = $(e.target).prop('checked');;
+            });
+        });
+
+        
+
+
+        $(".module").click(function (e) {
+            var checkedStatus = $(e.target).prop('checked');
+            var id = e.target.getAttribute("data-id");
+            var dataType = e.target.getAttribute("data-type");
+            var parentId = e.target.getAttribute("data-parent-id"); //parentId of Module is Always Zero
+
+
+            // CHECK ALL Columns of this row if FullPermission Column of parent is checked
+            if (dataType === 'Full') {
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"]'), function (thisRowIndex, thisRowItem) {
+                    thisRowItem["checked"] = checkedStatus;
+                });
+            }
+
+
+            // CHECK ALL CHILDS WHEN SELECTING MODULE (PARENT)
+            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-parent-id="' + id + '"][data-type="' + dataType + '"]'), function (index, item) {
+                
+                // CHECK ALL FullPermission column of child
+                item['checked'] = checkedStatus;
+
+
+                if (dataType === 'Full') {
+                    var childId = item.getAttribute("data-id");
+                    var childParent = item.getAttribute("data-parent-id");
+
+
+                    // CHECK ALL Column of this ROW, if the FullPermission is Clicked!
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"]'),function(thisRowIndex, thisRowItem) {
+                            // CHECKING Childs
+                            thisRowItem['checked'] = $(item).prop('checked');
+
+                            // CHECKING GrandChilds
+                            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-parent-id="' + childId + '"]'),function(_Index, _RowItem) {
+                                    _RowItem['checked'] = $(item).prop('checked');
+                            });
+                    });
+
+
+                    // CHECK ALL Column AND ALL ROWS OF CHILDS IF FullPermission is Checked on Parent
+                    item['checked'] = checkedStatus;
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + childId + '"]'),function(index, childItem) {
+                            childItem['checked'] = $(item).prop('checked');
+                        });
+                }
+                else {
+                    // CHECK/UNCHECK GrandChilds When Selecting ParentModule (Column except FullPermission)
+                    var childId = item.getAttribute("data-id");
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-type="' + dataType + '"][data-parent-id="' + childId + '"]'), function (thisRowIndex, thisRowItem) {
+                        thisRowItem['checked'] = $(item).prop('checked');
+                    });
+                }
+            });
+
+           
+
+
+
+            // UNCHECK FullPermission When any of the other (Without 'Active' column)  permission is Unchecked! 
+            if (dataType != 'Full') {
+                var checkCount = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"][data-type!="Full"][data-type!="Active"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) checkCount++;
+                });
+                if (checkCount == 6) $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = true;
+                 else $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = false;
+            }
+
+
+            // UNCHECK IsActive When all of the other permission is Unchekced! (do this auto checking/unchecking only based on other column selection, not this IsActive column)
+            if (dataType != 'Active') {
+                var noSelect = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-type!="Active"][data-id="' + id + '"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) noSelect++;
+                });
+                if (noSelect === 0) $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = false;
+                //else $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = true;
+            }
+
+
+
+            //=====(N E E D  to R E F A C T O R) ============
+            // CHECK / UNCHECKING FullPermission Column of parent and childs and grandChilds based on full column selection of all other permissions except IsActive 
+            if (dataType != 'Full' && dataType != 'Active') {
+                $.each($("#dataTable>tbody").find('tr[data-tr-id="' + id + '"],tr[data-tr-parent-id="' + id + '"]'), function (_trIndex, _trItem) {
+                    var tempDataIdFull;
+                    var menuCounter = 0;
+                    var menuId = 0;
+                    $.each($(_trItem).find('[type="checkbox"][data-type!="Full"][data-type!="Active"]'), function (_menuIndex, _menuItem) {
+                        menuId = _menuItem.getAttribute("data-id");
+                        tempDataIdFull = _menuItem.attributes["data-id"].value;
+                        if ($(_menuItem).prop('checked')) menuCounter++;
+                    });
+                    if (menuCounter === 6) $('input[type="checkbox"][data-type="Full"][data-id="' + tempDataIdFull + '"]')[0].checked = true;
+                    else $('input[type="checkbox"][data-type="Full"][data-id="' + tempDataIdFull + '"]')[0].checked = false;
+
+
+                    // Selecting/Unselecting Grandchilds 
+                    if (getChildTabCount(menuId) > 0) {
+                        var grandChildIdFull;
+                        var tabCheckCount = 0;
+                        var currentDataId = 0;
+                        $.each($("#dataTable>tbody>tr>td").find('[type="checkbox"][data-type!="Full"][data-type!="Active"][data-parent-id="' + menuId + '"]'), function (_tabIndex, _tabItem) {
+                            if (currentDataId == 0) currentDataId = _tabItem.getAttribute("data-id");
+                            if (currentDataId != 0 && $(_tabItem).prop('checked')) tabCheckCount++;
+                            grandChildIdFull = _tabItem.attributes["data-id"].value;
+
+                            if (tabCheckCount == 6) {
+                                $('input[type="checkbox"][data-type="Full"][data-id="' + grandChildIdFull + '"]')[0].checked = true;
+                                tabCheckCount = 0; currentDataId = 0;
+                            }
+                            else $('input[type="checkbox"][data-type="Full"][data-id="' + grandChildIdFull + '"]')[0].checked = false;
+                        });
+                    }
+                });
+            }
+        });
+
+
+
+        $(".menu").click(function (e) {
+            var checkedStatus = $(e.target).prop('checked');
+            var id = e.target.getAttribute("data-id");
+            var parentId = e.target.getAttribute("data-parent-id");
+            var dataType = e.target.getAttribute("data-type");
+
+
+            // CHECK ALL Grand CHILDS When Selecting Menu 
+            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-parent-id="' + id + '"][data-type="' + dataType + '"]'), function (index, item) {
+
+                // CHECK ALL FullPermission column of child
+                item['checked'] = checkedStatus;
+
+
+                if (dataType === 'Full') {
+                    var childId = item.getAttribute("data-id");
+                    var childParent = item.getAttribute("data-parent-id");
+
+
+                    // CHECK ALL Column of this ROW, if the FullPermission is Clicked!
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"]'), function (thisRowIndex, thisRowItem) {
+                        // CHECKING Childs
+                        thisRowItem['checked'] = $(item).prop('checked');
+                    });
+
+
+                    // CHECK ALL Column AND ALL ROWS OF CHILDS IF FullPermission is Checked on Parent
+                    item['checked'] = checkedStatus;
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + childId + '"]'), function (index, childItem) {
+                        childItem['checked'] = $(item).prop('checked');
+                    });
+                }
+            });
+
+
+            // CHECK/UNCHECK Parent based on Zero/More child selection
+            var count = 0;
+            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-parent-id="' + parentId + '"][data-type="' + dataType + '"]'), function (index, item) {
+                if (item.checked) count++;
+            });
+            $('input[type="checkbox"][data-id="' + parentId + '"][data-type="' + dataType + '"]')[0].checked = count > 0;
+            if (dataType === 'Full') {
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Active"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="View"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Add"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Edit"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Delete"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Details"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Report"]')[0].checked = count > 0;
+            }
+         
+
+
+
+            // CHECK All Column when FullPermission of child is selected
+            if (dataType === 'Full') {
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"]'), function (index, item) {
+                    item["checked"] = checkedStatus;
+                });
+            }
+
+
+            // UNCHECK FullPermission When any of the other (Without 'Active' column)  permission is Unchecked! 
+            if (dataType != 'Full') {
+                var checkCount = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"][data-type!="Full"][data-type!="Active"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) checkCount++;
+                });
+                if (checkCount === 6) $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = true;
+                else $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = false;
+            }
+
+
+            // UNCHECK IsActive When all of the other permission is Unchekced! (do this auto checking/unchecking only based on other column selection, not this IsActive column)
+            if (dataType != 'Active') {
+                var noSelect = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-type!="Active"][data-id="' + id + '"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) noSelect++;
+                });
+                if (noSelect === 0) $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = false;
+                //else $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = true;
+            }
+
+            // CHECK / UNCHECKING FullPermission Column of parent and childs and grandChilds based on full column selection of all other permissions except IsActive 
+            if (dataType != 'Full' && dataType != 'Active') {
+                $.each($("#dataTable>tbody").find('tr[data-tr-id="' + id + '"],tr[data-tr-parent-id="' + id + '"]'), function (_trIndex, _trItem) {
+                    var tempDataIdFull;
+                    var menuCounter = 0;
+                    var menuId = 0;
+                    $.each($(_trItem).find('[type="checkbox"][data-type!="Full"][data-type!="Active"]'), function (_menuIndex, _menuItem) {
+                        menuId = _menuItem.getAttribute("data-id");
+                        tempDataIdFull = _menuItem.attributes["data-id"].value;
+                        if ($(_menuItem).prop('checked')) menuCounter++;
+                    });
+                    if (menuCounter === 6) $('input[type="checkbox"][data-type="Full"][data-id="' + tempDataIdFull + '"]')[0].checked = true;
+                    else $('input[type="checkbox"][data-type="Full"][data-id="' + tempDataIdFull + '"]')[0].checked = false;
+                });
+            }
+
+        });
+
+
+
+        $(".tab").click(function (e) {
+            var checkedStatus = $(e.target).prop('checked');
+            var id = e.target.getAttribute("data-id");
+            var parentId = e.target.getAttribute("data-parent-id");
+            var dataType = e.target.getAttribute("data-type");
+
+
+            // CHECK/UNCHECK Parent based on Zero/More child selection
+            var count = 0;
+            $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-parent-id="' + parentId + '"][data-type="' + dataType + '"]'), function (index, item) {
+                if (item.checked) count++;
+            });
+            $('input[type="checkbox"][data-id="' + parentId + '"][data-type="' + dataType + '"]')[0].checked = count > 0;
+            if (dataType == 'Full') {
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Active"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="View"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Add"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Edit"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Delete"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Details"]')[0].checked = count > 0;
+                $('input[type="checkbox"][data-id="' + parentId + '"][data-type="Report"]')[0].checked = count > 0;
+            }
+
+
+            // IF Tab Has a GranParent (Module) then check/uncheck them based on tab selection
+            try {
+                var grandParentId = $('input[type="checkbox"][data-id="' + parentId + '"][data-type="' + dataType + '"]')[0].getAttribute("data-parent-id");
+                if (grandParentId != 0 && grandParentId != undefined) {
+                    var childCheckCount = 0;
+                    $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][checked][data-parent-id="' + grandParentId + '"][data-type!="Active"]'), function (index, item) {
+                        if (item.checked) childCheckCount++;
+                    });
+                    $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="' + dataType + '"]')[0].checked = childCheckCount > 0;
+                    if (dataType === 'Full') {
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Active"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="View"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Add"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Edit"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Delete"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Details"]')[0].checked = childCheckCount > 0;
+                        $('input[type="checkbox"][data-id="' + grandParentId + '"][data-type="Report"]')[0].checked = childCheckCount > 0;
+                    }
+                }
+            }
+            catch (err) { /*console.log(err); */ }
+
+
+
+            // CHECK All Column when FullPermission of child is selected
+            if (dataType === 'Full') {
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"]'), function (index, item) {
+                    item["checked"] = checkedStatus;
+                });
+            }
+
+
+            // UNCHECK FullPermission When any of the other (Without 'Active' column)  permission is Unchecked! 
+            if (dataType != 'Full') {
+                var checkCount = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-id="' + id + '"][data-type!="Full"][data-type!="Active"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) checkCount++;
+                });
+                if (checkCount === 6) $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = true;
+                else $('input[type="checkbox"][data-id="' + id + '"]')[0].checked = false;
+            }
+
+
+            // UNCHECK IsActive When all of the other permission is Unchekced! (do this auto checking/unchecking only based on other column selection, not this IsActive column)
+            if (dataType != 'Active') {
+                var noSelect = 0;
+                $.each($("#dataTable>tbody>tr>td").find('input[type="checkbox"][data-type!="Active"][data-id="' + id + '"]'), function (thisRowIndex, thisRowItem) {
+                    if ($(thisRowItem).prop('checked')) noSelect++;
+                });
+                if (noSelect === 0) $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = false;
+                //else $('input[type="checkbox"][data-type="Active"][data-id="' + id + '"]')[0].checked = true;
+            }
+        });
+
+
+
+        function getChildTabCount(parentId) {
+            var counter = 0;
+            $('#dataTable>tbody>tr>td').find('.tab[data-parent-id="' + parentId + '"]').each(function (i, obj) {
+                counter++;
+            });
+            return counter;
+        }
+
+    });
+</script>
+

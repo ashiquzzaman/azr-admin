@@ -1,0 +1,15 @@
+﻿@model int
+    @{
+        var approvers = new List<string> { "Executor" ,"Initiator", "1st Approver", "2nd Approver", "3rd Approver"};
+    }
+
+@if (Model <= 3)
+{
+    @Html.Label("", approvers[Model], new {@style = "font-weight: 500;"})
+
+}
+else
+{
+    @Html.Label("", Model + "th Approver", new {@style = "font-weight: 500;"})
+
+}

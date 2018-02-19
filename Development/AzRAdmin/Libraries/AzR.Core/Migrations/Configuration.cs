@@ -1,5 +1,5 @@
 using System.Data.Entity.Migrations;
-using AzR.Core.Config;
+using AzR.Core.AppContexts;
 
 namespace AzR.Core.Migrations
 {
@@ -9,14 +9,15 @@ namespace AzR.Core.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(ApplicationDbContext context)
         {
             var init = new InitializeConfig { Context = context };
-            init.InitializeRole();
             init.InitializeOrganization();
+            init.InitializeRole();
             init.InitializeAdmin();
         }
     }

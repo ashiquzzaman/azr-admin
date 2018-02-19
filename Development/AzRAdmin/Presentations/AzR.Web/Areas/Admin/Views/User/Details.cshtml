@@ -1,0 +1,45 @@
+﻿@model AzR.Core.ViewModels.Admin.UserViewModel
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+    </button>
+    <h4 class="modal-title">Details Record</h4>
+</div>
+<div class="modal-body">
+    <div>
+        <table class="table table-bordered">
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.FullName)</td>
+                <td>@Html.DisplayFor(model => model.FullName)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.RoleNames)</td>
+                <td>@Html.DisplayFor(model => model.RoleNames)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Email)</td>
+                <td>@Html.DisplayFor(model => model.Email)</td>
+            </tr>
+              <tr>
+                <td>@Html.DisplayNameFor(model => model.PhoneNumber)</td>
+                <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+            </tr>
+            <tr>
+                <td>@Html.DisplayNameFor(model => model.Created)</td>
+                <td>@Html.DisplayFor(model => model.Created,"LongToDateTime")</td>
+            </tr>
+
+
+
+
+
+        </table>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default"
+            data-dismiss="modal">
+        Close
+    </button>
+</div>

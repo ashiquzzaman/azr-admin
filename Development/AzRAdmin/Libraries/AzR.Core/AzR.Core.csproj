@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{406C1491-0444-4CA5-BB6D-1985841192B8}</ProjectGuid>
+    <ProjectGuid>{57E267E8-629D-42F1-99F8-C233B76D4A7D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AzR.Core</RootNamespace>
@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -45,23 +45,20 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Security.3.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.3.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.Cookies.2.1.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.3.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Security.OAuth.2.1.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -73,27 +70,6 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -102,77 +78,104 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiAuth\AccountBindingModels.cs" />
-    <Compile Include="ApiAuth\AccountViewModels.cs" />
-    <Compile Include="Config\ApplicationDbContext.cs" />
-    <Compile Include="Config\AsyncPagedList.cs" />
-    <Compile Include="Config\DateConvention.cs" />
-    <Compile Include="Config\DynamicQuery.cs" />
-    <Compile Include="Config\EmailService.cs" />
-    <Compile Include="Config\InitializeConfig.cs" />
-    <Compile Include="Config\SmsService.cs" />
-    <Compile Include="Entity\LoginHistory.cs" />
-    <Compile Include="Entity\Organization.cs" />
-    <Compile Include="IdentityConfig\ApplicationRole.cs" />
-    <Compile Include="IdentityConfig\ApplicationUser.cs" />
+    <Compile Include="AppIdentity.cs" />
+    <Compile Include="AppContexts\ApplicationDbContext.cs" />
+    <Compile Include="AppContexts\DateConvention.cs" />
+    <Compile Include="AppContexts\DynamicQuery.cs" />
+    <Compile Include="AppContexts\EmailService.cs" />
+    <Compile Include="AppContexts\InitializeConfig.cs" />
+    <Compile Include="Entities\Menu.cs" />
+    <Compile Include="Entities\UserPrivilege.cs" />
+    <Compile Include="Enumerations\ApproverType.cs" />
+    <Compile Include="Enumerations\MenuType.cs" />
+    <Compile Include="Enumerations\ModuleType.cs" />
+    <Compile Include="Repositoies\Implementation\LoginHistoryRepository.cs" />
+    <Compile Include="Repositoies\Implementation\MenuRepository.cs" />
+    <Compile Include="Repositoies\Implementation\OrganizationRepository.cs" />
+    <Compile Include="Repositoies\Implementation\RoleRepository.cs" />
+    <Compile Include="Repositoies\Implementation\UserPrivilegeRepository.cs" />
+    <Compile Include="Repositoies\Implementation\UserRepository.cs" />
+    <Compile Include="Repositoies\Interface\ILoginHistoryRepository.cs" />
+    <Compile Include="Repositoies\Interface\IMenuRepository.cs" />
+    <Compile Include="Repositoies\Interface\IOrganizationRepository.cs" />
+    <Compile Include="Repositoies\Interface\IRoleRepository.cs" />
+    <Compile Include="Repositoies\Interface\IUserPrivilegeRepository.cs" />
+    <Compile Include="Repositoies\Interface\IUserRepository.cs" />
+    <Compile Include="AppContexts\IRepository.cs" />
+    <Compile Include="AppContexts\AsyncPagedList.cs" />
     <Compile Include="IdentityConfig\ApplicationUserClaim.cs" />
     <Compile Include="IdentityConfig\ApplicationUserLogin.cs" />
     <Compile Include="IdentityConfig\ApplicationUserRole.cs" />
-    <Compile Include="IdentityConfig\IdentityRoleConfig.cs" />
     <Compile Include="IdentityConfig\IdentityUserConfig.cs" />
+    <Compile Include="AppContexts\Repository.cs" />
+    <Compile Include="IdentityConfig\IdentityRoleConfig.cs" />
+    <Compile Include="AppContexts\SmsService.cs" />
+    <Compile Include="Entities\LoginHistory.cs" />
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="ModelConfig\CheckboxHelper.cs" />
-    <Compile Include="ModelConfig\CmsUserViewModel.cs" />
-    <Compile Include="ModelConfig\DropDownItem.cs" />
-    <Compile Include="ModelConfig\DropDownValue.cs" />
-    <Compile Include="ModelConfig\EnumSetting.cs" />
-    <Compile Include="ModelConfig\RadioButtonHelper.cs" />
-    <Compile Include="ModelConfig\ReportHeader.cs" />
-    <Compile Include="MvcAuth\AccountBindingModels.cs" />
-    <Compile Include="MvcAuth\AccountViewModels.cs" />
-    <Compile Include="MvcAuth\AddPhoneNumberViewModel.cs" />
-    <Compile Include="MvcAuth\ChangePasswordViewModel.cs" />
-    <Compile Include="MvcAuth\ConfigureTwoFactorViewModel.cs" />
-    <Compile Include="MvcAuth\ExternalLoginConfirmationViewModel.cs" />
-    <Compile Include="MvcAuth\ExternalLoginListViewModel.cs" />
-    <Compile Include="MvcAuth\ForgotPasswordViewModel.cs" />
-    <Compile Include="MvcAuth\ForgotViewModel.cs" />
-    <Compile Include="MvcAuth\IndexViewModel.cs" />
-    <Compile Include="MvcAuth\LoginViewModel.cs" />
-    <Compile Include="MvcAuth\ManageLoginsViewModel.cs" />
-    <Compile Include="MvcAuth\NotificationViewModel.cs" />
-    <Compile Include="MvcAuth\OrganizationViewModel.cs" />
-    <Compile Include="MvcAuth\RegisterViewModel.cs" />
-    <Compile Include="MvcAuth\ResetPasswordViewModel.cs" />
-    <Compile Include="MvcAuth\SendCodeViewModel.cs" />
-    <Compile Include="MvcAuth\SetPasswordViewModel.cs" />
-    <Compile Include="MvcAuth\UserViewModel.cs" />
-    <Compile Include="MvcAuth\VerifyCodeViewModel.cs" />
-    <Compile Include="MvcAuth\VerifyPhoneNumberViewModel.cs" />
+    <Compile Include="Entities\Organization.cs" />
+    <Compile Include="IdentityConfig\ApplicationRole.cs" />
+    <Compile Include="IdentityConfig\ApplicationUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ILoginHistoryRepository.cs" />
-    <Compile Include="Repositories\IOrganizationRepository.cs" />
-    <Compile Include="Repositories\IRoleRepository.cs" />
-    <Compile Include="Repositories\IUserRepository.cs" />
-    <Compile Include="Repositories\LoginHistoryRepository.cs" />
-    <Compile Include="Repositories\OrganizationRepository.cs" />
-    <Compile Include="Repositories\RoleRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Utilities\DynamicClassBuilder.cs" />
-    <Compile Include="Utilities\ExtensionMethods.cs" />
-    <Compile Include="Utilities\GeneralHelper.cs" />
-    <Compile Include="Utilities\LdapUtility.cs" />
-    <Compile Include="Utilities\MailClient.cs" />
-    <Compile Include="Utilities\ManageCookie.cs" />
-    <Compile Include="Utilities\PcUniqueNumber.cs" />
-    <Compile Include="Utilities\QueryableExtensions.cs" />
-    <Compile Include="Utilities\TransactionWrapper.cs" />
+    <Compile Include="Services\Implementation\BaseManager.cs" />
+    <Compile Include="Services\Implementation\MenuManager.cs" />
+    <Compile Include="Services\Implementation\ModuleManager.cs" />
+    <Compile Include="Services\Implementation\OrganizationManager.cs" />
+    <Compile Include="Services\Implementation\RoleManager.cs" />
+    <Compile Include="Services\Implementation\UserManager.cs" />
+    <Compile Include="Services\Implementation\UserPrivilegeManager.cs" />
+    <Compile Include="Services\Interface\IBaseManager.cs" />
+    <Compile Include="Services\Interface\IMenuManager.cs" />
+    <Compile Include="Services\Interface\IModuleManager.cs" />
+    <Compile Include="Services\Interface\IOrganizationManager.cs" />
+    <Compile Include="Services\Interface\IRoleManager.cs" />
+    <Compile Include="Services\Interface\IUserManager.cs" />
+    <Compile Include="Services\Interface\IUserPrivilegeManager.cs" />
+    <Compile Include="ViewModels\ApiAuth\AccountBindingModels.cs" />
+    <Compile Include="ViewModels\ApiAuth\AccountViewModels.cs" />
+    <Compile Include="ViewModels\Admin\MenuViewModel.cs" />
+    <Compile Include="ViewModels\Admin\NotificationViewModel.cs" />
+    <Compile Include="ViewModels\Admin\OrganizationViewModel.cs" />
+    <Compile Include="ViewModels\Admin\PermittedUserViewModel.cs" />
+    <Compile Include="ViewModels\Admin\RoleViewModel.cs" />
+    <Compile Include="ViewModels\Admin\UserMenuViewModel.cs" />
+    <Compile Include="ViewModels\Admin\UserPrivilegeViewModel.cs" />
+    <Compile Include="ViewModels\Admin\UserViewModel.cs" />
+    <Compile Include="HelperModels\CheckboxHelper.cs" />
+    <Compile Include="HelperModels\CmsUserViewModel.cs" />
+    <Compile Include="HelperModels\DropDownItem.cs" />
+    <Compile Include="HelperModels\DropDownValue.cs" />
+    <Compile Include="HelperModels\RadioButtonHelper.cs" />
+    <Compile Include="HelperModels\ReportHeader.cs" />
+    <Compile Include="HelperModels\SelectDropDownItem.cs" />
+    <Compile Include="ViewModels\MvcAuth\AddPhoneNumberViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ConfigureTwoFactorViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ExternalLoginConfirmationViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ExternalLoginListViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ForgotPasswordViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ForgotViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\IndexViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ManageLoginsViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\SendCodeViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\SetPasswordViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\VerifyCodeViewModel.cs" />
+    <Compile Include="ViewModels\MvcAuth\VerifyPhoneNumberViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AzR.Utilities\AzR.Utilities.csproj">
+      <Project>{AB1C6403-5564-4277-8FF8-F4D537005B54}</Project>
+      <Name>AzR.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ModelConfigs\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

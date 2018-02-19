@@ -1,0 +1,72 @@
+﻿@using AzR.Core.HelperModels
+@model AzR.Core.ViewModels.Admin.MenuViewModel
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+    </button>
+    <h4 class="modal-title">
+    @{Html.RenderPartial("_SaveBoxTitel", "Menu");}
+    </h4>
+</div>
+<div class="modal-body">
+   
+    @using (Ajax.BeginForm(CurrentAction, "Menu", new {Area = "Admin"}, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "SubmitOnSuccess",
+        OnBegin = "Spiner.show()",
+        OnComplete = "Spiner.hide()"
+    }))
+    {
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.Url)
+        @Html.HiddenFor(model => model.MenuType)
+        @Html.HiddenFor(model => model.MenuOrder)
+        @Html.Hidden("page")
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(model => model.DisplayName, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DisplayName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.RoleId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ComboBoxFor(model => model.RoleId, Model.RoleList, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Url, htmlAttributes: new { @class = "control-label col-md-2 required" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Url, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Url, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ComboBoxFor(model => model.ParentId, Model.ParentList, "--Select--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.BooleanRadioButtonFor(model => model.IsActive, RadioButtonHelper.ActiveInActive)
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+        <div class="modal-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-dropbox" id="btnSave">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@using System.Collections
+@model AzR.Core.HelperModels.SelectDropDownItem
+<div class="clearfix"></div>
+<div style="margin-top:10px">
+
+    @using (Ajax.BeginForm("AvailablePermission", "UserPrivilege", new { area = "Admin" }, new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        HttpMethod = "GET",
+        UpdateTargetId = "subContainer",
+        OnBegin = "Spiner.show()",
+        OnComplete = "Spiner.hide()"
+    }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel-body form-horizontal search-form">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        @Html.Label("User Name", htmlAttributes: new {@class = "control-label col-md-6"})
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.Id, new SelectList((IEnumerable) ViewData["lstUser"], "Value", "Text"),"--Select User--", htmlAttributes: new { id = "AllUsers", @class = "form-control"})
+                            @Html.ValidationMessageFor(m => m.Id, "", new {@class = "text-danger"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="submit" id="save" class="btn btn-primary" title="Search"><i class="fa fa-search fa-1x"></i></button>
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="clearfix"></div>
+
+<div id="subContainer" class="">
+    @{Html.RenderAction("AvailablePermission", "UserPrivilege", new { model = Model});}
+</div>
+
+<script type="text/javascript">
+    $("#AllUsers").select2({ theme: "bootstrap", width: '100%' });
+</script>

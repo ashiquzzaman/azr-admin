@@ -1,0 +1,64 @@
+﻿@using AzR.Core.HelperModels
+@model AzR.Core.ViewModels.Admin.RoleViewModel
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+    </button>
+    <h4 class="modal-title">
+    @{Html.RenderPartial("_SaveBoxTitel", "Role");}
+    </h4>
+</div>
+<div class="modal-body">
+
+@using (Ajax.BeginForm(CurrentAction, "Role", new { Area = "Admin" }, new AjaxOptions
+{
+    HttpMethod = "POST",
+    OnSuccess = "SubmitOnSuccess",
+    OnBegin = "Spiner.show()",
+    OnComplete = "Spiner.hide()"
+}))
+{
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.Id)
+            @Html.Hidden("page")
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(model => model.RoleCode, htmlAttributes: new {@class = "control-label col-md-3 required"})
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.RoleCode, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.RoleCode, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-md-3 required"})
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.IsActive, htmlAttributes: new {@class = "control-label col-md-3"})
+                <div class="col-md-9">
+                    @Html.BooleanRadioButtonFor(model => model.IsActive, RadioButtonHelper.ActiveInActive)
+                    @Html.ValidationMessageFor(model => model.IsActive, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new {@class = "control-label col-md-3"})
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.Description, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Description, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-dropbox" id="btnSave">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+</div>

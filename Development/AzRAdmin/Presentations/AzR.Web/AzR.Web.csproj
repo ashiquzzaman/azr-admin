@@ -873,7 +873,10 @@
     <Content Include="Content\select2-bootstrap.less" />
     <Content Include="Content\select2-bootstrap-build.scss" />
     <Content Include="Content\select2-bootstrap-build.less" />
+    <Content Include="Scripts\app\dashboard.js" />
     <Content Include="Scripts\app\drag-drop.js" />
+    <Content Include="Scripts\Chart.js" />
+    <Content Include="Scripts\Chart.min.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />
     <Content Include="Scripts\ckeditor\config.js" />
@@ -1159,10 +1162,8 @@
     <Content Include="Images\noimage.png" />
     <Content Include="Images\profile.png" />
     <Content Include="Images\user.png" />
-    <Content Include="Scripts\app\chart.js" />
     <Content Include="Scripts\app\azr-admin.js" />
     <Content Include="Scripts\app\spin.js" />
-    <Content Include="Scripts\app\underscore.js" />
     <Content Include="Scripts\bootbox.js" />
     <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
@@ -1241,6 +1242,8 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\select2.js" />
     <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\underscore.js" />
+    <Content Include="Scripts\underscore.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1287,6 +1290,8 @@
     <Content Include="Views\Shared\EditorTemplates\CheckboxHelper.cshtml" />
     <Content Include="Views\Shared\_SaveBoxTitel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\ApproverLevel.cshtml" />
+    <Content Include="Views\Home\Board.cshtml" />
+    <Content Include="Scripts\underscore.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,14 +10,16 @@ namespace AzR.Web.Controllers
         {
 
         }
-
-
-
         // GET: Dashboard
         public ActionResult Index()
         {
             return View();
         }
+        public ActionResult Board()
+        {
+            return PartialView();
+        }
+
 
     }
 }

@@ -32,6 +32,8 @@ namespace AzR.Web
                 "~/Scripts/bootbox.js",
                 "~/Scripts/select2.js",
                 "~/Scripts/respond.js",
+                "~/Scripts/Chart.js",
+                "~/Scripts/underscore.js",
                 "~/Scripts/app/underscore.js",
                 "~/Scripts/app/spin.js",
                 "~/Scripts/app/drag-drop.js",

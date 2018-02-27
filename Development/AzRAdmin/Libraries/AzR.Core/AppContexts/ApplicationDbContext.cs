@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.IdentityConfig;
 using AzR.Utilities;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Validation;
 
 namespace AzR.Core.AppContexts
 {
@@ -16,6 +16,7 @@ namespace AzR.Core.AppContexts
     {
         public ApplicationDbContext() : base("DefaultConnection")
         {
+
         }
         #region General
         public DbSet<LoginHistory> LoginHistories { get; set; }
@@ -29,6 +30,7 @@ namespace AzR.Core.AppContexts
         {
             return new ApplicationDbContext();
         }
+
         public override int SaveChanges()
         {
             try
@@ -63,7 +65,20 @@ namespace AzR.Core.AppContexts
             {
                 throw new ArgumentNullException("modelBuilder");
             }
+
             base.OnModelCreating(modelBuilder);
+
+            //  Database.SetInitializer(new AppDatabaseInitializer());
+            modelBuilder.HasDefaultSchema("C##AZRADMIN");
+            modelBuilder
+                .Properties()
+                .Where(p => p.PropertyType == typeof(string) &&
+                            !p.Name.Contains("Id") &&
+                            !p.Name.Contains("Provider"))
+                .Configure(p => p.HasMaxLength(256));
+
+
+
 
             modelBuilder.Entity<Organization>()
                 .HasOptional(p => p.Parent)
@@ -74,7 +89,6 @@ namespace AzR.Core.AppContexts
                 .HasOptional(p => p.Parent)
                 .WithMany(p => p.Children)
                 .HasForeignKey(p => p.ParentId);
-
 
             modelBuilder.Entity<ApplicationRole>()
                 .ToTable("Roles")
@@ -104,7 +118,7 @@ namespace AzR.Core.AppContexts
                 .ToTable("UserClaims")
                 .Property(u => u.ClaimValue).HasMaxLength(500);
 
-            modelBuilder.Conventions.Add(new DateConvention());
+            //modelBuilder.Conventions.Add(new DateConvention());
 
         }
 

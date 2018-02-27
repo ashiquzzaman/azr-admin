@@ -6,10 +6,12 @@ using AzR.Core.Services.Interface;
 using AzR.Web.Controllers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Practices.Unity;
 using System.Data.Entity;
 using System.Web.Http;
 using System.Web.Mvc;
+using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 using Unity.Mvc5;
 
 namespace AzR.Web

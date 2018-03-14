@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.ViewModels.Admin;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Interface
 {
-    public interface IOrganizationManager
+    public interface IBranchService
     {
         IQueryable<OrganizationViewModel> GetAllAsync();
         Task<OrganizationViewModel> GetAsync(int id);

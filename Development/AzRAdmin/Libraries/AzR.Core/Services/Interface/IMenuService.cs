@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.HelperModels;
 using AzR.Core.ViewModels.Admin;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Interface
 {
-    public interface IMenuManager
+    public interface IMenuService
     {
         IQueryable<MenuViewModel> GetAllAsync();
         Task<MenuViewModel> GetAsync(int id);

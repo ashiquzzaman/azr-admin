@@ -1,11 +1,7 @@
 using AzR.Core.AppContexts;
 using AzR.Core.Repositoies.Implementation;
-using AzR.Core.Repositoies.Interface;
-using AzR.Core.Services.Implementation;
 using AzR.Core.Services.Interface;
 using AzR.Web.Controllers;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -13,6 +9,7 @@ using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 using Unity.Mvc5;
+using Unity.RegistrationByConvention;
 
 namespace AzR.Web
 {
@@ -23,46 +20,64 @@ namespace AzR.Web
             var container = new UnityContainer();
 
 
-            #region CONFIG
 
-            //DB Connection
             container.RegisterType<DbContext, ApplicationDbContext>(new HierarchicalLifetimeManager());
-            //Identity Entity Config
-            container.RegisterType(typeof(UserManager<>), new InjectionConstructor(typeof(IUserStore<>)));
-            container.RegisterType<IUser>(new InjectionFactory(c => c.Resolve<IUser>()));
-            container.RegisterType(typeof(IUserStore<>), typeof(UserStore<>));
-            //container.RegisterType<IdentityUser, ApplicationUser>(new ContainerControlledLifetimeManager());
-            //container.RegisterType<UserManager<ApplicationUser>>(new HierarchicalLifetimeManager());
-            //container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(new HierarchicalLifetimeManager());
-            container.RegisterType<IIdentityMessageService, EmailService>();
 
-            #endregion
+            container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
 
-            #region REPOSITORY
-            container.RegisterType<ILoginHistoryRepository, LoginHistoryRepository>();
-            container.RegisterType<IOrganizationRepository, OrganizationRepository>();
-            container.RegisterType<IMenuRepository, MenuRepository>();
-            container.RegisterType<IRoleRepository, RoleRepository>();
-            container.RegisterType<IUserPrivilegeRepository, UserPrivilegeRepository>();
-            container.RegisterType<IUserRepository, UserRepository>();
-            #endregion
+            container.RegisterTypes(
+                AllClasses.FromAssemblies(typeof(WebApiApplication).Assembly),
+                WithMappings.FromMatchingInterface,
+                WithName.Default);
 
-            #region SERVICE
-            container.RegisterType<IBaseManager, BaseManager>();
-            container.RegisterType<IModuleManager, ModuleManager>();
-            container.RegisterType<IOrganizationManager, OrganizationManager>();
-            container.RegisterType<IMenuManager, MenuManager>();
-            container.RegisterType<IRoleManager, RoleManager>();
-            container.RegisterType<IUserPrivilegeManager, UserPrivilegeManager>();
-            container.RegisterType<IUserManager, UserManager>();
+            container.RegisterTypes(
+                AllClasses.FromAssemblies(typeof(UserRepository).Assembly),
+                WithMappings.FromMatchingInterface,
+                WithName.Default);
 
-            #endregion
+            //container.RegisterType<DbContext, StudentDbContext>(typeof(StudentDbContext).Name, new HierarchicalLifetimeManager());
+            //var repos = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "AzR.*.Core.dll", SearchOption.AllDirectories).ToList();
+
+            //foreach (var file in repos)
+            //{
+            //    container.RegisterTypes(
+            //        AllClasses.FromAssemblies(Assembly.LoadFrom(file))
+            //        .Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Service")),
+            //        WithMappings.FromMatchingInterface,
+            //        getInjectionMembers: new InjectionParameter(typeof(IBaseService))
+            //        );
+
+            //}
 
 
-            container.RegisterType<UserAuthController>(new InjectionConstructor(typeof(IBaseManager)));
-            container.RegisterType<UserProfileController>(new InjectionConstructor(typeof(IBaseManager)));
 
-            container.RegisterType<UserAuthApiController>(new InjectionConstructor(typeof(IBaseManager)));
+            //container.RegisterTypes(
+            //    AllClasses.FromLoadedAssemblies(),  //uses reflection
+            //    WithMappings.FromMatchingInterface, //Matches Interfaces to implementations by name
+            //    WithName.Default);
+
+            //container.RegisterTypes(
+            //    AllClasses.FromAssemblies(typeof(UserRepository).Assembly)
+            //        .Where(t => t.Name.EndsWith("Repository")),
+            //    WithMappings.FromAllInterfaces,
+            //    WithName.TypeName,
+            //    WithLifetime.Transient);
+
+            //container.RegisterTypes(
+            //    AllClasses.FromAssemblies(typeof(BaseService).Assembly)
+            //        .Where(t => t.Name.EndsWith("Service")),
+            //    WithMappings.FromAllInterfaces);
+
+
+
+
+
+
+
+            container.RegisterType<UserAuthController>(new InjectionConstructor(typeof(IBaseService)));
+            container.RegisterType<UserProfileController>(new InjectionConstructor(typeof(IBaseService)));
+
+            container.RegisterType<UserAuthApiController>(new InjectionConstructor(typeof(IBaseService)));
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Implementation;
@@ -11,16 +6,21 @@ using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Implementation
 {
-    public class OrganizationManager : IOrganizationManager
+    public class BranchService : IBranchService
     {
 
         private readonly IOrganizationRepository _organization;
         private IUserRepository _user;
         private RoleRepository _role;
-        public OrganizationManager(IOrganizationRepository institution, IUserRepository user, RoleRepository role)
+        public BranchService(IOrganizationRepository institution, IUserRepository user, RoleRepository role)
         {
             _organization = institution;
             _user = user;

@@ -15,8 +15,8 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     [RoutePrefix("api/v1/branchs")]
     public class BranchV1Controller : BaseApiController
     {
-        private IOrganizationManager _organization;
-        public BranchV1Controller(IBaseManager general, IOrganizationManager organization) : base(general)
+        private IBranchService _organization;
+        public BranchV1Controller(IBaseService general, IBranchService organization) : base(general)
         {
             _organization = organization;
         }

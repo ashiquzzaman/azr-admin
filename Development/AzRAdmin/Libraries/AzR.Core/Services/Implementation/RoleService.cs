@@ -1,22 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.HelperModels;
+﻿using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Implementation
 {
 
-    public class RoleManager : IRoleManager
+    public class RoleService : IRoleService
     {
         private IRoleRepository _role;
 
-        public RoleManager(IRoleRepository role)
+        public RoleService(IRoleRepository role)
         {
             _role = role;
         }

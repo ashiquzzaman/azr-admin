@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.Enumerations;
 using AzR.Core.HelperModels;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Implementation
 {
-    public class MenuManager : IMenuManager
+    public class MenuService : IMenuService
     {
         private readonly IMenuRepository _menu;
         private readonly IUserPrivilegeRepository _userPrivilege;
         private IRoleRepository _role;
         private readonly List<MenuType> _menuTypes = new List<MenuType> { MenuType.Module, MenuType.Menu };
 
-        public MenuManager(IMenuRepository menu, IUserPrivilegeRepository userPrivilege, IRoleRepository role)
+        public MenuService(IMenuRepository menu, IUserPrivilegeRepository userPrivilege, IRoleRepository role)
         {
             _menu = menu;
             _userPrivilege = userPrivilege;

@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace AzR.Core.Services.Implementation
 {
-    public class UserPrivilegeManager : IUserPrivilegeManager
+    public class UserPrivilegeService : IUserPrivilegeService
     {
         private IUserPrivilegeRepository _userPrivilege;
         private IUserRepository _user;
         private IMenuRepository _menu;
-        public UserPrivilegeManager(IUserPrivilegeRepository userPrivilege
+        public UserPrivilegeService(IUserPrivilegeRepository userPrivilege
             , IUserRepository user
             , IMenuRepository menu
         )

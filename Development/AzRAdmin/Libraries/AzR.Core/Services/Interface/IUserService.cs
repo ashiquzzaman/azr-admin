@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.ViewModels.Admin;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Interface
 {
-    public interface IUserManager
+    public interface IUserService
     {
         ApplicationUser GetById(int id);
         IEnumerable<UserViewModel> GetAllInstituteUsers(int instituteId);

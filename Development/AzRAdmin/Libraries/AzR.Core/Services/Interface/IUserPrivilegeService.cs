@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.ViewModels.Admin;
+using System.Collections.Generic;
 
 namespace AzR.Core.Services.Interface
 {
-    public interface IUserPrivilegeManager
+    public interface IUserPrivilegeService
     {
         IEnumerable<UserPrivilegeViewModel> GetByUserId(int id);
         UserPrivilege Create(UserPrivilegeViewModel model);

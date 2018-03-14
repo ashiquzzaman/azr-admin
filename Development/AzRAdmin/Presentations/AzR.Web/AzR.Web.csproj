@@ -301,6 +301,8 @@
     <Compile Include="Areas\Api\Controllers\V1\RoleV1Controller.cs" />
     <Compile Include="Areas\Api\Controllers\V1\MenuV1Controller.cs" />
     <Compile Include="Areas\Api\Controllers\V1\BranchV1Controller.cs" />
+    <Compile Include="Areas\Example\Controllers\StudentController.cs" />
+    <Compile Include="Areas\Example\ExampleAreaRegistration.cs" />
     <Compile Include="Areas\HelpPage\ApiDescriptionExtensions.cs" />
     <Compile Include="Areas\HelpPage\App_Start\HelpPageConfig.cs" />
     <Compile Include="Areas\HelpPage\Controllers\HelpController.cs" />
@@ -1203,6 +1205,8 @@
     <Content Include="Configs\ConnectionStrings.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Areas\Example\Views\web.config" />
+    <Content Include="Areas\Example\Views\Student\Index.cshtml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Images\ashiqvai.jpg" />
     <Content Include="Images\blur.svg" />
@@ -1346,6 +1350,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Views\Shared\DisplayTemplates\" />
+    <Folder Include="Areas\Example\Views\Shared\" />
     <Folder Include="Areas\HelpPage\Views\Shared\" />
     <Folder Include="Uploads\FileTemplate\" />
   </ItemGroup>
@@ -1362,6 +1367,10 @@
     <ProjectReference Include="..\..\Libraries\AzR.Core\AzR.Core.csproj">
       <Project>{57E267E8-629D-42F1-99F8-C233B76D4A7D}</Project>
       <Name>AzR.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Plugins\Example\AzR.Student.Core\AzR.Student.Core.csproj">
+      <Project>{DBCD44AD-7996-4E9C-A005-487E230B4AED}</Project>
+      <Name>AzR.Student.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AzR.Web.Root\AzR.Web.Root.csproj">
       <Project>{c1cf9d31-2236-45f3-bf11-212d08fea955}</Project>

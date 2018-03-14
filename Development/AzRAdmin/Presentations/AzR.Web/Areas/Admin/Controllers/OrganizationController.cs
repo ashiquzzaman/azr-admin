@@ -11,9 +11,9 @@ namespace AzR.Web.Areas.Admin.Controllers
     [Authorize]
     public class OrganizationController : BaseController
     {
-        private readonly IOrganizationManager _organization;
+        private readonly IBranchService _organization;
 
-        public OrganizationController(IOrganizationManager organization, IBaseManager general) : base(general)
+        public OrganizationController(IBranchService organization, IBaseService general) : base(general)
         {
             _organization = organization;
         }

@@ -1,24 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.HelperModels;
+﻿using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Implementation
 {
-    public class UserManager : IUserManager
+    public class UserService : IUserService
     {
         private readonly IRoleRepository _roles;
         private readonly IUserRepository _user;
         private readonly IOrganizationRepository _organization;
 
-        public UserManager(IRoleRepository roles, IUserRepository user, IOrganizationRepository organization)
+        public UserService(IRoleRepository roles, IUserRepository user, IOrganizationRepository organization)
         {
             _roles = roles;
             _user = user;

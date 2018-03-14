@@ -20,12 +20,12 @@ namespace AzR.Web.Controllers
         private MvcApplicationSignInManager _signInManager;
         private MvcApplicationUserManager _userManager;
 
-        public UserAuthController(IBaseManager general) : base(general)
+        public UserAuthController(IBaseService general) : base(general)
         {
 
         }
 
-        public UserAuthController(MvcApplicationUserManager userManager, MvcApplicationSignInManager signInManager, IBaseManager general) : base(general)
+        public UserAuthController(MvcApplicationUserManager userManager, MvcApplicationSignInManager signInManager, IBaseService general) : base(general)
         {
             UserManager = userManager;
             SignInManager = signInManager;

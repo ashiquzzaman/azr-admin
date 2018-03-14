@@ -15,8 +15,8 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     [RoutePrefix("api/v1/users")]
     public class UserV1Controller : BaseApiController
     {
-        private IUserManager _user;
-        public UserV1Controller(IBaseManager general, IUserManager user) : base(general)
+        private IUserService _user;
+        public UserV1Controller(IBaseService general, IUserService user) : base(general)
         {
             _user = user;
         }

@@ -11,8 +11,8 @@ namespace AzR.Web.Controllers
 {
     public abstract class BaseApiController : ApiController
     {
-        protected IBaseManager BaseHepler;
-        protected BaseApiController(IBaseManager general)
+        protected IBaseService BaseHepler;
+        protected BaseApiController(IBaseService general)
         {
             BaseHepler = general;
         }

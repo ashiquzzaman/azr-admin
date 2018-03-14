@@ -10,9 +10,9 @@ namespace AzR.Web.Areas.Admin.Controllers
 {
     public class MenuController : BaseController
     {
-        private IMenuManager _menu;
-        private IRoleManager _role;
-        public MenuController(IMenuManager menu, IBaseManager general, IRoleManager role) : base(general)
+        private IMenuService _menu;
+        private IRoleService _role;
+        public MenuController(IMenuService menu, IBaseService general, IRoleService role) : base(general)
         {
             _menu = menu;
             _role = role;

@@ -2,6 +2,7 @@ using AzR.Core.AppContexts;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.SqlServer;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
@@ -15,10 +16,10 @@ namespace AzR.Core.Migrations
         private readonly bool _pendingMigrations;
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
-            AutomaticMigrationDataLossAllowed = false;
-            //SetSqlGenerator("System.Data.SQLite", new SqliteMigrationSqlGenerator());
-            //SetHistoryContextFactory("System.Data.SQLite", (conn, schema) => new CustomHistoryContext(conn, schema));
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
+            SetSqlGenerator("System.Data.SqlClient", new SqlServerMigrationSqlGenerator());
+            SetHistoryContextFactory("System.Data.SqlClient", (conn, schema) => new CustomHistoryContext(conn, schema));
 
         }
 

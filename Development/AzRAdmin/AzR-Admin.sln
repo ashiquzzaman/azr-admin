@@ -14,15 +14,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{3F61E381-0080-4EA8-AD9F-D769799FFFD4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{A942B073-AFB4-4012-BCF9-D2B970D0A21B}"
-	ProjectSection(SolutionItems) = preProject
-		TextFile.txt = TextFile.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentations", "Presentations", "{4866E18E-1840-4368-8AB1-96ACB1E07C1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzR.Admin.Test", "Tests\AzR.Admin.Test\AzR.Admin.Test.csproj", "{C7167562-66FB-4B98-A2D0-23BFA59D1331}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzR.Web.Root", "Presentations\AzR.Web.Root\AzR.Web.Root.csproj", "{C1CF9D31-2236-45F3-BF11-212D08FEA955}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Example", "Example", "{6267B887-B9F1-4612-9C44-1A1FCF580109}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzR.Student.Core", "Plugins\Example\AzR.Student.Core\AzR.Student.Core.csproj", "{DBCD44AD-7996-4E9C-A005-487E230B4AED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +51,10 @@ Global
 		{C1CF9D31-2236-45F3-BF11-212D08FEA955}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1CF9D31-2236-45F3-BF11-212D08FEA955}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1CF9D31-2236-45F3-BF11-212D08FEA955}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCD44AD-7996-4E9C-A005-487E230B4AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCD44AD-7996-4E9C-A005-487E230B4AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCD44AD-7996-4E9C-A005-487E230B4AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCD44AD-7996-4E9C-A005-487E230B4AED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +65,8 @@ Global
 		{AB1C6403-5564-4277-8FF8-F4D537005B54} = {3F61E381-0080-4EA8-AD9F-D769799FFFD4}
 		{C7167562-66FB-4B98-A2D0-23BFA59D1331} = {52422532-A76D-4B32-9E9C-AE3D289DFF46}
 		{C1CF9D31-2236-45F3-BF11-212D08FEA955} = {4866E18E-1840-4368-8AB1-96ACB1E07C1B}
+		{6267B887-B9F1-4612-9C44-1A1FCF580109} = {A942B073-AFB4-4012-BCF9-D2B970D0A21B}
+		{DBCD44AD-7996-4E9C-A005-487E230B4AED} = {6267B887-B9F1-4612-9C44-1A1FCF580109}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CDF17DFB-CA1D-4A08-90A8-1DCF69DA213E}

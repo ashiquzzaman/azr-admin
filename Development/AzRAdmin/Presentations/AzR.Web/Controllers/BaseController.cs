@@ -9,8 +9,8 @@ namespace AzR.Web.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected IBaseManager BaseHepler;
-        protected BaseController(IBaseManager general)
+        protected IBaseService BaseHepler;
+        protected BaseController(IBaseService general)
         {
             BaseHepler = general;
         }

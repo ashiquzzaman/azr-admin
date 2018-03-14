@@ -15,8 +15,8 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     [RoutePrefix("api/v1/menus")]
     public class MenuV1Controller : BaseApiController
     {
-        private IMenuManager _menu;
-        public MenuV1Controller(IBaseManager general,  IMenuManager menu) : base(general)
+        private IMenuService _menu;
+        public MenuV1Controller(IBaseService general,  IMenuService menu) : base(general)
         {
             _menu = menu;
         }

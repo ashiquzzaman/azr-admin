@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Services.Implementation
 {
-    public class BaseManager : IBaseManager
+    public class BaseService : IBaseService
     {
 
         private ILoginHistoryRepository _login;
         private IUserRepository _user;
         private IOrganizationRepository _organization;
         private IRoleRepository _role;
-        public BaseManager(ILoginHistoryRepository login, IUserRepository user, IOrganizationRepository organization, IRoleRepository role)
+        public BaseService(ILoginHistoryRepository login, IUserRepository user, IOrganizationRepository organization, IRoleRepository role)
         {
             _login = login;
             _user = user;

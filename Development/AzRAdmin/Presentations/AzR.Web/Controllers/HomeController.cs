@@ -6,7 +6,7 @@ namespace AzR.Web.Controllers
     [Authorize]
     public class HomeController : BaseController
     {
-        public HomeController(IBaseManager general) : base(general)
+        public HomeController(IBaseService general) : base(general)
         {
 
         }

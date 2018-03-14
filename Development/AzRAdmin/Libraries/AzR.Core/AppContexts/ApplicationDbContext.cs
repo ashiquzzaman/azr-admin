@@ -69,13 +69,14 @@ namespace AzR.Core.AppContexts
             base.OnModelCreating(modelBuilder);
 
             //  Database.SetInitializer(new AppDatabaseInitializer());
-            modelBuilder.HasDefaultSchema("C##AZRADMIN");
-            modelBuilder
-                .Properties()
-                .Where(p => p.PropertyType == typeof(string) &&
-                            !p.Name.Contains("Id") &&
-                            !p.Name.Contains("Provider"))
-                .Configure(p => p.HasMaxLength(256));
+
+            //modelBuilder.HasDefaultSchema("C##AZRADMIN");
+            //modelBuilder
+            //    .Properties()
+            //    .Where(p => p.PropertyType == typeof(string) &&
+            //                !p.Name.Contains("Id") &&
+            //                !p.Name.Contains("Provider"))
+            //    .Configure(p => p.HasMaxLength(256));
 
 
 

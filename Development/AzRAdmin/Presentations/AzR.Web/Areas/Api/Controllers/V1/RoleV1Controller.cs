@@ -13,8 +13,8 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     [RoutePrefix("api/v1/roles")]
     public class RoleV1Controller : BaseApiController
     {
-        private IRoleManager _role;
-        public RoleV1Controller(IBaseManager general, IRoleManager role) : base(general)
+        private IRoleService _role;
+        public RoleV1Controller(IBaseService general, IRoleService role) : base(general)
         {
             _role = role;
         }

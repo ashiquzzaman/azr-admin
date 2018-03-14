@@ -1,0 +1,57 @@
+﻿@model IEnumerable<AzR.Student.Core.ViewModels.StudentViewModel>
+@{
+    var count = 1; //Model.FirstItemOnPage;
+}
+
+<div class="clearfix"></div>
+
+<div class="box">
+    <h3 class="box-title">
+        <span class="btn btn-sm btn-info btnCreate" onclick="createModal('@Url.Action("Create", "Student")') ">
+            <i class="glyphicon glyphicon-plus"></i>Create New
+        </span>
+    </h3>    @if (Model.Any())
+    {
+        <div class="box-body" id="divList">
+            <div class="table-responsive">
+                <table id="dataTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th style="width: 50px;">SL#</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Id)</th>
+                            <th>@Html.DisplayNameFor(model => model.First().Name)</th>
+                            <th style="width: 150px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="dataItem">
+                                <td>@(count++)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>
+                                    @{Html.RenderPartial("_eddIcon", item.Id);}
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @*<div class="box-footer">
+                @Html.PaginationFor(Model, page => Url.Action("Index", new {area = "Admin", searchItem = ViewBag.SearchData, page, pageSize =Model.PageSize}))
+            </div>*@
+    }
+    else
+    {
+        <div class="no-data">
+            <hr />
+            <h3>No Data Found!!!</h3>
+            <hr />
+        </div>
+    }
+</div>
+
+
+

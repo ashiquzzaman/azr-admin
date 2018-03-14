@@ -23,12 +23,12 @@ namespace AzR.Web.Controllers
         private const string LocalLoginProvider = "Local";
         private ApiApplicationUserManager _userManager;
 
-        public UserAuthApiController(IBaseManager general) : base(general)
+        public UserAuthApiController(IBaseService general) : base(general)
         {
         }
 
         public UserAuthApiController(ApiApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IBaseManager general) : base(general)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IBaseService general) : base(general)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;

@@ -11,10 +11,10 @@ namespace AzR.Web.Areas.Admin.Controllers
     [Authorize]
     public class UserController : BaseController
     {
-        private IUserManager _user;
-        private IRoleManager _role;
-        private IOrganizationManager _organization;
-        public UserController(IUserManager user, IBaseManager general, IRoleManager role, IOrganizationManager organization) : base(general)
+        private IUserService _user;
+        private IRoleService _role;
+        private IBranchService _organization;
+        public UserController(IUserService user, IBaseService general, IRoleService role, IBranchService organization) : base(general)
         {
             _user = user;
             _role = role;

@@ -8,8 +8,8 @@ namespace AzR.Web.Areas.Admin.Controllers
 {
     public class RoleController : BaseController
     {
-        private IRoleManager _role;
-        public RoleController(IBaseManager general, IRoleManager role) : base(general)
+        private IRoleService _role;
+        public RoleController(IBaseService general, IRoleService role) : base(general)
         {
             _role = role;
         }

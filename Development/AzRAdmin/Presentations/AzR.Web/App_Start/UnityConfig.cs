@@ -1,8 +1,13 @@
 using AzR.Core.AppContexts;
 using AzR.Core.Repositoies.Implementation;
 using AzR.Core.Services.Interface;
+using AzR.Student.Core;
 using AzR.Web.Controllers;
+using System;
 using System.Data.Entity;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Web.Http;
 using System.Web.Mvc;
 using Unity;
@@ -35,19 +40,30 @@ namespace AzR.Web
                 WithMappings.FromMatchingInterface,
                 WithName.Default);
 
-            //container.RegisterType<DbContext, StudentDbContext>(typeof(StudentDbContext).Name, new HierarchicalLifetimeManager());
-            //var repos = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "AzR.*.Core.dll", SearchOption.AllDirectories).ToList();
+            //  container.RegisterType<IAccountRepository, AccountRepository>(new InjectionConstructor(typeof(ApplicationDbContext)));
+            //  container.RegisterType<ICashBookRepository, CashBookRepository>(new InjectionConstructor(new ResolvedParameter<ViewDbContext>(typeof(ApplicationDbContext).Name)));
 
-            //foreach (var file in repos)
-            //{
-            //    container.RegisterTypes(
-            //        AllClasses.FromAssemblies(Assembly.LoadFrom(file))
-            //        .Where(t => t.Name.EndsWith("Repository") || t.Name.EndsWith("Service")),
-            //        WithMappings.FromMatchingInterface,
-            //        getInjectionMembers: new InjectionParameter(typeof(IBaseService))
-            //        );
 
-            //}
+
+            container.RegisterType<DbContext, StudentDbContext>(typeof(StudentDbContext).Name, new HierarchicalLifetimeManager());
+            var repos = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "AzR.*.Core.dll", SearchOption.AllDirectories).ToList();
+
+            foreach (var file in repos)
+            {
+                container.RegisterTypes(
+                    AllClasses.FromAssemblies(Assembly.LoadFrom(file))
+                    .Where(t => t.Name.EndsWith("Repository")),
+                    WithMappings.FromMatchingInterface
+                    // getInjectionMembers: type => new List<InjectionMember> {}
+                    );
+
+                container.RegisterTypes(
+                    AllClasses.FromAssemblies(Assembly.LoadFrom(file))
+                        .Where(t => t.Name.EndsWith("Service")),
+                    WithMappings.FromMatchingInterface,
+                    WithName.Default
+                );
+            }
 
 
 

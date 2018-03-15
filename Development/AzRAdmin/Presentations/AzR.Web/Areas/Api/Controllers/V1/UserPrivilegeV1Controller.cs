@@ -1,11 +1,11 @@
-﻿using AzR.Utilities;
+﻿using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Utilities;
 using AzR.Web.Controllers;
 using AzR.Web.Filters;
 using System;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Api.Controllers.V1
 {
@@ -14,7 +14,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     public class UserPrivilegeV1Controller : BaseApiController
     {
         private IRoleService _role;
-        public UserPrivilegeV1Controller(IBaseService general, IRoleService role) : base(general)
+        public UserPrivilegeV1Controller(IRoleService role)
         {
             _role = role;
         }

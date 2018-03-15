@@ -1,10 +1,10 @@
-﻿using AzR.Web.Controllers;
+﻿using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Web.Controllers;
 using PagedList;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {
@@ -14,7 +14,7 @@ namespace AzR.Web.Areas.Admin.Controllers
         private IUserService _user;
         private IRoleService _role;
         private IBranchService _organization;
-        public UserController(IUserService user, IBaseService general, IRoleService role, IBranchService organization) : base(general)
+        public UserController(IUserService user, IRoleService role, IBranchService organization)
         {
             _user = user;
             _role = role;

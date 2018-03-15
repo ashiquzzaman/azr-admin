@@ -1,4 +1,5 @@
-﻿using AzR.Web.Providers;
+﻿using AzR.Core.IdentityConfig;
+using AzR.Web.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -6,8 +7,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
-using AzR.Core.AppContexts;
-using AzR.Core.IdentityConfig;
+using System.Web.Mvc;
 
 namespace AzR.Web
 {
@@ -19,15 +19,9 @@ namespace AzR.Web
 
         public void ConfigureAuth(IAppBuilder app)
         {
-            // Configure the db context and user manager to use a single instance per request
-            app.CreatePerOwinContext(ApplicationDbContext.Create);
-            app.CreatePerOwinContext<ApiApplicationUserManager>(ApiApplicationUserManager.Create);
-            //ROLE
-            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
-
-            //MVC
-            app.CreatePerOwinContext<MvcApplicationUserManager>(MvcApplicationUserManager.Create);
-            app.CreatePerOwinContext<MvcApplicationSignInManager>(MvcApplicationSignInManager.Create);
+            app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationUserManager>());
+            app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationRoleManager>());
+            app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationSignInManager>());
 
 
             // Enable the application to use a cookie to store information for the signed in user
@@ -36,13 +30,13 @@ namespace AzR.Web
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/UserAuth/Login"),
-                CookieName = "MVC-USERAUTH",
+                CookieName = "AzRADMIN-USERAUTH",
                 Provider = new CookieAuthenticationProvider
                 {
                     // Enables the application to validate the security stamp when the user logs in.
                     // This is a security feature which is used when you change a password or add an external login to your account.  
                     OnValidateIdentity = SecurityStampValidator
-                        .OnValidateIdentity<ApiApplicationUserManager, ApplicationUser, int>(
+                        .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(
                             validateInterval: TimeSpan.FromMinutes(30),
                             regenerateIdentityCallback: (manager, user) =>
                                 user.GenerateUserIdentityAsync(manager),

@@ -1,5 +1,5 @@
-﻿using System.Web.Mvc;
-using AzR.Core.HelperModels;
+﻿using AzR.Core.HelperModels;
+using System.Web.Mvc;
 
 namespace AzR.Web.Root.ViewPage
 {
@@ -7,7 +7,7 @@ namespace AzR.Web.Root.ViewPage
     {
         protected CmsUserViewModel CmsUser
         {
-            get { return Context.Items["APPUSER"] as CmsUserViewModel; }
+            get { return Context.Items["AzRADMINUSER"] as CmsUserViewModel; }
 
         }
         protected string CurrentAction
@@ -21,7 +21,7 @@ namespace AzR.Web.Root.ViewPage
     {
         public CmsUserViewModel CmsUser
         {
-            get { return Context.Items["APPUSER"] as CmsUserViewModel; }
+            get { return Context.Items["AzRADMINUSER"] as CmsUserViewModel; }
 
         }
         protected string CurrentAction

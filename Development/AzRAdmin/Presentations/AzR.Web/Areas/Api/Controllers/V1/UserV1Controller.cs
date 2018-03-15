@@ -1,4 +1,6 @@
-﻿using AzR.Utilities;
+﻿using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Utilities;
 using AzR.Web.Controllers;
 using AzR.Web.Filters;
 using PagedList;
@@ -6,8 +8,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Api.Controllers.V1
 {
@@ -16,7 +16,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     public class UserV1Controller : BaseApiController
     {
         private IUserService _user;
-        public UserV1Controller(IBaseService general, IUserService user) : base(general)
+        public UserV1Controller(IUserService user)
         {
             _user = user;
         }

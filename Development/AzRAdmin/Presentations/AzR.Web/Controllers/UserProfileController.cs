@@ -1,38 +1,40 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AzR.Core.IdentityConfig;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Core.ViewModels.MvcAuth;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
-using AzR.Core.ViewModels.MvcAuth;
 
 namespace AzR.Web.Controllers
 {
     [Authorize]
     public class UserProfileController : BaseController
     {
-        private MvcApplicationSignInManager _signInManager;
-        private MvcApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        private IBaseService _general;
 
-        public UserProfileController(IBaseService general) : base(general)
+        public UserProfileController(IBaseService general)
         {
-
+            _general = general;
         }
 
-        public UserProfileController(MvcApplicationUserManager userManager, MvcApplicationSignInManager signInManager, IBaseService general) : base(general)
+        public UserProfileController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IBaseService general)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _general = general;
         }
-        public MvcApplicationSignInManager SignInManager
+        public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<MvcApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
@@ -40,11 +42,11 @@ namespace AzR.Web.Controllers
             }
         }
 
-        public MvcApplicationUserManager UserManager
+        public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<MvcApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {

@@ -1,5 +1,4 @@
-﻿using AzR.Core.Services.Interface;
-using AzR.Student.Core.Services.Interface;
+﻿using AzR.Student.Core.Services.Interface;
 using AzR.Web.Controllers;
 using System.Web.Mvc;
 
@@ -8,7 +7,7 @@ namespace AzR.Web.Areas.Example.Controllers
     public class StudentController : BaseController
     {
         private IStudentService _student;
-        public StudentController(IBaseService general, IStudentService student) : base(general)
+        public StudentController(IStudentService student)
         {
             _student = student;
         }

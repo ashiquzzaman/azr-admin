@@ -1,10 +1,10 @@
-﻿using AzR.Web.Controllers;
+﻿using AzR.Core.AppContexts;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Web.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AzR.Core.AppContexts;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {
@@ -12,7 +12,7 @@ namespace AzR.Web.Areas.Admin.Controllers
     {
         private IMenuService _menu;
         private IRoleService _role;
-        public MenuController(IMenuService menu, IBaseService general, IRoleService role) : base(general)
+        public MenuController(IMenuService menu, IRoleService role)
         {
             _menu = menu;
             _role = role;

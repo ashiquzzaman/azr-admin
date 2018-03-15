@@ -1,11 +1,11 @@
-﻿using AzR.Web.Controllers;
+﻿using AzR.Core.HelperModels;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Web.Controllers;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using AzR.Core.HelperModels;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {
@@ -15,7 +15,7 @@ namespace AzR.Web.Areas.Admin.Controllers
         private readonly IUserService _user;
         private readonly IUserPrivilegeService _userPrivilege;
         private readonly IMenuService _menu;
-        public UserPrivilegeController(IUserService user, IUserPrivilegeService userPrivilege, IMenuService menu, IBaseService general) : base(general)
+        public UserPrivilegeController(IUserService user, IUserPrivilegeService userPrivilege, IMenuService menu)
         {
             _user = user;
             _userPrivilege = userPrivilege;

@@ -1,13 +1,13 @@
-﻿using AzR.Utilities;
+﻿using AzR.Core.AppContexts;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Utilities;
 using AzR.Web.Controllers;
 using AzR.Web.Filters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AzR.Core.AppContexts;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Api.Controllers.V1
 {
@@ -16,7 +16,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     public class BranchV1Controller : BaseApiController
     {
         private IBranchService _organization;
-        public BranchV1Controller(IBaseService general, IBranchService organization) : base(general)
+        public BranchV1Controller(IBranchService organization)
         {
             _organization = organization;
         }

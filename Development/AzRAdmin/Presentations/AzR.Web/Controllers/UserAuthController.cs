@@ -1,4 +1,8 @@
-﻿using AzR.Utilities;
+﻿using AzR.Core.HelperModels;
+using AzR.Core.IdentityConfig;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.MvcAuth;
+using AzR.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -7,35 +11,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AzR.Core.HelperModels;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.MvcAuth;
 
 namespace AzR.Web.Controllers
 {
     [Authorize]
     public class UserAuthController : BaseController
     {
-        private MvcApplicationSignInManager _signInManager;
-        private MvcApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
+        private ApplicationUserManager _userManager;
+        private IBaseService _general;
 
-        public UserAuthController(IBaseService general) : base(general)
+        public UserAuthController(IBaseService general)
         {
-
+            _general = general;
         }
 
-        public UserAuthController(MvcApplicationUserManager userManager, MvcApplicationSignInManager signInManager, IBaseService general) : base(general)
+        public UserAuthController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IBaseService general)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            _general = general;
         }
 
-        public MvcApplicationSignInManager SignInManager
+        public ApplicationSignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<MvcApplicationSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
             private set
             {
@@ -43,11 +45,11 @@ namespace AzR.Web.Controllers
             }
         }
 
-        public MvcApplicationUserManager UserManager
+        public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<MvcApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -71,7 +73,7 @@ namespace AzR.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-            var isInRole = await BaseHepler.IsActive(model.UserName);
+            var isInRole = await _general.IsActive(model.UserName);
             if (!isInRole)
             {
                 ModelState.AddModelError("UserName", model.UserName + " is Not Exist");
@@ -87,7 +89,7 @@ namespace AzR.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    BaseHepler.SetCookie(model.UserName);
+                    _general.SetCookie(model.UserName);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -181,7 +183,7 @@ namespace AzR.Web.Controllers
                     UserManager.AddToRole(user.Id, "SUBSCRIBER");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     RemoveCookie();
-                    BaseHepler.SetCookie(model.Email);
+                    _general.SetCookie(model.Email);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     //Send an email with this link
@@ -368,9 +370,9 @@ namespace AzR.Web.Controllers
         private const string XsrfKey = "XsrfId";
         private void RemoveCookie()
         {
-            BaseHepler.LogOutTime(User.Identity.GetUserId<int>());
+            _general.LogOutTime(User.Identity.GetUserId<int>());
             var cookie = new ManageCookie();
-            cookie.RemoveCookie("APPUSER");
+            cookie.RemoveCookie("AzRADMINUSER");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.Cache.SetExpires(DateTime.UtcNow.AddDays(-364));
             Response.Cache.SetNoStore();

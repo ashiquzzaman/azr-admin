@@ -1,15 +1,15 @@
-﻿using AzR.Web.Controllers;
+﻿using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Web.Controllers;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {
     public class RoleController : BaseController
     {
         private IRoleService _role;
-        public RoleController(IBaseService general, IRoleService role) : base(general)
+        public RoleController(IRoleService role)
         {
             _role = role;
         }

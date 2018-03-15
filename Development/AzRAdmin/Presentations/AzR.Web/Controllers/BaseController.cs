@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using AzR.Core.HelperModels;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using AzR.Core.HelperModels;
-using AzR.Core.Services.Interface;
 
 namespace AzR.Web.Controllers
 {
     public abstract class BaseController : Controller
     {
-        protected IBaseService BaseHepler;
-        protected BaseController(IBaseService general)
-        {
-            BaseHepler = general;
-        }
 
         protected IEnumerable<SelectListItem> Months
         {
@@ -31,7 +25,7 @@ namespace AzR.Web.Controllers
         }
         protected CmsUserViewModel CmsUser
         {
-            get { return HttpContext.Items["APPUSER"] as CmsUserViewModel; }
+            get { return HttpContext.Items["AzRADMINUSER"] as CmsUserViewModel; }
         }
 
     }

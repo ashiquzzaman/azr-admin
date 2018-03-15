@@ -1,11 +1,10 @@
-﻿using AzR.Web.Root;
+﻿using AzR.Web.Root.AppStart;
 using AzR.Web.Root.Caching;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using AzR.Web.Root.AppStart;
 
 namespace AzR.Web
 {
@@ -14,7 +13,7 @@ namespace AzR.Web
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
 
-            var cookie = Request.Cookies["APPUSER"];
+            var cookie = Request.Cookies["AzRADMINUSER"];
             CookieAuthConfig.SetAuth(cookie);
         }
         protected void Application_Start()

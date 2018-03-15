@@ -1,10 +1,10 @@
-﻿using AzR.Web.Controllers;
+﻿using AzR.Core.AppContexts;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Web.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AzR.Core.AppContexts;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {
@@ -13,7 +13,7 @@ namespace AzR.Web.Areas.Admin.Controllers
     {
         private readonly IBranchService _organization;
 
-        public OrganizationController(IBranchService organization, IBaseService general) : base(general)
+        public OrganizationController(IBranchService organization)
         {
             _organization = organization;
         }

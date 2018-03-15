@@ -87,8 +87,8 @@ namespace AzR.Core.Services.Implementation
         {
             var userCookie = CmsUser(userName).ToDictionary();
             var cookie = new ManageCookie();
-            cookie.RemoveCookie("APPUSER");
-            cookie.SetCookie("APPUSER", userCookie);
+            cookie.RemoveCookie("AzRADMINUSER");
+            cookie.SetCookie("AzRADMINUSER", userCookie);
             LoginTime(userName);
         }
         public IEnumerable<ApplicationRole> GetAllRoleByUsers(int userId)

@@ -1,13 +1,13 @@
-﻿using AzR.Utilities;
+﻿using AzR.Core.AppContexts;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.Admin;
+using AzR.Utilities;
 using AzR.Web.Controllers;
 using AzR.Web.Filters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AzR.Core.AppContexts;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Web.Areas.Api.Controllers.V1
 {
@@ -16,7 +16,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     public class MenuV1Controller : BaseApiController
     {
         private IMenuService _menu;
-        public MenuV1Controller(IBaseService general,  IMenuService menu) : base(general)
+        public MenuV1Controller(IMenuService menu)
         {
             _menu = menu;
         }

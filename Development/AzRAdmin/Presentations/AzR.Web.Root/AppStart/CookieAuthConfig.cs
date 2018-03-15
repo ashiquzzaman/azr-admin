@@ -1,9 +1,9 @@
-﻿using System;
+﻿using AzR.Core.HelperModels;
+using AzR.Utilities;
+using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
-using AzR.Core.HelperModels;
-using AzR.Utilities;
 
 namespace AzR.Web.Root.AppStart
 {
@@ -40,7 +40,7 @@ namespace AzR.Web.Root.AppStart
                 RoleIds = cookie.Values.Get(9).Md5Decrypt(),
                 RoleNames = cookie.Values.Get(11).Md5Decrypt()
             };
-            HttpContext.Current.Items["APPUSER"] = newUser;
+            HttpContext.Current.Items["AzRADMINUSER"] = newUser;
         }
     }
 }

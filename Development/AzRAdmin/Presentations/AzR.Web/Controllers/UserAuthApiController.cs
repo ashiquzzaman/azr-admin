@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AzR.Core.IdentityConfig;
+using AzR.Core.Services.Interface;
+using AzR.Core.ViewModels.ApiAuth;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
@@ -10,9 +13,6 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Services.Interface;
-using AzR.Core.ViewModels.ApiAuth;
 
 namespace AzR.Web.Controllers
 {
@@ -21,24 +21,27 @@ namespace AzR.Web.Controllers
     public class UserAuthApiController : BaseApiController
     {
         private const string LocalLoginProvider = "Local";
-        private ApiApplicationUserManager _userManager;
-
-        public UserAuthApiController(IBaseService general) : base(general)
+        private ApplicationUserManager _userManager;
+        private IBaseService _general;
+        public UserAuthApiController(IBaseService general)
         {
+            _general = general;
         }
 
-        public UserAuthApiController(ApiApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IBaseService general) : base(general)
+        public UserAuthApiController(ApplicationUserManager userManager,
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IBaseService general)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
+            _general = general;
+
         }
 
-        public ApiApplicationUserManager UserManager
+        public ApplicationUserManager UserManager
         {
             get
             {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApiApplicationUserManager>();
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {

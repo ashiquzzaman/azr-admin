@@ -1,7 +1,6 @@
-using AzR.Core.AppContexts;
+using AzR.Core.Config;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Implementation;
-using AzR.Core.Repositoies.Interface;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System;
@@ -30,21 +29,6 @@ namespace AzR.Web
 
             IdentityContainer(container);
 
-
-            container.RegisterTypes(
-                AllClasses.FromAssemblies(typeof(WebApiApplication).Assembly),
-                WithMappings.FromMatchingInterface,
-                WithName.Default);
-
-            container.RegisterTypes(
-                AllClasses.FromAssemblies(typeof(UserRepository).Assembly),
-                WithMappings.FromMatchingInterface,
-                WithName.Default);
-
-
-            //  container.RegisterType<IStudentRepository, StudentRepository>(new InjectionConstructor(new ResolvedParameter<DbContext>(typeof(StudentDbContext).Name)));
-            // container.RegisterType<IStudentRepository, StudentRepository>(new InjectionConstructor(container.Resolve<DbContext>(typeof(StudentDbContext).Name)));
-
             var repos = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "bin"), "AzR.*.Core.dll", SearchOption.AllDirectories).ToList();
 
             foreach (var file in repos)
@@ -60,7 +44,7 @@ namespace AzR.Web
                     .Where(t => t.Name.EndsWith("Repository")),
                     WithMappings.FromMatchingInterface,
                     getInjectionMembers: type => new List<InjectionMember> { new InjectionConstructor(container.Resolve<DbContext>(drivenType.Name)) }
-                    // getInjectionMembers: type => new List<InjectionMember> { new InjectionConstructor(new ResolvedParameter<DbContext>(typeof(StudentDbContext).Name)) }
+                    // getInjectionMembers: type => new List<InjectionMember> { new InjectionConstructor(new ResolvedParameter<DbContext>(drivenType.Name)) }
                     );
 
                 container.RegisterTypes(
@@ -71,10 +55,10 @@ namespace AzR.Web
                  );
             }
 
-
-            //container.RegisterType<UserAuthController>(new InjectionConstructor(typeof(IBaseService)));
-            //container.RegisterType<UserProfileController>(new InjectionConstructor(typeof(IBaseService)));
-            //container.RegisterType<UserAuthApiController>(new InjectionConstructor(typeof(IBaseService)));
+            container.RegisterTypes(
+                AllClasses.FromAssemblies(typeof(WebApiApplication).Assembly),
+                WithMappings.FromMatchingInterface,
+                WithName.Default);
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
@@ -104,8 +88,10 @@ namespace AzR.Web
 
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
 
-            container.RegisterType<IRoleRepository, RoleRepository>();
-            container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterTypes(
+                AllClasses.FromAssemblies(typeof(UserRepository).Assembly),
+                WithMappings.FromMatchingInterface,
+                WithName.Default);
         }
 
     }

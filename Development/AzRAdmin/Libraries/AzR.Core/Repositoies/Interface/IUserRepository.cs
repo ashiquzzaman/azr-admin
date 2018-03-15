@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using AzR.Core.AppContexts;
+﻿using AzR.Core.Config;
 using AzR.Core.IdentityConfig;
 using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace AzR.Core.Repositoies.Interface
 {
     public interface IUserRepository : IRepository<ApplicationUser>
     {
-        IQueryable<ApplicationUser> GetAll();
         IEnumerable<ApplicationUser> GetAllActive();
         IEnumerable<ApplicationUser> GetAllDeactive();
         ApplicationUser GetByName(string username);

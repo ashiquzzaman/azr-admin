@@ -3,7 +3,8 @@ using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
-using AzR.Utilities;
+using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,13 +17,13 @@ namespace AzR.Core.Services.Implementation
     {
         private readonly IRoleRepository _roles;
         private readonly IUserRepository _user;
-        private readonly IOrganizationRepository _organization;
+        private readonly IBranchRepository _branch;
 
-        public UserService(IRoleRepository roles, IUserRepository user, IOrganizationRepository organization)
+        public UserService(IRoleRepository roles, IUserRepository user, IBranchRepository branch)
         {
             _roles = roles;
             _user = user;
-            _organization = organization;
+            _branch = branch;
         }
 
         public ApplicationUser GetById(int id)
@@ -40,7 +41,7 @@ namespace AzR.Core.Services.Implementation
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 ImageUrl = user.ImageUrl,
                 InVacation = user.InVacation,
                 Created = user.Created,
@@ -68,9 +69,9 @@ namespace AzR.Core.Services.Implementation
                 Expired = model.Expired ?? DateTime.UtcNow.ToLong(),
                 ImageUrl = model.ImageUrl,
                 InVacation = model.InVacation,
-                OrgId = model.OrgId ?? 1,
+                BranchId = model.OrgId ?? 1,
                 IsActive = model.Active,
-                AgentId = PcUniqueNumber.GetUserAgentInfo,
+                LoginId = PcUniqueNumber.GetUserAgentInfo,
                 Modified = DateTime.UtcNow.ToLong(),
             };
             _user.Create(newUser, model.NewPassword);
@@ -98,13 +99,13 @@ namespace AzR.Core.Services.Implementation
                 UserName = model.UserName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
-                OrgId = model.OrgId ?? 1,
+                BranchId = model.OrgId ?? 1,
                 Created = DateTime.UtcNow.ToLong(),
                 Expired = model.Expired ?? DateTime.UtcNow.ToLong(),
                 ImageUrl = model.ImageUrl ?? "/Images/user.png",
                 IsActive = model.Active,
                 InVacation = model.InVacation,
-                AgentId = PcUniqueNumber.GetUserAgentInfo,
+                LoginId = PcUniqueNumber.GetUserAgentInfo,
                 Modified = DateTime.UtcNow.ToLong(),
             };
             _user.Create(newUser, model.NewPassword);
@@ -125,7 +126,7 @@ namespace AzR.Core.Services.Implementation
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 Created = user.Created,
                 Expired = user.Expired,
                 Active = user.IsActive,
@@ -180,11 +181,11 @@ namespace AzR.Core.Services.Implementation
             user.UserName = model.UserName;
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
-            user.OrgId = model.OrgId ?? 1;
+            user.BranchId = model.OrgId ?? 1;
             user.IsActive = model.Active;
             user.ImageUrl = model.ImageUrl;
             user.Modified = DateTime.UtcNow.ToLong();
-            user.AgentId = PcUniqueNumber.GetUserAgentInfo;
+            user.LoginId = PcUniqueNumber.GetUserAgentInfo;
             user.IsActive = model.Active;
             _user.Update(user);
             if (!model.RoleNameList.Any()) return user;
@@ -211,7 +212,7 @@ namespace AzR.Core.Services.Implementation
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 Active = user.IsActive,
                 Created = user.Created
             };
@@ -239,7 +240,7 @@ namespace AzR.Core.Services.Implementation
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 Created = user.Created,
                 Expired = user.Expired,
                 Active = user.IsActive,
@@ -276,7 +277,7 @@ namespace AzR.Core.Services.Implementation
         {
 
             var roles = from ur in _user.FindAll(u => u.Id == userId).Include(r => r.Roles).SelectMany(y => y.Roles)
-                        join r in _roles.All() on ur.RoleId equals r.Id
+                        join r in _roles.GetAll on ur.RoleId equals r.Id
                         select r;
             return await roles.ToListAsync();
 
@@ -295,7 +296,7 @@ namespace AzR.Core.Services.Implementation
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 Active = user.IsActive,
                 Created = user.Created
             }).ToList();
@@ -308,13 +309,13 @@ namespace AzR.Core.Services.Implementation
             {
                 return new List<UserViewModel> { new UserViewModel() };
             }
-            var users = roleUsers.Where(u => u.OrgId == orgId && u.IsActive).Select(user => new UserViewModel
+            var users = roleUsers.Where(u => u.BranchId == orgId && u.IsActive).Select(user => new UserViewModel
             {
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                OrgId = user.OrgId,
+                OrgId = user.BranchId,
                 Active = user.IsActive,
                 Created = user.Created,
             }).ToList().OrderBy(u => u.Id);
@@ -324,14 +325,14 @@ namespace AzR.Core.Services.Implementation
         {
             var user = _user.GetBy(id);
             user.IsActive = false;
-            user.AgentId = PcUniqueNumber.GetUserAgentInfo;
+            user.LoginId = PcUniqueNumber.GetUserAgentInfo;
             _user.SaveChanges();
         }
         public async Task<int> DeActiveAsync(int id)
         {
             var user = _user.GetBy(id);
             user.IsActive = false;
-            user.AgentId = PcUniqueNumber.GetUserAgentInfo;
+            user.LoginId = PcUniqueNumber.GetUserAgentInfo;
             return await _user.SaveChangesAsync();
         }
 
@@ -340,7 +341,7 @@ namespace AzR.Core.Services.Implementation
         public IEnumerable<DropDownItem> LoadUser(int orgId, string role)
         {
 
-            var list = GetUsersInRole(role).Where(b => b.OrgId == orgId && b.IsActive).Select(
+            var list = GetUsersInRole(role).Where(b => b.BranchId == orgId && b.IsActive).Select(
                  p => new DropDownItem
                  {
                      Value = p.Id.ToString(),
@@ -352,7 +353,7 @@ namespace AzR.Core.Services.Implementation
 
         public List<DropDownItem> LoadUsers()
         {
-            var result = _user.GetAll().Where(b => b.IsActive).Select(r => new DropDownItem
+            var result = _user.GetAll.Where(b => b.IsActive).Select(r => new DropDownItem
             {
                 Value = r.Id.ToString(),
                 Text = r.FullName

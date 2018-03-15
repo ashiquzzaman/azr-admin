@@ -1,0 +1,106 @@
+﻿@model BranchViewModel
+<div class="modal-header" model-type="large">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+    </button>
+    <h4 class="modal-title">
+    @{Html.RenderPartial("_SaveBoxTitel", "Branch");}
+    </h4>
+</div>
+<div class="modal-body">
+
+    @using (Html.BeginForm(CurrentAction, "Branch", new {area = "Admin"}, FormMethod.Post, new {enctype = "multipart/form-data", id = "fileForm", name = "fileForm"}))
+    {
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.ParentId)
+            @Html.Hidden("page")
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(model => model.BranchCode, htmlAttributes: new {@class = "control-label col-md-2 required"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.BranchCode, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.BranchCode, "", new {@class = "text-danger"})
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new {@class = "control-label col-md-2 required"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new {htmlAttributes = new {@class = "form-control"}})
+                    @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
+                </div>
+            </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, htmlAttributes: new {@class = "control-label col-md-2 required"})
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Phone, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Phone, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+   
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new {@class = "control-label col-md-2 required"})
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Email, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Active, htmlAttributes: new {@class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.BooleanRadioButtonFor(model => model.Active, RadioButtonHelper.ActiveInActive)
+                    @Html.ValidationMessageFor(model => model.Active, "", new {@class = "text-danger"})
+                </div>
+            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new {@class = "control-label col-md-2"})
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Address, new {htmlAttributes = new {@class = "form-control"}})
+                        @Html.ValidationMessageFor(model => model.Address, "", new {@class = "text-danger"})
+                    </div>
+                </div>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-dropbox" id="btnSave">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $(document).ready(function() {
+        $('#dtpDate').datetimepicker({
+            defaultDate: new Date(),
+            format: 'DD-MM-YYYY'
+        });
+    });
+    $("#btnSave")
+        .click(function () {
+
+            var fd = new FormData();
+            var otherData = $('#fileForm').serializeArray();
+            $.each(otherData, function (key, input) {
+                fd.append(input.name, input.value);
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: $("#fileForm").attr('action'),
+                async: false,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: fd,
+                error: function (json) {
+                    $('#modelContent').html(json.responseText);
+                    $('#myModal').modal('show');
+                },
+                success: function (json) {
+                    SubmitOnSuccess(json);
+                }
+            });
+        });
+</script>

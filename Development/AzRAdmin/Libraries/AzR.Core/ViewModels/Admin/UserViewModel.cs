@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using AzR.Core.HelperModels;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AzR.Core.HelperModels;
 
 namespace AzR.Core.ViewModels.Admin
 {
@@ -39,7 +39,7 @@ namespace AzR.Core.ViewModels.Admin
         public int? OrgId { get; set; }
 
         [Display(Name = "Branch Name")]
-        public string OrganizationName { get; set; }
+        public string BranchName { get; set; }
 
 
         public long? Created { get; set; }

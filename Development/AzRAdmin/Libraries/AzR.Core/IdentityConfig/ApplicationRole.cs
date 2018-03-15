@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AzR.Core.Config;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.ComponentModel.DataAnnotations;
 
 namespace AzR.Core.IdentityConfig
 {
-    public class ApplicationRole : IdentityRole<int, ApplicationUserRole>
+    public class ApplicationRole : IdentityRole<int, ApplicationUserRole>, IEntity<int>
     {
         public ApplicationRole() { }
 
@@ -18,5 +19,6 @@ namespace AzR.Core.IdentityConfig
         public string Description { get; set; }
         public bool IsDisplay { get; set; }
         public bool IsActive { get; set; }
+        public string LoginId { get; set; }
     }
 }

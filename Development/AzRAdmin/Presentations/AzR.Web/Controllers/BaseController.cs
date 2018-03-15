@@ -1,4 +1,4 @@
-﻿using AzR.Core.HelperModels;
+﻿using AzR.Utilities.Securities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -23,9 +23,9 @@ namespace AzR.Web.Controllers
                        });
             }
         }
-        protected CmsUserViewModel CmsUser
+        protected AppUserPrincipal CmsUser
         {
-            get { return HttpContext.Items["AzRADMINUSER"] as CmsUserViewModel; }
+            get { return HttpContext.Items["AzRADMINUSER"] as AppUserPrincipal; }
         }
 
     }

@@ -13,12 +13,12 @@ namespace AzR.Web.Areas.Admin.Controllers
     {
         private IUserService _user;
         private IRoleService _role;
-        private IBranchService _organization;
-        public UserController(IUserService user, IRoleService role, IBranchService organization)
+        private IBranchService _branch;
+        public UserController(IUserService user, IRoleService role, IBranchService branch)
         {
             _user = user;
             _role = role;
-            _organization = organization;
+            _branch = branch;
         }
 
         // GET: Institute/User
@@ -34,9 +34,9 @@ namespace AzR.Web.Areas.Admin.Controllers
         {
             var model = new UserViewModel
             {
-                OrgId = CmsUser.OrgId,
+                OrgId = CmsUser.ActiveBranchId,
                 Active = true,
-                OrgList = await _organization.LoadBranchsAsync(),
+                OrgList = await _branch.LoadBranchsAsync(),
                 RoleList = await _role.LoadRoleByNameAsync(),
             };
 
@@ -53,7 +53,7 @@ namespace AzR.Web.Areas.Admin.Controllers
             }
             if (!ModelState.IsValid)
             {
-                model.OrgList = await _organization.LoadBranchsAsync();
+                model.OrgList = await _branch.LoadBranchsAsync();
                 model.RoleList = await _role.LoadRoleByNameAsync();
                 return PartialView("Save", model);
             }
@@ -73,7 +73,7 @@ namespace AzR.Web.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var model = _user.GetUserById(id);
-            model.OrgList = await _organization.LoadBranchsAsync();
+            model.OrgList = await _branch.LoadBranchsAsync();
             model.RoleList = await _role.LoadRoleByNameAsync();
             return PartialView("Save", model);
         }
@@ -90,7 +90,7 @@ namespace AzR.Web.Areas.Admin.Controllers
             if (!ModelState.IsValid)
             {
 
-                model.OrgList = await _organization.LoadBranchsAsync();
+                model.OrgList = await _branch.LoadBranchsAsync();
                 model.RoleList = await _role.LoadRoleByNameAsync();
                 return PartialView("Save", model);
             }

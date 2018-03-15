@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using AzR.Core.Config;
+using AzR.Core.IdentityConfig;
+using AzR.Core.Repositoies.Interface;
+using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AzR.Core.AppContexts;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Interface;
-using Microsoft.AspNet.Identity;
 
 namespace AzR.Core.Repositoies.Implementation
 {
@@ -19,10 +19,7 @@ namespace AzR.Core.Repositoies.Implementation
             _store = new ApplicationUserStore(context);
             _manager = new ApplicationUserManager(_store);
         }
-        public IQueryable<ApplicationUser> GetAll()
-        {
-            return All();
-        }
+
         public IEnumerable<ApplicationUser> GetAllActive()
         {
             return FindAll(r => r.IsActive == true);
@@ -71,7 +68,7 @@ namespace AzR.Core.Repositoies.Implementation
 
         public IEnumerable<ApplicationUser> GetAllInstituteUsers(long instituteId)
         {
-            return _store.Users.Where(u => u.OrgId == instituteId).Include(u => u.Roles);
+            return _store.Users.Where(u => u.BranchId == instituteId).Include(u => u.Roles);
         }
         public async Task CreateAsync(ApplicationUser user, string password)
         {

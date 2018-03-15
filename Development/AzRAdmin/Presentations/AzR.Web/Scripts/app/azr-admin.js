@@ -1171,12 +1171,12 @@ $(function () {
     getFixedFoltingButton();
 });
 
-$(document).on("click", '.nav-list li>a', function () {
-    $('.nav-list li> a.active').removeClass('active');
+$(document).on("click", '.azr-nav li>a', function () {
+    $('.azr-nav li> a.active').removeClass('active');
     $(this).addClass('active');
 });
-$('.main-nav li>a').on('click', function () {
-    $('.main-nav li.active').removeClass('active');
+$('.azr-nav li>a').on('click', function () {
+    $('.azr-nav li.active').removeClass('active');
     $(this.parentNode).addClass('active');
 });
 $('#btn-back-to-top').click(function (e) {

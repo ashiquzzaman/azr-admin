@@ -290,7 +290,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\MenuController.cs" />
-    <Compile Include="Areas\Admin\Controllers\OrganizationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\BranchController.cs" />
     <Compile Include="Areas\Admin\Controllers\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserPrivilegeController.cs" />
@@ -1185,9 +1185,9 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Areas\Admin\Views\web.config" />
-    <Content Include="Areas\Admin\Views\Organization\Save.cshtml" />
-    <Content Include="Areas\Admin\Views\Organization\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Organization\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Branch\Save.cshtml" />
+    <Content Include="Areas\Admin\Views\Branch\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Branch\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Details.cshtml" />
     <Content Include="Areas\Admin\Views\User\Save.cshtml" />
     <Content Include="Areas\Admin\Views\User\Index.cshtml" />

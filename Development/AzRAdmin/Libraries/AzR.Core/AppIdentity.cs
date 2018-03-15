@@ -1,34 +1,41 @@
-﻿using System.Configuration;
+﻿using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
+using AzR.Utilities.Securities;
+using System;
+using System.Configuration;
 using System.Threading;
-using AzR.Utilities;
-using Microsoft.AspNet.Identity;
+using System.Web;
 
 namespace AzR.Core
 {
     public class AppIdentity
     {
-        public static string AppUserName
+        public static AppUserPrincipal AppUser
         {
             get
             {
-                return Thread.CurrentPrincipal.Identity.Name;
+                return HttpContext.Current != null
+                    ? HttpContext.Current.Items["AzRADMINUSER"] as AppUserPrincipal
+                    : Thread.CurrentPrincipal as AppUserPrincipal;
             }
         }
-        public static long AppUserId
+        public static string AuditId
         {
             get
             {
-                return Thread.CurrentPrincipal.Identity.GetUserId<long>();
+                return AppInfo + "U" + AppUser.UserId + "T" +
+                       DateTime.UtcNow.ToLong() + "E" + GeneralHelper.UtcNowTicks;
             }
         }
-
-        public static string AgentInfo { get { return PcUniqueNumber.GetUserAgentInfo; } }
+        public static string AgentInfo { get { return PcUniqueNumber.GetUserAgentInfo ?? "127.0.0.1"; } }
         public static string AppInfo { get { return ConfigurationManager.AppSettings["AppInfo"]; } }
         public static string AppName { get { return ConfigurationManager.AppSettings["AppName"]; } }
+        public static string AppFullName { get { return ConfigurationManager.AppSettings["AppFullName"]; } }
+        public static string AppSlogan { get { return ConfigurationManager.AppSettings["AppSlogan"]; } }
         public static string AppType { get { return ConfigurationManager.AppSettings["AppType"]; } }
         public static string AppVersion { get { return ConfigurationManager.AppSettings["AppVersion"]; } }
         public static string AppUrl { get { return ConfigurationManager.AppSettings["AppUrl"]; } }
         public static string AppPath { get { return ConfigurationManager.AppSettings["AppPath"]; } }
-
+        public static string DefaultController { get { return ConfigurationManager.AppSettings["DefaultController"]; } }
     }
 }

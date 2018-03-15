@@ -1,9 +1,15 @@
-﻿namespace AzR.Core.Enumerations
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AzR.Core.Enumerations
 {
     public enum MenuType
     {
-        Module = 1,
-        Menu = 2,
-        Tab = 3
+        [Display(Name = "Module")]
+        Module = 0,
+        [Display(Name = "Menu")]
+        Menu = 1,
+        [Display(Name = "Tab")]
+        Tab = 2,
+
     }
 }

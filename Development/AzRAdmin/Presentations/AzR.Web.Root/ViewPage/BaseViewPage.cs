@@ -1,13 +1,13 @@
-﻿using AzR.Core.HelperModels;
+﻿using AzR.Utilities.Securities;
 using System.Web.Mvc;
 
 namespace AzR.Web.Root.ViewPage
 {
     public abstract class BaseViewPage : WebViewPage
     {
-        protected CmsUserViewModel CmsUser
+        protected AppUserPrincipal CmsUser
         {
-            get { return Context.Items["AzRADMINUSER"] as CmsUserViewModel; }
+            get { return Context.Items["AzRADMINUSER"] as AppUserPrincipal; }
 
         }
         protected string CurrentAction
@@ -19,9 +19,9 @@ namespace AzR.Web.Root.ViewPage
 
     public abstract class BaseViewPage<TModel> : WebViewPage<TModel>
     {
-        public CmsUserViewModel CmsUser
+        public AppUserPrincipal CmsUser
         {
-            get { return Context.Items["AzRADMINUSER"] as CmsUserViewModel; }
+            get { return Context.Items["AzRADMINUSER"] as AppUserPrincipal; }
 
         }
         protected string CurrentAction

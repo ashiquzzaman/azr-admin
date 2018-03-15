@@ -5,7 +5,7 @@ using AzR.Core.Repositoies.Implementation;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
-using AzR.Utilities;
+using AzR.Utilities.Exentions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -17,19 +17,19 @@ namespace AzR.Core.Services.Implementation
     public class BranchService : IBranchService
     {
 
-        private readonly IOrganizationRepository _organization;
+        private readonly IBranchRepository _branch;
         private IUserRepository _user;
         private RoleRepository _role;
-        public BranchService(IOrganizationRepository institution, IUserRepository user, RoleRepository role)
+        public BranchService(IBranchRepository institution, IUserRepository user, RoleRepository role)
         {
-            _organization = institution;
+            _branch = institution;
             _user = user;
             _role = role;
         }
 
         public async Task<List<DropDownItem>> LoadBranchsAsync()
         {
-            var result = _organization.FindAll(b => b.IsActive && b.Id != 1).Select(r => new DropDownItem
+            var result = _branch.FindAll(b => b.IsActive && b.Id != 1).Select(r => new DropDownItem
             {
                 Value = r.Id.ToString(),
                 Text = r.Name
@@ -38,7 +38,7 @@ namespace AzR.Core.Services.Implementation
         }
         public async Task<List<DropDownItem>> LoadAllOrgsAsync()
         {
-            var result = _organization.FindAll(b => b.IsActive && b.Id != 1).Select(r => new DropDownItem
+            var result = _branch.FindAll(b => b.IsActive && b.Id != 1).Select(r => new DropDownItem
             {
                 Value = r.Id.ToString(),
                 Text = r.Name
@@ -46,21 +46,21 @@ namespace AzR.Core.Services.Implementation
             return await result;
         }
 
-        public IQueryable<OrganizationViewModel> GetAllAsync()
+        public IQueryable<BranchViewModel> GetAllAsync()
         {
-            var result = _organization.FindAll(p => p.IsActive)
-                .Select(_organization.ModelExpression).OrderBy(b => b.Id);
+            var result = _branch.FindAll(p => p.IsActive)
+                .Select(_branch.ModelExpression).OrderBy(b => b.Id);
             return result;
         }
-        public async Task<OrganizationViewModel> GetAsync(int id)
+        public async Task<BranchViewModel> GetAsync(int id)
         {
-            var model = _organization.EntityFactory(await _organization.FindAsync(o => o.Id == id));
+            var model = _branch.EntityFactory(await _branch.FindAsync(o => o.Id == id));
             return model;
         }
 
         public async Task<List<DropDownItem>> LoadParentAsync()
         {
-            var model = await _organization
+            var model = await _branch
                             .FindAllAsync(m => m.IsActive && m.ParentId == null);
             var result = model.Select(r => new DropDownItem
             {
@@ -70,11 +70,11 @@ namespace AzR.Core.Services.Implementation
             return result;
         }
 
-        public OrganizationViewModel GetOwner()
+        public BranchViewModel GetOwner()
         {
-            var model = _organization.FirstOrDefault(i => i.Id == 1);
-            if (model == null) return new OrganizationViewModel();
-            return _organization.EntityFactory(model);
+            var model = _branch.FirstOrDefault(i => i.Id == 1);
+            if (model == null) return new BranchViewModel();
+            return _branch.EntityFactory(model);
         }
 
         public IEnumerable<ApplicationUser> GetAllUserByRole(int orgId, string roleName)
@@ -84,19 +84,19 @@ namespace AzR.Core.Services.Implementation
             var usersInRole =
                 _user.GetAllUsers()
                     .Where(u => (u.Roles.Select(r => r.RoleId)
-                        .Contains(role.RoleId)) && u.OrgId == orgId).ToList();
+                        .Contains(role.RoleId)) && u.BranchId == orgId).ToList();
             return usersInRole;
 
 
         }
 
-        public async Task<Organization> CreateAsync(OrganizationViewModel model)
+        public async Task<Branch> CreateAsync(BranchViewModel model)
         {
 
             try
             {
-                var comapny = _organization.ModelFactory(model);
-                return await _organization.CreateAsync(comapny);
+                var comapny = _branch.ModelFactory(model);
+                return await _branch.CreateAsync(comapny);
             }
             catch (Exception ex)
             {
@@ -106,12 +106,12 @@ namespace AzR.Core.Services.Implementation
 
         }
 
-        public async Task<Organization> UpdateAsync(OrganizationViewModel model)
+        public async Task<Branch> UpdateAsync(BranchViewModel model)
         {
             try
             {
-                var comapny = _organization.ModelFactory(model);
-                await _organization.UpdateAsync(comapny);
+                var comapny = _branch.ModelFactory(model);
+                await _branch.UpdateAsync(comapny);
                 return comapny;
             }
             catch (Exception ex)
@@ -123,15 +123,15 @@ namespace AzR.Core.Services.Implementation
 
         public async Task<int> ActiveAsync(int id)
         {
-            _organization.First(o => o.Id == id).IsActive = true;
-            return await _organization.SaveChangesAsync();
+            _branch.First(o => o.Id == id).IsActive = true;
+            return await _branch.SaveChangesAsync();
         }
         public async Task<int> DeActiveAsync(int id)
         {
             try
             {
-                _organization.First(o => o.Id == id).IsActive = false;
-                return await _organization.SaveChangesAsync();
+                _branch.First(o => o.Id == id).IsActive = false;
+                return await _branch.SaveChangesAsync();
             }
             catch (Exception ex)
             {

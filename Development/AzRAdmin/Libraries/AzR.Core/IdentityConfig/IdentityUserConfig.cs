@@ -1,5 +1,4 @@
-﻿using AzR.Core.AppContexts;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -8,6 +7,7 @@ using System;
 using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AzR.Core.Config;
 
 namespace AzR.Core.IdentityConfig
 {

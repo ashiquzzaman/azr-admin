@@ -1,7 +1,7 @@
-﻿using AzR.Core.AppContexts;
+﻿using AzR.Core.Config;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
-using AzR.Utilities;
+using AzR.Utilities.Exentions;
 using AzR.Web.Controllers;
 using AzR.Web.Filters;
 using System;
@@ -15,10 +15,10 @@ namespace AzR.Web.Areas.Api.Controllers.V1
     [RoutePrefix("api/v1/branchs")]
     public class BranchV1Controller : BaseApiController
     {
-        private IBranchService _organization;
-        public BranchV1Controller(IBranchService organization)
+        private IBranchService _branch;
+        public BranchV1Controller(IBranchService branch)
         {
-            _organization = organization;
+            _branch = branch;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
         public async Task<IHttpActionResult> Get(int page = 1, int pageSize = 30)
         {
 
-            var model = await _organization.GetAllAsync().OrderBy(s => s.Id).ToPagedListAsync(page, pageSize);
+            var model = await _branch.GetAllAsync().OrderBy(s => s.Id).ToPagedListAsync(page, pageSize);
             var result = new
             {
                 Error = false,
@@ -44,7 +44,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
         public async Task<IHttpActionResult> GetDropdown()
         {
 
-            var model = await _organization.LoadBranchsAsync();
+            var model = await _branch.LoadBranchsAsync();
             var result = new
             {
                 Error = false,
@@ -57,13 +57,13 @@ namespace AzR.Web.Areas.Api.Controllers.V1
         [Route("create")]
         [HttpPost]
         [HttpModelValidator]
-        public async Task<IHttpActionResult> Post([FromBody]OrganizationViewModel model)
+        public async Task<IHttpActionResult> Post([FromBody]BranchViewModel model)
         {
             model.ParentId = 1;
             model.Active = true;
             try
             {
-                var branch = await _organization.CreateAsync(model);
+                var branch = await _branch.CreateAsync(model);
                 if (branch != null) model.Id = branch.Id;
 
                 var result = new
@@ -85,12 +85,12 @@ namespace AzR.Web.Areas.Api.Controllers.V1
         [Route("edit")]
         [HttpPut]
         [HttpModelValidator]
-        public async Task<IHttpActionResult> Put([FromBody]OrganizationViewModel model)
+        public async Task<IHttpActionResult> Put([FromBody]BranchViewModel model)
         {
             model.ParentId = 1;
             try
             {
-                var branch = await _organization.UpdateAsync(model);
+                var branch = await _branch.UpdateAsync(model);
                 if (branch != null) model.Id = branch.Id;
 
                 var result = new
@@ -116,7 +116,7 @@ namespace AzR.Web.Areas.Api.Controllers.V1
         {
             try
             {
-                var branch = await _organization.DeActiveAsync(id);
+                var branch = await _branch.DeActiveAsync(id);
 
                 var result = new
                 {

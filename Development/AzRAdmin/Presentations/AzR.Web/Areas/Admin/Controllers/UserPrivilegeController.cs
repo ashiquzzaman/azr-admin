@@ -13,9 +13,9 @@ namespace AzR.Web.Areas.Admin.Controllers
     public class UserPrivilegeController : BaseController
     {
         private readonly IUserService _user;
-        private readonly IUserPrivilegeService _userPrivilege;
+        private readonly IUserMenuService _userPrivilege;
         private readonly IMenuService _menu;
-        public UserPrivilegeController(IUserService user, IUserPrivilegeService userPrivilege, IMenuService menu)
+        public UserPrivilegeController(IUserService user, IUserMenuService userPrivilege, IMenuService menu)
         {
             _user = user;
             _userPrivilege = userPrivilege;

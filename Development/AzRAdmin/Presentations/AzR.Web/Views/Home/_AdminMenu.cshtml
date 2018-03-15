@@ -11,31 +11,48 @@
     };
 }
 <li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Document</span>", "Index", "Help", new { Area = "HelpPage", type = "POST" }, ajaxOptions, new { })
-</li>
-
-<li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Menu</span>", "Index", "Menu", new { Area = "Admin"}, ajaxOptions, new { })
-</li>
-<li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>User</span>", "Index", "User", new { Area = "Admin"}, ajaxOptions, new { })
-</li>
-<li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>User Privilege</span>", "Index", "UserPrivilege", new { Area = "Admin"}, ajaxOptions, new { })
-</li>
-<li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Role</span>", "Index", "Role", new { Area = "Admin" }, ajaxOptions, new { })
-</li>
-<li>
-    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Branch</span>", "Index", "Organization", new { Area = "Admin" }, ajaxOptions, new { })
+    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Dashboard</span>", "Board", "Dashboard", new { Area = "" }, ajaxOptions, new { })
 </li>
 <li class="panel panel-default dropdown">
-    <a data-toggle="collapse" href="#dropdown-icon">
+    <a data-toggle="collapse" href="#dropdown-setting">
+        <span class="icon fa fa-gears"></span><span class="title">SETTING</span>
+    </a>
+    <div id="dropdown-setting" class="panel-collapse collapse">
+        <div class="panel-body">
+            <ul class="nav navbar-nav azr-nav">
+                
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Document</span>", "Index", "Help", new { Area = "HelpPage", type = "POST" }, ajaxOptions, new { })
+                </li>
+
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Menu</span>", "Index", "Menu", new { Area = "Admin" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>User</span>", "Index", "User", new { Area = "Admin" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>User Privilege</span>", "Index", "UserPrivilege", new { Area = "Admin" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Role</span>", "Index", "Role", new { Area = "Admin" }, ajaxOptions, new { })
+                </li>
+                <li>
+                    @Ajax.IconActionLink("<span class='icon fa fa-tags'></span><span class='title'>Branch</span>", "Index", "Branch", new { Area = "Admin" }, ajaxOptions, new { })
+                </li>
+            </ul>
+        </div>
+    </div>
+</li>
+
+
+<li class="panel panel-default dropdown">
+    <a data-toggle="collapse" href="#dropdown-example">
         <span class="icon fa fa-gears"></span><span class="title">Example</span>
     </a>
-    <div id="dropdown-icon" class="panel-collapse collapse">
+    <div id="dropdown-example" class="panel-collapse collapse">
         <div class="panel-body">
-            <ul class="nav navbar-nav main-nav">
+            <ul class="nav navbar-nav azr-nav">
                 <li>
                     @Ajax.IconActionLink("<span class='icon fa fa-university'></span><span class='title'>Student</span>", "Index", "Student", new { Area = "Example" }, ajaxOptions, new { })
                 </li>

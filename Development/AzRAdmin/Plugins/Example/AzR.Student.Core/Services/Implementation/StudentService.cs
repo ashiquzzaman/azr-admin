@@ -17,7 +17,7 @@ namespace AzR.Student.Core.Services.Implementation
 
         public List<StudentViewModel> GetAll()
         {
-            var students = _student.All().Select(s => new StudentViewModel
+            var students = _student.GetAll.Select(s => new StudentViewModel
             {
                 Id = s.Id,
                 Name = s.Name,

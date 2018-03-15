@@ -2,7 +2,9 @@
 using AzR.Core.IdentityConfig;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.MvcAuth;
-using AzR.Utilities;
+using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
+using AzR.Utilities.Securities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -168,9 +170,9 @@ namespace AzR.Web.Controllers
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     FullName = model.Name,
-                    OrgId = 1,
+                    BranchId = 1,
                     ImageUrl = "/Images/user.png",
-                    AgentId = PcUniqueNumber.GetUserAgentInfo,
+                    LoginId = PcUniqueNumber.GetUserAgentInfo,
                     Created = DateTime.UtcNow.ToLong(),
                     Expired = DateTime.UtcNow.AddYears(5).ToLong(),
                     Modified = DateTime.UtcNow.ToLong(),

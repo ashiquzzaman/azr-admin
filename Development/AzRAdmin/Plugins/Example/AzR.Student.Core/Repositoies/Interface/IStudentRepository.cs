@@ -1,4 +1,4 @@
-﻿using AzR.Core.AppContexts;
+﻿using AzR.Core.Config;
 
 namespace AzR.Student.Core.Repositoies.Interface
 {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AzR.Core.Config;
+using AzR.Core.IdentityConfig;
+using AzR.Core.ViewModels.Admin;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using AzR.Core.AppContexts;
-using AzR.Core.IdentityConfig;
-using AzR.Core.ViewModels.Admin;
 
 namespace AzR.Core.Repositoies.Interface
 {

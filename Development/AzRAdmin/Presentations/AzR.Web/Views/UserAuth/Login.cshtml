@@ -1,10 +1,9 @@
-﻿@using AzR.Core
-@model AzR.Core.ViewModels.MvcAuth.LoginViewModel
+﻿@model LoginViewModel
 @{Layout = null;}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>@AppIdentity.AppName</title>
+    <title>@AppIdentity.AppName|@AppIdentity.AppSlogan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @Styles.Render("~/Content/app-css")
     @Scripts.Render("~/bundles/modernizr")

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using AzR.Web.Root.Controllers;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {

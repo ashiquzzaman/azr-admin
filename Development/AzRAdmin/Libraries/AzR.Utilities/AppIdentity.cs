@@ -1,10 +1,10 @@
-﻿using System;
+﻿using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
+using AzR.Utilities.Securities;
+using System;
 using System.Configuration;
 using System.Threading;
 using System.Web;
-using AzR.Utilities.Exentions;
-using AzR.Utilities.Helpers;
-using AzR.Utilities.Securities;
 
 namespace AzR.Utilities
 {
@@ -15,7 +15,7 @@ namespace AzR.Utilities
             get
             {
                 return HttpContext.Current != null
-                    ? HttpContext.Current.Items[AppName] as AppUserPrincipal
+                    ? HttpContext.Current.Items["AzRADMINUSER"] as AppUserPrincipal
                     : Thread.CurrentPrincipal as AppUserPrincipal;
             }
         }

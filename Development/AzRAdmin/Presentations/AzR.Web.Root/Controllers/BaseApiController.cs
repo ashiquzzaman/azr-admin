@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web.Http;
 using System.Web.Mvc;
 
-namespace AzR.Web.Controllers
+namespace AzR.Web.Root.Controllers
 {
     public abstract class BaseApiController : ApiController
     {

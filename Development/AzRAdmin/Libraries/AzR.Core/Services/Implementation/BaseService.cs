@@ -84,21 +84,6 @@ namespace AzR.Core.Services.Implementation
         {
             return _branch.FirstOrDefault(i => i.Id == 1);
         }
-
-        public void SetCookie(string userName)
-        {
-
-            var login = LoginTime(userName);
-            var user = AppUser(login);
-            var userCookie = user.GetDictionary(user);
-            var cookie = new ManageCookie();
-            cookie.RemoveCookie("AzRADMINUSER");
-            cookie.SetCookie("AzRADMINUSER", userCookie);
-            LoginTime(userName);
-
-
-            LoginTime(userName);
-        }
         public IEnumerable<ApplicationRole> GetAllRoleByUsers(int userId)
         {
 
@@ -108,6 +93,17 @@ namespace AzR.Core.Services.Implementation
             return roles.ToList();
 
         }
+        public void SetCookie(string userName)
+        {
+            var login = LoginTime(userName);
+            var user = AppUser(login);
+            var userCookie = user.GetDictionary(user);
+            var cookie = new ManageCookie();
+            cookie.RemoveCookie("AzRADMINUSER");
+            cookie.SetCookie("AzRADMINUSER", userCookie);
+
+        }
+
         public AppUserPrincipal AppUser(LoginHistory login)
         {
             var user = _user.Find(u => u.Id == login.UserId);

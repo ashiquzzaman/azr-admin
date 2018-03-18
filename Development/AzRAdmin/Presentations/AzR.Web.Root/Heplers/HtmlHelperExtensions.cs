@@ -1,4 +1,5 @@
-﻿using PagedList;
+﻿using AzR.Core.HelperModels;
+using PagedList;
 using PagedList.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
-using AzR.Core.HelperModels;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 
-namespace AzR.Web.Heplers
+namespace AzR.Web.Root.Heplers
 {
     public static class HtmlHelperExtensions
     {

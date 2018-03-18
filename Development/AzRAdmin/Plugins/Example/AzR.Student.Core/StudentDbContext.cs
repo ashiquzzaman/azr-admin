@@ -29,7 +29,7 @@ namespace AzR.Student.Core
             //  Database.SetInitializer(new AppDatabaseInitializer());
 
             //modelBuilder.HasDefaultSchema("C##AZRADMIN");
-
+            // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Ignore<AuditLog>();
 

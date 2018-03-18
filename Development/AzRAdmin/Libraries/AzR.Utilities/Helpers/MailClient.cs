@@ -5,7 +5,7 @@ using System.Net.Configuration;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace AzR.Utilities
+namespace AzR.Utilities.Helpers
 {
 
     public class MailClient

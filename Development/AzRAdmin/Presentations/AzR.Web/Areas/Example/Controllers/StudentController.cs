@@ -1,6 +1,7 @@
 ﻿using AzR.Student.Core.Services.Interface;
 using AzR.Web.Controllers;
 using System.Web.Mvc;
+using AzR.Web.Root.Controllers;
 
 namespace AzR.Web.Areas.Example.Controllers
 {

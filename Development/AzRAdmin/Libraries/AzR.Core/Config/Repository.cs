@@ -1,4 +1,9 @@
-﻿using System;
+﻿using AzR.Core.AuditLogs;
+using AzR.Core.Enumerations;
+using AzR.Utilities.Attributes;
+using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -9,11 +14,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
-using AzR.Core.AuditLogs;
-using AzR.Core.Enumerations;
-using AzR.Utilities.Attributes;
-using AzR.Utilities.Exentions;
-using AzR.Utilities.Helpers;
 
 // By: Ashiquzzaman;
 
@@ -54,8 +54,8 @@ namespace AzR.Core.Config
         {
             try
             {
-                return _context.SaveChanges();
-                //return CreateLog();
+                // return _context.SaveChanges();
+                return CreateLog();
             }
             catch (DbEntityValidationException ex)
             {
@@ -317,8 +317,8 @@ namespace AzR.Core.Config
 
             try
             {
-                return await _context.SaveChangesAsync();
-                //  return await CreateLogAsync();
+                // return await _context.SaveChangesAsync();
+                return await CreateLogAsync();
             }
             catch (DbEntityValidationException ex)
             {
@@ -505,7 +505,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 3);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
                     changes = _context.SaveChanges();
@@ -518,7 +518,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 2);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
                     changes = _context.SaveChanges();
@@ -532,7 +532,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 1);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
 
@@ -557,7 +557,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 3);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
                     changes = _context.SaveChangesAsync();
@@ -570,7 +570,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 2);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
                     changes = _context.SaveChangesAsync();
@@ -585,7 +585,7 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 1);
                         if (audit == null) continue;
-                        var auditlog = _context.Set<AuditLog>();
+                        var auditlog = _context.Set(typeof(AuditLog));
                         auditlog.Add(audit);
                     }
 

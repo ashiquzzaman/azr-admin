@@ -1,10 +1,10 @@
-﻿using AzR.Utilities.Securities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using AzR.Utilities.Securities;
 
-namespace AzR.Web.Controllers
+namespace AzR.Web.Root.Controllers
 {
     public abstract class BaseController : Controller
     {

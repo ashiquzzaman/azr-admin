@@ -79,12 +79,13 @@ namespace AzR.Core.Config
 
                 // Combine the original exception message with the new one.
                 var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
                 // Throw a new DbEntityValidationException with the improved exception message.
                 throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
             }
             catch (Exception ex)
             {
+                ex.WriteLog();
                 throw new Exception(ex.Message);
             }
         }
@@ -342,12 +343,13 @@ namespace AzR.Core.Config
 
                 // Combine the original exception message with the new one.
                 var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
                 // Throw a new DbEntityValidationException with the improved exception message.
                 throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
             }
             catch (Exception ex)
             {
+                ex.WriteLog();
                 throw new Exception(ex.Message);
             }
         }

@@ -54,8 +54,8 @@ namespace AzR.Core.Config
         {
             try
             {
-                // return _context.SaveChanges();
-                return CreateLog();
+                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
+                return ignorClass ? _context.SaveChanges() : CreateLog();
             }
             catch (DbEntityValidationException ex)
             {
@@ -318,8 +318,8 @@ namespace AzR.Core.Config
 
             try
             {
-                // return await _context.SaveChangesAsync();
-                return await CreateLogAsync();
+                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
+                return ignorClass ? await _context.SaveChangesAsync() : await CreateLogAsync();
             }
             catch (DbEntityValidationException ex)
             {

@@ -500,6 +500,9 @@ namespace AzR.Core.Config
             using (var scope = new TransactionScope())
             {
                 var changes = 0;
+                var logList = new List<AuditLog>();
+
+
 
                 var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
 
@@ -510,11 +513,8 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 1);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-
-                    changes = _context.SaveChanges();
                 }
 
                 var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
@@ -534,10 +534,8 @@ namespace AzR.Core.Config
 
                         var audit = WriteLog.Create(entry, 2);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-                    changes = _context.SaveChanges();
                 }
 
                 var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
@@ -547,12 +545,12 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 3);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-                    changes = _context.SaveChanges();
                 }
-
+                var auditlog = _context.Set(typeof(AuditLog));
+                auditlog.AddRange(logList);
+                changes = _context.SaveChanges();
 
                 scope.Complete();
                 return changes;
@@ -564,7 +562,7 @@ namespace AzR.Core.Config
             using (var scope = new TransactionScope())
             {
                 var changes = Task.FromResult(0);
-
+                var logList = new List<AuditLog>();
 
                 var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
 
@@ -575,11 +573,8 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 1);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-
-                    changes = _context.SaveChangesAsync();
                 }
 
 
@@ -600,10 +595,8 @@ namespace AzR.Core.Config
 
                         var audit = WriteLog.Create(entry, 2);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-                    changes = _context.SaveChangesAsync();
                 }
 
                 var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
@@ -613,12 +606,13 @@ namespace AzR.Core.Config
                     {
                         var audit = WriteLog.Create(entry, 3);
                         if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
+                        logList.Add(audit);
                     }
-                    changes = _context.SaveChangesAsync();
                 }
 
+                var auditlog = _context.Set(typeof(AuditLog));
+                auditlog.AddRange(logList);
+                changes = _context.SaveChangesAsync();
 
                 scope.Complete();
                 return changes;

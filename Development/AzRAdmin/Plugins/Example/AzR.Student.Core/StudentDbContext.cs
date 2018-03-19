@@ -7,7 +7,9 @@ namespace AzR.Student.Core
 {
     public class StudentDbContext : DbContext
     {
-        public StudentDbContext() : base("StudentConnection")//base(Util.GetTheConnectionString())
+        private readonly bool _isMigrationMode;
+
+        public StudentDbContext() : base("DefaultConnection")//base(AppIdentity.AppUser.ConnectionName)
         {
         }
         public DbSet<Models.Student> Students { get; set; }
@@ -16,6 +18,8 @@ namespace AzR.Student.Core
         public DbSet<Notification> Notifications { get; set; }
 
         public DbSet<UserNotification> UserNotifications { get; set; }
+
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -31,13 +35,13 @@ namespace AzR.Student.Core
             //modelBuilder.HasDefaultSchema("C##AZRADMIN");
             // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Ignore<AuditLog>();
+            //modelBuilder.Ignore<AuditLog>();
 
-            modelBuilder.Ignore<Notification>();
+            //modelBuilder.Ignore<Notification>();
 
-            modelBuilder.Ignore<UserNotification>();
+            //modelBuilder.Ignore<UserNotification>();
 
-
+            Database.SetInitializer<StudentDbContext>(null);
 
         }
 

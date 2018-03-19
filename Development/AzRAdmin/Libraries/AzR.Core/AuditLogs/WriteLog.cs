@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using AzR.Core.Config;
+﻿using AzR.Core.Config;
 using AzR.Core.Enumerations;
 using AzR.Utilities.Attributes;
 using AzR.Utilities.Exentions;
 using AzR.Utilities.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
 
 namespace AzR.Core.AuditLogs
 {
@@ -47,7 +47,7 @@ namespace AzR.Core.AuditLogs
         {
             var entityValue = new EntityValue();
             var eType = entry.Entity.GetType();
-            var type = Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = eType ?? Type.GetType(eType.FullName) ?? eType.BaseType;
             var ignorClass = type.IsDefined(typeof(IgnoreLogAttribute), false);
             if (ignorClass)
             {
@@ -98,17 +98,17 @@ namespace AzR.Core.AuditLogs
 
             var audit = new AuditLog
             {
-                //Id = AppIdentity.AuditId,
-                //LoginId = AppIdentity.AppUser.Id,
-                //ActionType = actionType,
-                //EntityName = type.Name,
-                //EntityFullName = type.FullName,
-                //ActionTime = DateTime.UtcNow.ToLong(),
-                //KeyFieldId = keyValue,
-                //UserId = AppIdentity.AppUser.UserId,
-                //BranchId = AppIdentity.AppUser.ActiveBranchId,
-                //ActionUrl = "",
-                //ActionUser = AppIdentity.AppUserName,
+                Id = AppIdentity.AuditId,
+                LoginId = AppIdentity.AppUser.Id,
+                ActionType = actionType,
+                EntityName = type.Name,
+                EntityFullName = type.FullName,
+                ActionTime = DateTime.UtcNow.ToLong(),
+                KeyFieldId = keyValue,
+                UserId = AppIdentity.AppUser.UserId,
+                BranchId = AppIdentity.AppUser.ActiveBranchId,
+                ActionUrl = "",
+                ActionUser = AppIdentity.AppUser.Name,
                 ActionAgent = AppIdentity.AgentInfo,
                 ValueBefore = JsonConvert.SerializeObject(oldObject),
                 ValueAfter = JsonConvert.SerializeObject(newObject),

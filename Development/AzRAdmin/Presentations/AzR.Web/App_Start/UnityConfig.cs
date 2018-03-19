@@ -15,7 +15,6 @@ using System.Web.Mvc;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
-using Unity.Mvc5;
 using Unity.Registration;
 using Unity.RegistrationByConvention;
 
@@ -60,7 +59,7 @@ namespace AzR.Web
                 WithMappings.FromMatchingInterface,
                 WithName.Default);
 
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+            DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
         }

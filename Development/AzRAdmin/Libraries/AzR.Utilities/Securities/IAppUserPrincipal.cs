@@ -12,7 +12,7 @@ namespace AzR.Utilities.Securities
         string Name { get; set; }
         string Phone { get; set; }
         string Email { get; set; }
-        long Expaired { get; set; }
+        long Expired { get; set; }
         int ActiveBranchId { get; set; }
         int ParentBranchId { get; set; }
         int ActiveRoleId { get; set; }

@@ -1,7 +1,10 @@
-﻿using AzR.Student.Core.Services.Interface;
-using AzR.Web.Controllers;
-using System.Web.Mvc;
+﻿using AzR.Core.Config;
+using AzR.Student.Core.Services.Interface;
+using AzR.Student.Core.ViewModels;
 using AzR.Web.Root.Controllers;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace AzR.Web.Areas.Example.Controllers
 {
@@ -13,15 +16,45 @@ namespace AzR.Web.Areas.Example.Controllers
             _student = student;
         }
         // GET: Example/Student
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int? page, int pageSize = 30)
         {
-            var model = _student.GetAll();
+            page = page == null || page == 0 ? 1 : page;
+            var model = await _student.GetAllAsync().OrderBy(s => s.Id).ToPagedListAsync((int)page, pageSize);
             return PartialView(model);
         }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Save(int? id)
         {
-            throw new System.NotImplementedException();
+            var model = id != null && id > 0
+                ? await _student.GetAsync((int)id)
+                : new StudentViewModel
+                {
+                    Id = -1,
+                };
+            return PartialView(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Save(StudentViewModel model, int page = 1)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return PartialView("Save", model);
+            }
+
+            var result = await _student.CreateOrUpdateAsync(model);
+
+            return
+                Json(
+                    new
+                    {
+                        redirectTo = Url.Action("Index", "Student", new { Area = "Example", page }),
+                        message = result == null ? "Record update Failed!!!" : "Record update successfully!!!",
+                        position = "mainContent"
+                    });
+        }
+
     }
 }

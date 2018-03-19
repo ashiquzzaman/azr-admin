@@ -1,13 +1,13 @@
-﻿@model IEnumerable<AzR.Student.Core.ViewModels.StudentViewModel>
+﻿@model IPagedList<AzR.Student.Core.ViewModels.StudentViewModel>
 @{
-    var count = 1; //Model.FirstItemOnPage;
+    var count = Model.FirstItemOnPage;
 }
 
 <div class="clearfix"></div>
 
 <div class="box">
     <h3 class="box-title">
-        <span class="btn btn-sm btn-info btnCreate" onclick="createModal('@Url.Action("Create", "Student")') ">
+        <span class="btn btn-sm btn-info btnCreate" onclick="createModal('@Url.Action("Save", "Student")') ">
             <i class="glyphicon glyphicon-plus"></i>Create New
         </span>
     </h3>    @if (Model.Any())

@@ -1,4 +1,4 @@
-namespace AzR.Web.Areas.HelpPage.SampleGeneration
+namespace AzR.Web.Areas.HelpPage
 {
     /// <summary>
     /// Indicates whether the sample is used for request or response

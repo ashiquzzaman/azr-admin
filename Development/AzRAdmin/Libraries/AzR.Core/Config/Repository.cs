@@ -498,31 +498,7 @@ namespace AzR.Core.Config
             using (var scope = new TransactionScope())
             {
                 var changes = 0;
-                var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
-                if (deleteEntries.Count > 0)
-                {
-                    foreach (var entry in deleteEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 3);
-                        if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
-                    }
-                    changes = _context.SaveChanges();
-                }
-                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
 
-                if (modifiedEntries.Count > 0)
-                {
-                    foreach (var entry in modifiedEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 2);
-                        if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
-                    }
-                    changes = _context.SaveChanges();
-                }
                 var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
 
                 if (addedEntries.Count > 0)
@@ -539,6 +515,43 @@ namespace AzR.Core.Config
                     changes = _context.SaveChanges();
                 }
 
+                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
+
+                if (modifiedEntries.Count > 0)
+                {
+                    foreach (var entry in modifiedEntries)
+                    {
+                        var properties = typeof(TEntity).GetProperties()
+                            .Where(property =>
+                                property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
+                            .Select(p => p.Name);
+                        foreach (var property in properties)
+                        {
+                            entry.Property(property).IsModified = false;
+                        }
+
+                        var audit = WriteLog.Create(entry, 2);
+                        if (audit == null) continue;
+                        var auditlog = _context.Set(typeof(AuditLog));
+                        auditlog.Add(audit);
+                    }
+                    changes = _context.SaveChanges();
+                }
+
+                var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
+                if (deleteEntries.Count > 0)
+                {
+                    foreach (var entry in deleteEntries)
+                    {
+                        var audit = WriteLog.Create(entry, 3);
+                        if (audit == null) continue;
+                        var auditlog = _context.Set(typeof(AuditLog));
+                        auditlog.Add(audit);
+                    }
+                    changes = _context.SaveChanges();
+                }
+
+
                 scope.Complete();
                 return changes;
             }
@@ -549,6 +562,47 @@ namespace AzR.Core.Config
             using (var scope = new TransactionScope())
             {
                 var changes = Task.FromResult(0);
+
+
+                var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
+
+                if (addedEntries.Count > 0)
+                {
+                    _context.SaveChanges();
+                    foreach (var entry in addedEntries)
+                    {
+                        var audit = WriteLog.Create(entry, 1);
+                        if (audit == null) continue;
+                        var auditlog = _context.Set(typeof(AuditLog));
+                        auditlog.Add(audit);
+                    }
+
+                    changes = _context.SaveChangesAsync();
+                }
+
+
+                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
+
+                if (modifiedEntries.Count > 0)
+                {
+                    foreach (var entry in modifiedEntries)
+                    {
+                        var properties = typeof(TEntity).GetProperties()
+                            .Where(property =>
+                                property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
+                            .Select(p => p.Name);
+                        foreach (var property in properties)
+                        {
+                            entry.Property(property).IsModified = false;
+                        }
+
+                        var audit = WriteLog.Create(entry, 2);
+                        if (audit == null) continue;
+                        var auditlog = _context.Set(typeof(AuditLog));
+                        auditlog.Add(audit);
+                    }
+                    changes = _context.SaveChangesAsync();
+                }
 
                 var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
                 if (deleteEntries.Count > 0)
@@ -562,35 +616,7 @@ namespace AzR.Core.Config
                     }
                     changes = _context.SaveChangesAsync();
                 }
-                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
 
-                if (modifiedEntries.Count > 0)
-                {
-                    foreach (var entry in modifiedEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 2);
-                        if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
-                    }
-                    changes = _context.SaveChangesAsync();
-                }
-
-                var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
-
-                if (addedEntries.Count > 0)
-                {
-                    _context.SaveChangesAsync();
-                    foreach (var entry in addedEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 1);
-                        if (audit == null) continue;
-                        var auditlog = _context.Set(typeof(AuditLog));
-                        auditlog.Add(audit);
-                    }
-
-                    changes = _context.SaveChangesAsync();
-                }
 
                 scope.Complete();
                 return changes;

@@ -1,11 +1,10 @@
 ﻿using AzR.Core.Config;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
-using AzR.Web.Controllers;
+using AzR.Web.Root.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using AzR.Web.Root.Controllers;
 
 namespace AzR.Web.Areas.Admin.Controllers
 {

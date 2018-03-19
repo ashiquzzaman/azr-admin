@@ -1,6 +1,8 @@
+@using System.Web.Http
 @using System.Web.Http.Controllers
 @using System.Web.Http.Description
 @using AzR.Web.Areas.HelpPage
+@using AzR.Web.Areas.HelpPage.Models
 @model IGrouping<HttpControllerDescriptor, ApiDescription>
 
 @{
@@ -22,13 +24,7 @@
     @foreach (var api in Model)
     {
         <tr>
-            <td class="api-name">
-                
-               @Ajax.ActionLink(api.HttpMethod.Method +" "+ api.RelativePath, "Api", "Help",
-               new { apiId = api.GetFriendlyId() },
-               new AjaxOptions { HttpMethod = "GET", InsertionMode = InsertionMode.Replace, UpdateTargetId = "mainContent", OnBegin = "Spiner.show()", OnComplete = "Spiner.hide()" },
-               new {  })
-            </td>
+            <td class="api-name"><a href="@Url.Action("Api", "Help", new { apiId = api.GetFriendlyId() })">@api.HttpMethod.Method @api.RelativePath</a></td>
             <td class="api-documentation">
             @if (api.Documentation != null)
             {

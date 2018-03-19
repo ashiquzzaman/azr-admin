@@ -1,4 +1,3 @@
-using AzR.Web.Areas.HelpPage.App_Start;
 using System.Web.Http;
 using System.Web.Mvc;
 
@@ -17,7 +16,7 @@ namespace AzR.Web.Areas.HelpPage
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Help_Default",
+                "HelpPage_Default",
                 "Help/{action}/{apiId}",
                 new { controller = "Help", action = "Index", apiId = UrlParameter.Optional });
 

@@ -7,7 +7,6 @@ namespace AzR.Core.Services.Interface
 {
     public interface IBaseService
     {
-        LoginHistory LoginTime(int shopId, int userId);
         void LogOutTime(int userId);
         LoginHistory LoginTime(string userName);
         string LoginId(int userId);

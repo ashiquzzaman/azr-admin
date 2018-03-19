@@ -34,14 +34,18 @@ namespace AzR.Core.Services.Implementation
         public LoginHistory LoginTime(string userName)
         {
             var user = _user.Find(u => u.UserName == userName);
-            var date = DateTime.UtcNow.ToLong().ToString();
+            var id = AppIdentity.AppInfo + "U" + user.Id + "T" + DateTime.UtcNow.ToLong() + "E" +
+                     GeneralHelper.UtcNowTicks;
+
             var model = new LoginHistory
             {
-                Id = date,
+                Id = id,
                 UserId = user.Id,
                 LoginTime = DateTime.UtcNow.ToLong(),
                 LogoutTime = null,
                 AgentId = PcUniqueNumber.GetUserAgentInfo,
+                ModifiedBy = user.Id,
+                UserBranchId = user.BranchId
             };
             return _login.Create(model);
         }
@@ -51,19 +55,6 @@ namespace AzR.Core.Services.Implementation
             return _login.MaxValue(u => u.Id.ToString(), u => u.UserId == userId);
         }
 
-        public LoginHistory LoginTime(int shopId, int userId)
-        {
-            var date = DateTime.UtcNow.ToLong().ToString();
-            var model = new LoginHistory
-            {
-                Id = date,
-                UserId = userId,
-                LoginTime = DateTime.UtcNow.ToLong(),
-                LogoutTime = null,
-                AgentId = PcUniqueNumber.GetUserAgentInfo,
-            };
-            return _login.Create(model);
-        }
 
         public void LogOutTime(int userId)
         {
@@ -73,6 +64,7 @@ namespace AzR.Core.Services.Implementation
                 var model = _login.First(o => o.Id == loginId);
                 model.AgentId = PcUniqueNumber.GetUserAgentInfo;
                 model.LogoutTime = DateTime.UtcNow.ToLong();
+                model.ModifiedBy = userId;
                 _login.SaveChanges();
             }
 
@@ -128,6 +120,7 @@ namespace AzR.Core.Services.Implementation
             {
                 Id = login.Id,
                 UserId = user.Id,
+                UniqueName = user.UserName,
                 UserName = user.UserName,
                 Name = user.FullName,
                 Phone = user.PhoneNumber,
@@ -135,7 +128,7 @@ namespace AzR.Core.Services.Implementation
                 ActiveBranchId = user.BranchId,
                 BranchId = user.BranchId,
                 ParentBranchId = branch.ParentId ?? 0,
-                Expaired = 0,
+                Expired = user.Expired,
                 ActiveRoleName = role.Name,
                 ActiveRoleId = role.Id,
                 RoleIdList = applicationRoles.Select(s => s.Id).ToList(),

@@ -36,7 +36,7 @@ namespace AzR.Utilities.Securities
 
         public string Email { get; set; }
 
-        public long Expaired { get; set; }
+        public long Expired { get; set; }
         public int ActiveRoleId { get; set; }
 
         public string ActiveRoleName { get; set; }
@@ -123,7 +123,7 @@ namespace AzR.Utilities.Securities
                 {"4",user.Name },
                 {"5",user.Phone },
                 {"6",user.Email },
-                {"7",user.Expaired },
+                {"7",user.Expired },
                 {"8",user.ActiveBranchId },
                 {"9",user.ParentBranchId },
                 {"10",user.ActiveRoleName },

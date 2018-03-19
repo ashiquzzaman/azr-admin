@@ -35,7 +35,7 @@ namespace AzR.Web.Root.AppStart
                     Name = cookie.Values.Get(3).Md5Decrypt(),
                     Phone = cookie.Values.Get(4).Md5Decrypt(),
                     Email = cookie.Values.Get(5).Md5Decrypt(),
-                    Expaired = cookie.Values.Get(6).Md5Decrypt().AsInt(),
+                    Expired = cookie.Values.Get(6).Md5Decrypt().AsInt(),
                     ActiveBranchId = cookie.Values.Get(7).Md5Decrypt().AsInt(),
                     ParentBranchId = cookie.Values.Get(8).Md5Decrypt().AsInt(),
                     ActiveRoleName = cookie.Values.Get(9).Md5Decrypt(),

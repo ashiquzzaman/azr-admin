@@ -16,7 +16,7 @@ namespace AzR.Core.Config
             var newEntity = entry.CurrentValues.PropertyNames.ToDictionary(key => key,
                 key => entry.CurrentValues.GetValue<object>(key));
             var eType = entry.Entity.GetType();
-            var type = Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = eType ?? Type.GetType(eType.FullName) ?? eType.BaseType;
             var newObj = Activator.CreateInstance(type);
             foreach (var kv in newEntity)
             {

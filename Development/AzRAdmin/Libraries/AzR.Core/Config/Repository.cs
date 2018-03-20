@@ -476,7 +476,7 @@ namespace AzR.Core.Config
                 var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
                 int result;
 
-                using (var scope = new TransactionScope())
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
                     if (!ignorClass) CreateLog();
                     result = await _context.SaveChangesAsync();

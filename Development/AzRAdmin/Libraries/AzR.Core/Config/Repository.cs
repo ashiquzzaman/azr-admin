@@ -1,5 +1,4 @@
 ﻿using AzR.Core.AuditLogs;
-using AzR.Core.Enumerations;
 using AzR.Core.Notifications;
 using AzR.Utilities.Attributes;
 using AzR.Utilities.Exentions;
@@ -23,6 +22,8 @@ namespace AzR.Core.Config
 
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
+        #region CONFIG
+
         private DbContext _context;//IAppDbContext
         private bool _shareContext;
         private bool _disposed;
@@ -59,7 +60,10 @@ namespace AzR.Core.Config
             }
         }
 
-        #region IDisposable Members
+
+        #endregion
+
+        #region Disposed
 
         ~Repository()
         {
@@ -91,7 +95,9 @@ namespace AzR.Core.Config
             _disposed = true;
         }
 
+        #endregion
 
+        #region LINQ
 
         public IQueryable<TEntity> GetAll
         {
@@ -145,12 +151,10 @@ namespace AzR.Core.Config
             return DbSet.AsNoTracking().FirstOrDefault(predicate);
         }
 
-
         public IQueryable<string> Select(Expression<Func<TEntity, string>> predicate)
         {
             return DbSet.Select(predicate);
         }
-
 
         public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
         {
@@ -176,49 +180,65 @@ namespace AzR.Core.Config
 
         public int Update(TEntity item)
         {
-            try
+            var entry = _context.Entry(item);
+            DbSet.Attach(item);
+            entry.State = EntityState.Modified;
+            return !ShareContext ? SaveChanges() : 0;
+        }
+
+        public TEntity CreateOrUpdate(Expression<Func<TEntity, bool>> predicate, TEntity newItem)
+        {
+            var record = DbSet.FirstOrDefault(predicate);
+            if (record == null)
             {
-                using (var scope = new TransactionScope())
-                {
-                    var entry = _context.Entry(item);
-                    var entityValue = new EntityValue();
-
-                    DbSet.Attach(item);
-
-                    entry.State = EntityState.Modified;
-                    var oldObject = entityValue.OldObject(entry);
-
-
-                    var properties = typeof(TEntity).GetProperties()
-                        .Where(property =>
-                            property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
-                        .Select(p => p.Name);
-                    foreach (var property in properties)
-                    {
-                        entry.Property(property).IsModified = false;
-                    }
-
-
-                    var keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
-                        ? entry.OriginalValues.GetValue<object>("Id").ToString()
-                        : "0";
-
-
-                    var audit = WriteLog.Create(ActionType.Update, keyValue, (TEntity)oldObject, item);
-                    if (audit == null) return 0;
-                    var auditlog = _context.Set<AuditLog>();
-                    auditlog.Add(audit);
-
-                    var result = !ShareContext ? _context.SaveChanges() : 0;
-                    scope.Complete();
-                    return result;
-                }
+                DbSet.Add(newItem);
             }
-            catch (Exception ex)
+            else
             {
-                ex.WriteLog();
-                throw;
+                var entry = _context.Entry(record);
+                //DbSet.Attach(record);
+                entry.CurrentValues.SetValues(newItem);
             }
+
+
+            var result = !ShareContext ? SaveChanges() : 0;
+            return result > 0 ? newItem : null;
+        }
+        public TEntity CreateOrUpdate(TEntity item)
+        {
+            var pi = item.GetType().GetProperty("Id");
+            var keyFieldId = pi != null ? pi.GetValue(item, null) : 0;
+
+            var record = DbSet.Find(keyFieldId);
+            if (record == null)
+            {
+                DbSet.Add(item);
+            }
+            else
+            {
+                _context.Entry(record).CurrentValues.SetValues(item);
+            }
+
+            var result = !ShareContext ? SaveChanges() : 0;
+            return result > 0 ? item : null;
+        }
+
+        public int Update(Expression<Func<TEntity, bool>> predicate)
+        {
+            var records = Where(predicate);
+            if (!records.Any())
+            {
+                throw new ObjectNotFoundException();
+            }
+            foreach (var record in records)
+            {
+                var entry = _context.Entry(record);
+
+                DbSet.Attach(record);
+
+                entry.State = EntityState.Modified;
+            }
+            return !ShareContext ? SaveChanges() : 0;
         }
 
         public int Delete(TEntity item)
@@ -244,6 +264,20 @@ namespace AzR.Core.Config
             var count = DbSet.Count(predicate);
             return count > 0;
         }
+
+        public string ToId(Expression<Func<TEntity, string>> predicate, string prefix, int returnLength = 9, char fillValue = '0')
+        {
+            return DbSet.Max(predicate).MakeId(prefix, returnLength, fillValue);
+        }
+        public string CreateId(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where, string prefix,
+            int returnLength = 9, char fillValue = '0')
+        {
+            return DbSet.Where(where).AsNoTracking().Max(predicate).MakeId(prefix, returnLength, fillValue);
+        }
+
+        #endregion
+
+        #region SQL
         public IEnumerable<T> ExecuteQuery<T>(string sqlQuery, params object[] parameters)
         {
             return _context.Database.SqlQuery<T>(sqlQuery, parameters);
@@ -253,6 +287,7 @@ namespace AzR.Core.Config
         {
             return _context.Database.ExecuteSqlCommand(sqlCommand, parameters);
         }
+
         public IEnumerable DynamicExecuteQuery(string sqlQuery, params object[] parameters)
         {
             return _context.Database.DynamicSqlQuery(sqlQuery, parameters);
@@ -262,16 +297,8 @@ namespace AzR.Core.Config
         {
             return _context.Database.DynamicSqlQuery(sqlQuery, parameters).Cast<dynamic>().FirstOrDefault(o => o != null);
         }
-        public string ToId(Expression<Func<TEntity, string>> predicate, string prefix, int returnLength = 9, char fillValue = '0')
-        {
-            return DbSet.Max(predicate).MakeId(prefix, returnLength, fillValue);
-        }
 
-        public string CreateId(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where, string prefix,
-            int returnLength = 9, char fillValue = '0')
-        {
-            return DbSet.Where(where).AsNoTracking().Max(predicate).MakeId(prefix, returnLength, fillValue);
-        }
+
         #endregion
 
         #region LINQ ASYNC
@@ -322,6 +349,44 @@ namespace AzR.Core.Config
             }
             return await SaveChangesAsync();
         }
+
+        public async Task<TEntity> CreateOrUpdateAsync(TEntity item)
+        {
+            var pi = item.GetType().GetProperty("Id");
+            var keyFieldId = pi != null ? pi.GetValue(item, null) : 0;
+
+            var record = await DbSet.FindAsync(keyFieldId);
+            if (record == null)
+            {
+                DbSet.Add(item);
+            }
+            else
+            {
+                _context.Entry(record).CurrentValues.SetValues(item);
+            }
+
+            var result = !ShareContext ? await SaveChangesAsync() : 0;
+            return result > 0 ? item : null;
+        }
+        public async Task<TEntity> CreateOrUpdateAsync(Expression<Func<TEntity, bool>> predicate, TEntity newItem)
+        {
+            var record = await DbSet.FirstOrDefaultAsync(predicate);
+            if (record == null)
+            {
+                DbSet.Add(newItem);
+            }
+            else
+            {
+                var entry = _context.Entry(record);
+                // DbSet.Attach(record);
+                entry.CurrentValues.SetValues(newItem);
+            }
+
+            var result = !ShareContext ? await SaveChangesAsync() : 0;
+            return result > 0 ? newItem : null;
+
+        }
+
         public async Task<int> DeleteAsync(TEntity t)
         {
             DbSet.Remove(t);
@@ -417,7 +482,7 @@ namespace AzR.Core.Config
 
         #endregion
 
-
+        #region SaveChange
 
         public int SaveChanges()
         {
@@ -450,8 +515,8 @@ namespace AzR.Core.Config
 
                 // Retrieve the error messages as a list of strings.
                 var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
 
                 // Join the list to a single string.
                 var fullErrorMessage = string.Join("; ", errorMessages);
@@ -519,7 +584,12 @@ namespace AzR.Core.Config
             }
         }
 
-        private int CreateLog()
+
+        #endregion
+
+        #region LogNotify
+
+        public int CreateLog()
         {
             var logList = new List<AuditLog>();
             var notifies = new List<Notification>();
@@ -581,12 +651,11 @@ namespace AzR.Core.Config
 
             if (addedEntries.Count <= 0 && modifiedEntries.Count <= 0 && deleteEntries.Count <= 0) return 0;
 
-            AddLogInDb(logList, notifies);
+            LogNotifyList(logList, notifies);
 
             return 1;
         }
-
-        private void AddLogInDb(IEnumerable<AuditLog> logList, IEnumerable<Notification> notifies)
+        public void LogNotifyList(IEnumerable<AuditLog> logList, IEnumerable<Notification> notifies)
         {
             if (_context.GetType() == typeof(ApplicationDbContext))
             {
@@ -607,5 +676,96 @@ namespace AzR.Core.Config
             }
 
         }
+        public void LogList(IEnumerable<AuditLog> logList)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
+                var auditlog = _context.Set(typeof(AuditLog));
+                auditlog.AddRange(logList);
+            }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.AuditLogs.AddRange(logList);
+                    db.SaveChangesAsync();
+                }
+            }
+
+        }
+        public void NotifyList(IEnumerable<Notification> notifies)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
+                var notifications = _context.Set(typeof(Notification));
+                notifications.AddRange(notifies);
+            }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.Notifications.AddRange(notifies);
+                    db.SaveChangesAsync();
+                }
+            }
+
+        }
+        public void LogNotify(AuditLog log, Notification notify)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
+                var auditlog = _context.Set(typeof(AuditLog));
+                auditlog.Add(log);
+
+                var notifications = _context.Set(typeof(Notification));
+                notifications.Add(notify);
+            }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.AuditLogs.Add(log);
+                    db.Notifications.Add(notify);
+                    db.SaveChangesAsync();
+                }
+            }
+
+        }
+        public void Log(AuditLog log)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
+                var auditlog = _context.Set(typeof(AuditLog));
+                auditlog.Add(log);
+            }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.AuditLogs.Add(log);
+                    db.SaveChangesAsync();
+                }
+            }
+
+        }
+        public void Notify(Notification notify)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
+                var notifications = _context.Set(typeof(Notification));
+                notifications.Add(notify);
+            }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.Notifications.Add(notify);
+                    db.SaveChangesAsync();
+                }
+            }
+
+        }
+        #endregion
+
     }
 }

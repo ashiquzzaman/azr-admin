@@ -13,7 +13,7 @@ namespace AzR.Core.AuditLogs
 {
     public static class WriteLog
     {
-        public static AuditLog Create<T>(ActionType action, string keyFieldId, T oldObject, T newObject)
+        public static AuditLog Create<T>(ActionType action, T oldObject, T newObject)
         {
 
             var ignorClass = typeof(T).IsDefined(typeof(IgnoreLogAttribute), false);
@@ -22,6 +22,10 @@ namespace AzR.Core.AuditLogs
                 return null;
             }
             var deltaList = newObject.Compare(oldObject);
+
+            var pi = newObject.GetType().GetProperty("Id");
+            var keyFieldId = pi != null ? (string)pi.GetValue(newObject, null) : "0";
+
             var audit = new AuditLog
             {
                 Id = AppIdentity.AuditId,

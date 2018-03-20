@@ -1,5 +1,6 @@
 ﻿using AzR.Core.AuditLogs;
 using AzR.Core.Enumerations;
+using AzR.Core.Notifications;
 using AzR.Utilities.Attributes;
 using AzR.Utilities.Exentions;
 using AzR.Utilities.Helpers;
@@ -50,45 +51,6 @@ namespace AzR.Core.Config
             _context.Database.CommandTimeout = 100000;
         }
 
-        public int SaveChanges()
-        {
-            try
-            {
-                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
-                return ignorClass ? _context.SaveChanges() : CreateLog();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                var outputLines = new List<string>();
-                foreach (var eve in ex.EntityValidationErrors)
-                {
-                    outputLines.Add(string.Format(
-                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
-                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                    outputLines.AddRange(eve.ValidationErrors.Select(ve => string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage)));
-                }
-                GeneralHelper.WriteValue(string.Join("\n", outputLines));
-
-                // Retrieve the error messages as a list of strings.
-                var errorMessages = ex.EntityValidationErrors
-                        .SelectMany(x => x.ValidationErrors)
-                        .Select(x => x.ErrorMessage);
-
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("; ", errorMessages);
-
-                // Combine the original exception message with the new one.
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-                GeneralHelper.WriteValue(string.Join("\n", outputLines));
-                // Throw a new DbEntityValidationException with the improved exception message.
-                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-            }
-            catch (Exception ex)
-            {
-                ex.WriteLog();
-                throw new Exception(ex.Message);
-            }
-        }
         protected DbSet<TEntity> DbSet
         {
             get
@@ -313,46 +275,6 @@ namespace AzR.Core.Config
         #endregion
 
         #region LINQ ASYNC
-        public async Task<int> SaveChangesAsync()
-        {
-
-            try
-            {
-                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
-                return ignorClass ? await _context.SaveChangesAsync() : await CreateLogAsync();
-            }
-            catch (DbEntityValidationException ex)
-            {
-                var outputLines = new List<string>();
-                foreach (var eve in ex.EntityValidationErrors)
-                {
-                    outputLines.Add(string.Format(
-                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
-                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
-                    outputLines.AddRange(eve.ValidationErrors.Select(ve => string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage)));
-                }
-                GeneralHelper.WriteValue(string.Join("\n", outputLines));
-
-                // Retrieve the error messages as a list of strings.
-                var errorMessages = ex.EntityValidationErrors
-                    .SelectMany(x => x.ValidationErrors)
-                    .Select(x => x.ErrorMessage);
-
-                // Join the list to a single string.
-                var fullErrorMessage = string.Join("; ", errorMessages);
-
-                // Combine the original exception message with the new one.
-                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
-                GeneralHelper.WriteValue(string.Join("\n", outputLines));
-                // Throw a new DbEntityValidationException with the improved exception message.
-                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-            }
-            catch (Exception ex)
-            {
-                ex.WriteLog();
-                throw new Exception(ex.Message);
-            }
-        }
 
         public async Task<ICollection<TEntity>> GetAllAsync()
         {
@@ -495,6 +417,49 @@ namespace AzR.Core.Config
         #endregion
 
 
+
+        public int SaveChanges()
+        {
+            try
+            {
+                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
+                return ignorClass ? _context.SaveChanges() : CreateLog();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var outputLines = new List<string>();
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    outputLines.Add(string.Format(
+                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
+                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                    outputLines.AddRange(eve.ValidationErrors.Select(ve => string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage)));
+                }
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
+
+                // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                        .SelectMany(x => x.ValidationErrors)
+                        .Select(x => x.ErrorMessage);
+
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
+
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+            catch (Exception ex)
+            {
+                ex.WriteLog();
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+
         private int CreateLog()
         {
             using (var scope = new TransactionScope())
@@ -557,13 +522,56 @@ namespace AzR.Core.Config
             }
         }
 
+        public async Task<int> SaveChangesAsync()
+        {
+
+            try
+            {
+                var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
+                return ignorClass ? await _context.SaveChangesAsync() : await CreateLogAsync();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                var outputLines = new List<string>();
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    outputLines.Add(string.Format(
+                        "{0}: Entity of type \"{1}\" in state \"{2}\" has the following validation errors:",
+                        DateTime.Now, eve.Entry.Entity.GetType().Name, eve.Entry.State));
+                    outputLines.AddRange(eve.ValidationErrors.Select(ve => string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage)));
+                }
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
+
+                // Retrieve the error messages as a list of strings.
+                var errorMessages = ex.EntityValidationErrors
+                    .SelectMany(x => x.ValidationErrors)
+                    .Select(x => x.ErrorMessage);
+
+                // Join the list to a single string.
+                var fullErrorMessage = string.Join("; ", errorMessages);
+
+                // Combine the original exception message with the new one.
+                var exceptionMessage = string.Concat(ex.Message, " The validation errors are: ", fullErrorMessage);
+                GeneralHelper.WriteValue(string.Join("\n", outputLines));
+                // Throw a new DbEntityValidationException with the improved exception message.
+                throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
+            }
+            catch (Exception ex)
+            {
+                ex.WriteLog();
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+
         private Task<int> CreateLogAsync()
         {
             using (var scope = new TransactionScope())
             {
                 var changes = Task.FromResult(0);
                 var logList = new List<AuditLog>();
-
+                var notifies = new List<Notification>();
                 var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
 
                 if (addedEntries.Count > 0)
@@ -574,6 +582,9 @@ namespace AzR.Core.Config
                         var audit = WriteLog.Create(entry, 1);
                         if (audit == null) continue;
                         logList.Add(audit);
+                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
+                        if (notify == null) continue;
+                        notifies.Add(notify);
                     }
                 }
 
@@ -596,6 +607,10 @@ namespace AzR.Core.Config
                         var audit = WriteLog.Create(entry, 2);
                         if (audit == null) continue;
                         logList.Add(audit);
+
+                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
+                        if (notify == null) continue;
+                        notifies.Add(notify);
                     }
                 }
 
@@ -607,12 +622,23 @@ namespace AzR.Core.Config
                         var audit = WriteLog.Create(entry, 3);
                         if (audit == null) continue;
                         logList.Add(audit);
+
+                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
+                        if (notify == null) continue;
+                        notifies.Add(notify);
                     }
                 }
 
                 var auditlog = _context.Set(typeof(AuditLog));
                 auditlog.AddRange(logList);
+
+                var notifications = _context.Set(typeof(Notification));
+                notifications.AddRange(notifies);
+
                 changes = _context.SaveChangesAsync();
+
+
+                NotificationHub.Notify();
 
                 scope.Complete();
                 return changes;

@@ -24,30 +24,31 @@ namespace AzR.Core.AuditLogs
             var deltaList = newObject.Compare(oldObject);
             var audit = new AuditLog
             {
-                //Id = AppIdentity.AuditId,
-                //LoginId = AppIdentity.CmsUser.Id,
-                //ActionType = action,
-                //EntityName = typeof(T).Name,
-                //EntityFullName = typeof(T).FullName,
-                //ActionTime = DateTime.UtcNow.ToLong(),
-                //BranchId = AppIdentity.CmsUser.ShopId,
-                //KeyFieldId = keyFieldId,
-                //UserId = AppIdentity.CmsUser.UserId,
-                //ActionUrl = "",
-                //ActionAgent = AppIdentity.AgentInfo,
-                //ActionUser = AppIdentity.CmsUser.Name + "(" + AppIdentity.CmsUser.UserName + ")",
-                //ValueBefore = JsonConvert.SerializeObject(oldObject),
-                //ValueAfter = JsonConvert.SerializeObject(newObject),
-                //ValueChange = JsonConvert.SerializeObject(deltaList)
+                Id = AppIdentity.AuditId,
+                LoginId = AppIdentity.AppUser.Id,
+                ActionType = action,
+                EntityName = typeof(T).Name,
+                EntityFullName = typeof(T).FullName,
+                ActionTime = DateTime.UtcNow.ToLong(),
+                BranchId = AppIdentity.AppUser.ActiveBranchId,
+                KeyFieldId = keyFieldId,
+                UserId = AppIdentity.AppUser.UserId,
+                ActionUrl = "",
+                ActionAgent = AppIdentity.AgentInfo,
+                ActionUser = AppIdentity.AppUser.Name + "(" + AppIdentity.AppUser.UserName + ")",
+                ValueBefore = JsonConvert.SerializeObject(oldObject),
+                ValueAfter = JsonConvert.SerializeObject(newObject),
+                ValueChange = JsonConvert.SerializeObject(deltaList)
             };
             return audit;
         }
 
-        public static AuditLog Create(DbEntityEntry entry, int status)
+        public static AuditLog Create(DbEntityEntry entry, int status, Type entityType = null)
         {
             var entityValue = new EntityValue();
-            var eType = entry.Entity.GetType();
-            var type = eType ?? Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = entityType ?? entry.Entity.GetType();
+            //   var type = Type.GetType(entry.Entity.GetType().FullName + "," + entry.Entity.GetType().Assembly.GetName().Name)?? entry.Entity.GetType().BaseType;
+
             var ignorClass = type.IsDefined(typeof(IgnoreLogAttribute), false);
             if (ignorClass)
             {
@@ -63,7 +64,7 @@ namespace AzR.Core.AuditLogs
                 case ActionType.Create:
                     {
                         oldObject = Activator.CreateInstance(type);
-                        newObject = entityValue.NewObject(entry);
+                        newObject = entityValue.NewObject(entry, type);
                         deltaList = newObject.ToChangeLog();
                         keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
                             ? entry.OriginalValues.GetValue<object>("Id").ToString()
@@ -71,7 +72,7 @@ namespace AzR.Core.AuditLogs
                         break;
                     }
                 case ActionType.Delete:
-                    oldObject = entityValue.OldObject(entry);
+                    oldObject = entityValue.OldObject(entry, type);
                     newObject = oldObject;
                     deltaList = newObject.Compare(oldObject);
                     keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
@@ -86,8 +87,8 @@ namespace AzR.Core.AuditLogs
                         {
                             actionType = ActionType.Cancel;
                         }
-                        newObject = entityValue.NewObject(entry);
-                        oldObject = entityValue.OldObject(entry);
+                        newObject = entityValue.NewObject(entry, type);
+                        oldObject = entityValue.OldObject(entry, type);
                         deltaList = newObject.Compare(oldObject);
                         keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
                             ? entry.OriginalValues.GetValue<object>("Id").ToString()
@@ -108,7 +109,7 @@ namespace AzR.Core.AuditLogs
                 UserId = AppIdentity.AppUser.UserId,
                 BranchId = AppIdentity.AppUser.ActiveBranchId,
                 ActionUrl = "",
-                ActionUser = AppIdentity.AppUser.Name,
+                ActionUser = AppIdentity.AppUser.Name + "(" + AppIdentity.AppUser.UserName + ")",
                 ActionAgent = AppIdentity.AgentInfo,
                 ValueBefore = JsonConvert.SerializeObject(oldObject),
                 ValueAfter = JsonConvert.SerializeObject(newObject),

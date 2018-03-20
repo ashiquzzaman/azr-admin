@@ -31,7 +31,8 @@
                                 <td>@Html.DisplayFor(modelItem => item.Id)</td>
                                 <td>@Html.DisplayFor(modelItem => item.Name)</td>
                                 <td>
-                                    @{Html.RenderPartial("_eddIcon", item.Id);}
+                                    <span class="btn btn-primary" onclick="createModal('@Url.Action("Save", "Student",new {id=item.Id})') " title="Edit"><i class="fa fa-edit fa-1x"></i></span>
+                                    <span class="btn btn-danger" onclick="deleteModal('@Url.Action("Save", "Student",new {id=item.Id})','@Url.Action("Index", "Student")') " title="Delete"><i class="fa fa-trash-o fa-1x"></i></span>
                                 </td>
                             </tr>
                         }

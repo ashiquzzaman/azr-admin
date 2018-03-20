@@ -1,12 +1,12 @@
-﻿using System;
+﻿using AzR.Core.Enumerations;
+using AzR.Utilities.Attributes;
+using AzR.Utilities.Exentions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using AzR.Core.Enumerations;
-using AzR.Utilities.Attributes;
-using AzR.Utilities.Exentions;
 
 namespace AzR.Core.Notifications
 {
@@ -66,12 +66,10 @@ namespace AzR.Core.Notifications
         public bool Active { get; set; }
         public long CreatedTime { get; set; }
         public List<UserNotification> UserNotifications { get; set; }
-        public static Notification ActionNotifyForGroup(DbEntityEntry entry, int status, string auditLogId)
+        public static Notification ActionNotifyForGroup(DbEntityEntry entry, int status, string auditLogId, Type entityType = null)
         {
-            var eType = entry.Entity.GetType();
-            var type = Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = entityType ?? entry.Entity.GetType();
             var ignorClass = type.IsDefined(typeof(IgnoreLogAttribute), false);
-            long userId = 0;
             if (ignorClass)
             {
                 return null;
@@ -87,18 +85,12 @@ namespace AzR.Core.Notifications
                         keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
                             ? entry.OriginalValues.GetValue<object>("Id").ToString()
                             : "0";
-                        userId = entry.OriginalValues.PropertyNames.Any(s => s == "ModifiedBy")
-                            ? entry.OriginalValues.GetValue<long>("ModifiedBy")
-                            : 0;
                         break;
                     }
                 case Enumerations.ActionType.Delete:
                     keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
                         ? entry.OriginalValues.GetValue<object>("Id").ToString()
                         : "0";
-                    userId = entry.OriginalValues.PropertyNames.Any(s => s == "ModifiedBy")
-                        ? entry.CurrentValues.GetValue<long>("ModifiedBy")
-                        : 0;
 
                     break;
                 default:
@@ -111,9 +103,6 @@ namespace AzR.Core.Notifications
                         keyValue = entry.OriginalValues.PropertyNames.Any(s => s == "Id")
                             ? entry.OriginalValues.GetValue<object>("Id").ToString()
                             : "0";
-                        userId = entry.OriginalValues.PropertyNames.Any(s => s == "ModifiedBy")
-                            ? entry.CurrentValues.GetValue<long>("ModifiedBy")
-                            : 0;
                         break;
                     }
             }
@@ -126,7 +115,7 @@ namespace AzR.Core.Notifications
                 EntityName = type.Name,
                 EntityFullName = type.FullName,
                 KeyFieldId = keyValue,
-                ModifiedBy = userId,
+                ModifiedBy = AppIdentity.AppUser.UserId,
                 ActionUrl = "",
                 NotifiedBody = NotifiedBody.ROLEGROUP,
                 NotificationType = NotificationType.Action,

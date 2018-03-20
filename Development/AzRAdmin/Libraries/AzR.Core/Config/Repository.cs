@@ -25,7 +25,7 @@ namespace AzR.Core.Config
     {
         private DbContext _context;//IAppDbContext
         private bool _shareContext;
-        private bool disposed = false;
+        private bool _disposed;
         public bool ShareContext
         {
             get { return _shareContext; }
@@ -77,7 +77,7 @@ namespace AzR.Core.Config
         protected virtual void Dispose(bool disposing)
         {
             if (ShareContext || _context == null) return;
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
@@ -88,7 +88,7 @@ namespace AzR.Core.Config
                     }
                 }
             }
-            disposed = true;
+            _disposed = true;
         }
 
 
@@ -120,12 +120,12 @@ namespace AzR.Core.Config
             get { return DbSet.AsNoTracking().Count(); }
         }
 
-        public int Counting(Expression<Func<TEntity, bool>> predicate)
+        public int CounFunc(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.AsNoTracking().Count(predicate);
         }
 
-        public string MaxValue(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where)
+        public string MaxFunc(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where)
         {
             return DbSet.Where(where).AsNoTracking().Max(predicate);
         }
@@ -204,7 +204,7 @@ namespace AzR.Core.Config
                         : "0";
 
 
-                    var audit = WriteLog.Create<TEntity>(ActionType.Update, keyValue, (TEntity)oldObject, item);
+                    var audit = WriteLog.Create(ActionType.Update, keyValue, (TEntity)oldObject, item);
                     if (audit == null) return 0;
                     var auditlog = _context.Set<AuditLog>();
                     auditlog.Add(audit);
@@ -400,7 +400,8 @@ namespace AzR.Core.Config
                 string.Format(
                     "INSERT INTO {0} ({1}) VALUES ( {2}); SELECT CAST(SCOPE_IDENTITY() AS VARCHAR(50)) AS LAST_IDENTITY;",
                     tableName, dictonaryField, dictonaryValue);
-            var result = ExecuteQuery<string>(dictonaryQuery, dictonaryParams.ToArray()).FirstOrDefault();
+
+            var result = _context.Database.SqlQuery<string>(dictonaryQuery, dictonaryParams.ToArray()).FirstOrDefault();
             return result;
         }
 
@@ -410,7 +411,7 @@ namespace AzR.Core.Config
             var dictonary = model.Aggregate(string.Empty, (current, o) => current + o.Key + "=" + "@" + o.Key + ",");
             var dictonaryQuery = string.Format("UPDATE {2} SET {0} WHERE Id={1}",
                 dictonary.Remove(dictonary.LastIndexOf(",", StringComparison.Ordinal)), id, tableName);
-            var result = ExecuteCommand(dictonaryQuery, dictonaryParams.ToArray());
+            var result = _context.Database.ExecuteSqlCommand(dictonaryQuery, dictonaryParams.ToArray());
             return result;
         }
 
@@ -423,7 +424,17 @@ namespace AzR.Core.Config
             try
             {
                 var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
-                return ignorClass ? _context.SaveChanges() : CreateLog();
+                int result;
+
+                using (var scope = new TransactionScope())
+                {
+                    if (!ignorClass) CreateLog();
+                    result = _context.SaveChanges();
+                    scope.Complete();
+                }
+
+                NotificationHub.Notify();
+                return result;
             }
             catch (DbEntityValidationException ex)
             {
@@ -457,78 +468,23 @@ namespace AzR.Core.Config
                 throw new Exception(ex.Message);
             }
         }
-
-
-
-        private int CreateLog()
-        {
-            using (var scope = new TransactionScope())
-            {
-                var changes = 0;
-                var logList = new List<AuditLog>();
-
-
-
-                var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
-
-                if (addedEntries.Count > 0)
-                {
-                    _context.SaveChanges();
-                    foreach (var entry in addedEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 1);
-                        if (audit == null) continue;
-                        logList.Add(audit);
-                    }
-                }
-
-                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
-
-                if (modifiedEntries.Count > 0)
-                {
-                    foreach (var entry in modifiedEntries)
-                    {
-                        var properties = typeof(TEntity).GetProperties()
-                            .Where(property =>
-                                property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
-                            .Select(p => p.Name);
-                        foreach (var property in properties)
-                        {
-                            entry.Property(property).IsModified = false;
-                        }
-
-                        var audit = WriteLog.Create(entry, 2);
-                        if (audit == null) continue;
-                        logList.Add(audit);
-                    }
-                }
-
-                var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
-                if (deleteEntries.Count > 0)
-                {
-                    foreach (var entry in deleteEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 3);
-                        if (audit == null) continue;
-                        logList.Add(audit);
-                    }
-                }
-                var auditlog = _context.Set(typeof(AuditLog));
-                auditlog.AddRange(logList);
-                changes = _context.SaveChanges();
-
-                scope.Complete();
-                return changes;
-            }
-        }
-
         public async Task<int> SaveChangesAsync()
         {
 
             try
             {
                 var ignorClass = typeof(TEntity).IsDefined(typeof(IgnoreLogAttribute), false);
-                return ignorClass ? await _context.SaveChangesAsync() : await CreateLogAsync();
+                int result;
+
+                using (var scope = new TransactionScope())
+                {
+                    if (!ignorClass) CreateLog();
+                    result = await _context.SaveChangesAsync();
+                    scope.Complete();
+                }
+
+                NotificationHub.Notify();
+                return result;
             }
             catch (DbEntityValidationException ex)
             {
@@ -563,87 +519,93 @@ namespace AzR.Core.Config
             }
         }
 
-
-
-        private Task<int> CreateLogAsync()
+        private int CreateLog()
         {
-            using (var scope = new TransactionScope())
+            var logList = new List<AuditLog>();
+            var notifies = new List<Notification>();
+            var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
+
+            if (addedEntries.Count > 0)
             {
-                var changes = Task.FromResult(0);
-                var logList = new List<AuditLog>();
-                var notifies = new List<Notification>();
-                var addedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Added).ToList();
-
-                if (addedEntries.Count > 0)
+                _context.SaveChanges();
+                foreach (var entry in addedEntries)
                 {
-                    _context.SaveChanges();
-                    foreach (var entry in addedEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 1);
-                        if (audit == null) continue;
-                        logList.Add(audit);
-                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
-                        if (notify == null) continue;
-                        notifies.Add(notify);
-                    }
+                    var audit = WriteLog.Create(entry, 1, typeof(TEntity));
+                    if (audit == null) continue;
+                    logList.Add(audit);
+                    var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id, typeof(TEntity));
+                    if (notify == null) continue;
+                    notifies.Add(notify);
                 }
+            }
 
+            var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
 
-                var modifiedEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified).ToList();
-
-                if (modifiedEntries.Count > 0)
+            if (modifiedEntries.Count > 0)
+            {
+                foreach (var entry in modifiedEntries)
                 {
-                    foreach (var entry in modifiedEntries)
+                    var properties = typeof(TEntity).GetProperties()
+                        .Where(property =>
+                            property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
+                        .Select(p => p.Name);
+                    foreach (var property in properties)
                     {
-                        var properties = typeof(TEntity).GetProperties()
-                            .Where(property =>
-                                property != null && Attribute.IsDefined(property, typeof(IgnoreUpdateAttribute)))
-                            .Select(p => p.Name);
-                        foreach (var property in properties)
-                        {
-                            entry.Property(property).IsModified = false;
-                        }
-
-                        var audit = WriteLog.Create(entry, 2);
-                        if (audit == null) continue;
-                        logList.Add(audit);
-
-                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
-                        if (notify == null) continue;
-                        notifies.Add(notify);
+                        entry.Property(property).IsModified = false;
                     }
-                }
 
-                var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
-                if (deleteEntries.Count > 0)
+                    var audit = WriteLog.Create(entry, 2, typeof(TEntity));
+                    if (audit == null) continue;
+                    logList.Add(audit);
+
+                    var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id, typeof(TEntity));
+                    if (notify == null) continue;
+                    notifies.Add(notify);
+                }
+            }
+
+            var deleteEntries = _context.ChangeTracker.Entries().Where(e => e.State == EntityState.Deleted).ToList();
+            if (deleteEntries.Count > 0)
+            {
+                foreach (var entry in deleteEntries)
                 {
-                    foreach (var entry in deleteEntries)
-                    {
-                        var audit = WriteLog.Create(entry, 3);
-                        if (audit == null) continue;
-                        logList.Add(audit);
+                    var audit = WriteLog.Create(entry, 3, typeof(TEntity));
+                    if (audit == null) continue;
+                    logList.Add(audit);
 
-                        var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id);
-                        if (notify == null) continue;
-                        notifies.Add(notify);
-                    }
+                    var notify = Notification.ActionNotifyForGroup(entry, 1, audit.Id, typeof(TEntity));
+                    if (notify == null) continue;
+                    notifies.Add(notify);
                 }
+            }
 
+            if (addedEntries.Count <= 0 && modifiedEntries.Count <= 0 && deleteEntries.Count <= 0) return 0;
+
+            AddLogInDb(logList, notifies);
+
+            return 1;
+        }
+
+        private void AddLogInDb(IEnumerable<AuditLog> logList, IEnumerable<Notification> notifies)
+        {
+            if (_context.GetType() == typeof(ApplicationDbContext))
+            {
                 var auditlog = _context.Set(typeof(AuditLog));
                 auditlog.AddRange(logList);
 
                 var notifications = _context.Set(typeof(Notification));
                 notifications.AddRange(notifies);
-
-                changes = _context.SaveChangesAsync();
-
-
-                NotificationHub.Notify();
-
-                scope.Complete();
-                return changes;
             }
-        }
+            else
+            {
+                using (var db = ApplicationDbContext.Create())
+                {
+                    db.AuditLogs.AddRange(logList);
+                    db.Notifications.AddRange(notifies);
+                    db.SaveChangesAsync();
+                }
+            }
 
+        }
     }
 }

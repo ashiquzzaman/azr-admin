@@ -25,8 +25,8 @@ namespace AzR.Core.Config
         IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate);
         int Count { get; }
         bool ShareContext { get; set; }
-        int Counting(Expression<Func<TEntity, bool>> predicate);
-        string MaxValue(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where);
+        int CounFunc(Expression<Func<TEntity, bool>> predicate);
+        string MaxFunc(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where);
         string Max(Expression<Func<TEntity, string>> predicate);
         TEntity Create(TEntity item);
         int Update(TEntity item);

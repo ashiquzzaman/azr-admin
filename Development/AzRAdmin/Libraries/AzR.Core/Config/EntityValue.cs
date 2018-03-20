@@ -11,12 +11,12 @@ namespace AzR.Core.Config
             var objectStateEntry = ((IObjectContextAdapter)this).ObjectContext.ObjectStateManager.GetObjectStateEntry(entry.Entity);
             return objectStateEntry.EntityKey.EntityKeyValues[0].Value;
         }
-        public object NewObject(DbEntityEntry entry)
+        public object NewObject(DbEntityEntry entry, Type entityType = null)
         {
             var newEntity = entry.CurrentValues.PropertyNames.ToDictionary(key => key,
                 key => entry.CurrentValues.GetValue<object>(key));
-            var eType = entry.Entity.GetType();
-            var type = eType ?? Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = entityType ?? entry.Entity.GetType();
+
             var newObj = Activator.CreateInstance(type);
             foreach (var kv in newEntity)
             {
@@ -28,12 +28,12 @@ namespace AzR.Core.Config
             }
             return newObj;
         }
-        public object OldObject(DbEntityEntry entry)
+        public object OldObject(DbEntityEntry entry, Type entityType = null)
         {
             var oldEntity = entry.OriginalValues.PropertyNames.ToDictionary(key => key,
                 key => entry.OriginalValues.GetValue<object>(key));
-            var eType = entry.Entity.GetType();
-            var type = Type.GetType(eType.FullName) ?? eType.BaseType;
+            var type = entityType ?? entry.Entity.GetType();
+
             var oldObj = Activator.CreateInstance(type);
             foreach (var kv in oldEntity)
             {

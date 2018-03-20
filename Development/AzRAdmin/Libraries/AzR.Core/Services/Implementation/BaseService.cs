@@ -52,13 +52,13 @@ namespace AzR.Core.Services.Implementation
 
         public string LoginId(int userId)
         {
-            return _login.MaxValue(u => u.Id.ToString(), u => u.UserId == userId);
+            return _login.MaxFunc(u => u.Id.ToString(), u => u.UserId == userId);
         }
 
 
         public void LogOutTime(int userId)
         {
-            var loginId = _login.MaxValue(u => u.Id.ToString(), u => u.UserId == userId);
+            var loginId = _login.MaxFunc(u => u.Id.ToString(), u => u.UserId == userId);
             if (!string.IsNullOrEmpty(loginId))
             {
                 var model = _login.First(o => o.Id == loginId);

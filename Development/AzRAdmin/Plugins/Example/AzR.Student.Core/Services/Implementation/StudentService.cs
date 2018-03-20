@@ -41,7 +41,7 @@ namespace AzR.Student.Core.Services.Implementation
         {
             if (model.Id > 0)
             {
-                var student = _student.Find(s => s.Id == model.Id);
+                var student = _student.First(s => s.Id == model.Id);
                 student.Name = model.Name;
                 await _student.SaveChangesAsync();
                 return student;

@@ -1,0 +1,18 @@
+20/Mar/2018 09:43:: Repository.cs:: MoveNext::531 :: The transaction has aborted.
+20/Mar/2018 09:43:: RoleService.cs:: MoveNext::61 :: The transaction has aborted.
+20/Mar/2018 09:45:: Repository.cs:: MoveNext::531 :: The transaction has aborted.
+20/Mar/2018 09:58:: Repository.cs:: MoveNext::533 :: The transaction has aborted.
+20/Mar/2018 10:01:: :: MoveNext::0 :: The transaction has aborted.
+20/Mar/2018 11:03:: Repository.cs:: MoveNext::483 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:25:: Repository.cs:: MoveNext::483 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:37:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
+20/Mar/2018 11:37:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:37:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
+20/Mar/2018 11:37:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
+20/Mar/2018 11:37:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
+20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.

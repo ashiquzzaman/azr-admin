@@ -94,57 +94,6 @@ var ToastBox = (function () {
     }
     return that;
 }());
-var Timer = (function () {
-    "use strict";
-    var interval = null;
-    var targetId;
-    var redirectUrl;
-    var redirectHandle = null;
-    var timeInrerval = 1;
-    var sessionTime = 0;
-    var redirect = function () {
-        sessionTime = (timeInrerval) * 1000;
-        function resetRedirect() {
-            if (redirectHandle) clearTimeout(redirectHandle);
-            redirectHandle = setTimeout(function () {
-                window.location.href = redirectUrl;
-            }, sessionTime);
-        }
-        $.ajaxSetup({ complete: function () { resetRedirect(); } });
-        resetRedirect();
-    }
-    var timer = function () {
-        redirect();
-        interval = setInterval(function () {
-            var count = parseInt($(targetId).html());
-            if (count !== 0) {
-                $(targetId).html(count - 1);
-            } else {
-                clearInterval(interval);
-            }
-        }, 1000);
-
-    };
-    var refresh = function () {
-        $(targetId).html("0");
-        clearInterval(interval);
-        clearTimeout(redirectHandle);
-        $(targetId).html(timeInrerval);
-        timer();
-    }
-    var result = {};
-    result.init = function (url, targetTimer) {
-        redirectUrl = url;
-        targetId = "#" + targetTimer;
-        timeInrerval = parseInt($(targetId).html());
-        timer();
-    }
-    result.refresh = function (inrervalTime) {
-        timeInrerval = parseInt(inrervalTime);
-        refresh();
-    }
-    return result;
-}());
 
 /*****************LOCAL STORAGE******************************/
 function allStorageVlaue() {
@@ -293,7 +242,7 @@ function createModal(url, page) {
         }
     });
 }
-function deActivateModal(url, redirectTo, msg) {
+function deleteModal(url, redirectTo, msg) {
     if (typeof (msg) === 'undefined') {
         msg = "Do you want to deactive this Record?";
     }
@@ -315,62 +264,17 @@ function deActivateModal(url, redirectTo, msg) {
     });
 
 }
-function deleteModal(url, redirectTo) {
-    bootbox.confirm("Are you sure want to Delete this Record?", function (result) {
-        if (result) {
-            $.ajax({
-                url: url,
-                type: 'POST',
-                contentType: 'application/json; charset=utf-8',
-                success: function (data) {
-                    showMessage("Record Deleted successfully!!!");
-                    loadLink(redirectTo);
-                },
-                error: function (data) {
-                    bootbox.alert('Error in getting result');
-                }
-            });
-        }
-    });
-
-}
-function loadLink(url, id) {
+function loadLink(url, id, header) {
     if (typeof (id) === 'undefined') {
         $('#mainContent').load(url);
     } else {
         $('#mainContent').load(url);
-    }
-}
-function loadMenu(url, header, id) {
-    if (typeof (id) === 'undefined') {
-        $('#mainContent').load(url);
-    } else {
-        $('#' + id).load(url);
     }
     if (typeof (header) !== 'undefined') {
         $('#PageHeader').html(header);
     }
-
 }
-function loadPartialView(link, position) {
 
-    $('#' + position).html('');
-    $.ajax({
-        url: link,
-        contentType: 'application/html; charset=utf-8',
-        type: 'GET',
-        async: false,
-        dataType: 'html'
-    })
-        .success(function (result) {
-            Spiner.show();
-            $('#' + position).html(result);
-            Spiner.hide();
-        })
-        .error(function (xhr, status) {
-            alert(status);
-        });
-}
 function showMessage(msg) {
     //bootbox.alert({
     //    message: msg,
@@ -1196,36 +1100,6 @@ $('.crunchify-top').click(function (event) {
 });
 
 /*******************************CRUD BUTTON***********************************************************************************/
-$(document).on('click', "table#dataTable>tbody>tr>td>span", function (e) {
-    var arg = $(e.target);
-    var page = $("#data-box").attr("current-page") == undefined ? 1 : $("#data-box").attr("current-page");
-    var area = $("#area-name").val();
-    var ctrl = $("#controller-name").val();
-    var pram = arg.attr("data-id");
-    var action = arg.attr('data-action');
-    if (action != undefined) {
-        var url = area
-            ? '/' + area + "/" + ctrl + "/" + action + "/" + pram + "/"
-            : "/" + ctrl + "/" + action + "/" + pram + "/";
-        if (action === 'delete') {
-            var currentPage = area
-                ? '/' + area + "/" + ctrl + "/Index/?page=" + page
-                : "/" + ctrl + "/" + action + "/Index/?page=" + page;
-            var msg = "Do you want to deactive this " + $('#PageHeader').html() + "?";
-            deActivateModal(url, currentPage, msg);
-        }
-        if (action === 'save') {
-            createModal(url, page);
-        }
-        if (action === 'details') {
-            createModal(url, page);
-        }
-        if (action === 'print') {
-            window.open(url, '_blank').focus();
-        }
-    }
-
-});
 function getFixedFoltingButton() {
 
     var create = $("#data-box").attr("data-action");

@@ -1,0 +1,39 @@
+﻿    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="reopen" aria-hidden="true" title="Details">
+                <i class="fa fa-eye" data-id="{{-recordId}}" data-action="details" data-modal="my"></i>
+            </span>
+            <span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+        </button>
+        <h4 class="modal-title">Logs</h4>
+    </div>
+    <div class="modal-body" modal-type='medium'>
+        <div class="table-responsive">
+            <table class="table table-condensed">
+                <tbody>
+                {{_.each(auditLogs, function(auditLog){}}
+                <tr class="active">
+                    <td colspan="2">Event date: {{= auditLog.ActionTime}}</td>
+                    <td>Action type: {{= auditLog.ActionTypeName}}</td>
+                </tr>
+                <tr class="text-warning">
+                    <td>Field name</td>
+                    <td>Before change</td>
+                    <td>After change</td>
+                </tr>
+                {{_.each(auditLog.Changes, function(change){}}
+                <tr>
+                    <td>{{= change.FieldName}}</td>
+                    <td>{{= change.ValueBefore}}</td>
+                    <td>{{= change.ValueAfter}}</td>
+                </tr>
+                {{});})}}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-tertiary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>

@@ -34,23 +34,24 @@ namespace AzR.Web
                 "~/Scripts/respond.js",
                 "~/Scripts/Chart.js",
                 "~/Scripts/underscore.js",
-                "~/Scripts/app/underscore.js",
-                "~/Scripts/app/spin.js",
-                "~/Scripts/app/drag-drop.js",
-                "~/Scripts/app/azr-admin.js"));
+
+                "~/Themes/AdminAzR/js/spin.js",
+                "~/Themes/AdminAzR/js/drag-drop.js",
+                "~/Themes/AdminAzR/js/azr-admin.js"));
 
             bundles.Add(new StyleBundle("~/Content/app-css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/bootstrap-datetimepicker.css",
                 "~/Content/font-awesome.css",
-                "~/Content/app/ionicons.css",
-                "~/Content/app/ionicons.css",
-                "~/Content/app/flag-icon.css",
                 "~/Content/PagedList.css",
-                "~/Content/app/animate.css",
                 "~/Content/css/select2.css",
                 "~/Content/select2-bootstrap.css",
-                "~/Content/app/azr-admin.css"));
+
+                "~/Themes/AdminAzR/css/animate.css",
+                "~/Themes/AdminAzR/css/ionicons.css",
+                "~/Themes/AdminAzR/css/flag-icon.css",
+                "~/Themes/AdminAzR/css/azr-admin.css",
+                "~/Themes/AdminAzR/css/azr-color.css"));
 
 
 

@@ -39,21 +39,15 @@ namespace AzR.Student.Core.Services.Implementation
 
         public async Task<Models.Student> CreateOrUpdateAsync(StudentViewModel model)
         {
-            if (model.Id > 0)
+
+            var student = new Models.Student
             {
-                var student = _student.First(s => s.Id == model.Id);
-                student.Name = model.Name;
-                await _student.SaveChangesAsync();
-                return student;
-            }
-            else
-            {
-                var student = new Models.Student
-                {
-                    Name = model.Name
-                };
-                return await _student.CreateAsync(student);
-            }
+                Id = model.Id,
+                Name = model.Name
+            };
+            await _student.CreateOrUpdateAsync(student);
+            return student;
+
         }
     }
 }

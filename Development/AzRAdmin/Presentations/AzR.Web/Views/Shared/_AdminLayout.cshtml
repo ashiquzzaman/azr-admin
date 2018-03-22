@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@AppIdentity.AppName</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="HTML5,CSS,XML,JavaScript,C#,DOT NET,.NET,ASP.NET,ASP MVC,JAVA,Python,Web service,WCF,WPF,Web api,Mobile Application,Web development,Web design,Software">
+
+    @Styles.Render("~/Content/app-css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/singalr")
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script>
+        var CKEDITOR_BASEPATH = '/ckeditor/';
+    </script>
+    <script src="/signalr/hubs"></script>
+
+    @{Html.RenderPartial("_Notification");}
+
+    @RenderSection("haderscripts", false)
+</head>
+<body class="azr-admin">
+    <div class="azr-container expanded">
+        <div class="row content-container">
+            <nav class="navbar navbar-light bg-light fixed-top navbar-top navbar-expand-md">
+                <button type="button" class="navbar-expand-toggle">
+                    <i class="fa fa-bars icon"></i>
+                </button>
+                <ol class="breadcrumb navbar-breadcrumb">
+                    <li class="active">
+                        <span id="PageHeader"></span>
+                    </li>
+                </ol>
+                <button type="button" class="ml-auto-expand-toggle float-right d-block d-sm-none">
+                    <i class="fa fa-th icon"></i>
+                </button>
+                <ul class="nav navbar-nav ml-auto">
+                    <button type="button" class="ml-auto-expand-toggle float-right d-block d-sm-none">
+                        <i class="fa fa-times icon"></i>
+                    </button>
+                    <li class="dropdown danger nav-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
+                           aria-expanded="false">
+
+                            <i class="fa fa-bell"></i>
+
+                            <span class="js-notifications-count hide"></span>
+
+                        </a>
+                        <ul class="dropdown-menu danger animated fadeInDown">
+                            <li class="title dropdown-item">
+                                Notification <span class="badge js-notifications-count hide float-right"></span>
+                            </li>
+                            <li id="all-notifications" class="dropdown-item"></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown profile nav-item">
+                        <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" role="button"
+                           aria-expanded="false">Ashiquzzaman<span class="caret"></span></a>
+                        <ul class="dropdown-menu animated fadeInDown">
+                            <li class="profile-img dropdown-item">
+                                <img src="/Images/user.png" alt="/Images/user.png" class="profile-img">
+                            </li>
+                            <li class="dropdown-item">
+                                <div class="profile-info">
+                                    <h4 class="username">Ashiquzzaman</h4>
+                                    <div class="btn-group margin-bottom-2x" role="group">
+                                        <button type="button" class="btn btn-secondary"><i class="fa fa-user"></i> Profile</button> <a href="javascript:document.getElementById(&apos;logoutForm&apos;).submit()"
+                                                                                                                                       class="btn btn-secondary"><i class="fa fa-sign-out"></i>Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+            <div class="side-menu sidebar-inverse">
+                <nav class="navbar navbar-light bg-light navbar-expand-md" role="navigation">
+                    <div class="side-menu-container">
+                        <a class="navbar-brand" href="/">
+
+                            <div class="icon fa fa-connectdevelop fa-lg">
+
+
+
+                            </div>
+
+                            <div class="title">AzR-Admin</div>
+
+                        </a>
+                        <button type="button" class="navbar-expand-toggle float-right d-block d-sm-none">
+                            <i class="fa fa-times icon"></i>
+                        </button>
+                        @RenderSection("menu", false)
+                    </div>
+                </nav>
+            </div>
+            <div class="container-fluid">
+                <div class="side-body padding-top">
+                    <span id="config-hidden">
+
+                        <input type="hidden" id="area-name" value="">
+
+                        <input type="hidden" id="controller-name" value="">
+
+                    </span>
+                    <div id="toast-alert" class="alert alert-success fade in"
+                         style="display: none;">
+                        <p></p>
+                    </div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <footer class="azr-footer">
+            <div class="footer-wrapper">
+                <span class="pull-right">
+                    <span>Powered by&nbsp;<a href="http://www.azr-it.com" target="_blank"><strong>AzR</strong></a></span>
+                </span> &copy; @DateTime.UtcNow.Year Copyright&nbsp;<span><a href="http://www.azr-it.com" target="_blank"><strong>AzR</strong></a></span>
+            </div>
+        </footer>
+    </div>
+    <div class="floating-button">
+        <button id="fixed-button" data-url="" style="display: none;">+</button>
+    </div>
+    <a href="#" class="crunchify-top"><i class="fa fa-angle-up active"></i></a>
+@Scripts.Render("~/bundles/app-js")
+@RenderSection("scripts", false)
+
+
+
+
+
+</body>
+
+
+
+
+
+
+
+
+</html>

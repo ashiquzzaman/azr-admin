@@ -1,12 +1,12 @@
 ﻿/********************AzR COLOR*************************/
 .nav-pills > li.active > a {
-    color: #fff;
-    background-color: #266aa5;
+	color: #fff;
+	background-color: #266aa5;
 }
-    .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
-        color: #266aa5;
-        background-color: #FFF;
-    }
+	.nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+		color: #266aa5;
+		background-color: #FFF;
+	}
 .azr-admin {background-color: #F9F9F9;}
 .badge {background-color: #F9F9F9;}
 .badge i {color: #2980b9;font-size: 16px;}

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AzR.Core.Config;
+using System.ComponentModel.DataAnnotations;
 
 namespace AzR.Student.Core.Models
 {
-    public class Student
+    public class Student : IBaseEntity
     {
         [Key]
         public int Id { get; set; }

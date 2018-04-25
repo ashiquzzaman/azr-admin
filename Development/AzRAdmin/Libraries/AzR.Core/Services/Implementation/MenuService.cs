@@ -1,4 +1,5 @@
-﻿using AzR.Core.Entities;
+﻿using AzR.Core.Config;
+using AzR.Core.Entities;
 using AzR.Core.Enumerations;
 using AzR.Core.HelperModels;
 using AzR.Core.Repositoies.Interface;
@@ -15,12 +16,12 @@ namespace AzR.Core.Services.Implementation
 {
     public class MenuService : IMenuService
     {
-        private readonly IMenuRepository _menu;
-        private readonly IUserMenuRepository _userPrivilege;
+        private readonly IRepository<Menu> _menu;
+        private readonly IRepository<UserMenu> _userPrivilege;
         private IRoleRepository _role;
         private readonly List<MenuType> _menuTypes = new List<MenuType> { MenuType.Module, MenuType.Menu };
 
-        public MenuService(IMenuRepository menu, IUserMenuRepository userPrivilege, IRoleRepository role)
+        public MenuService(IRepository<Menu> menu, IRepository<UserMenu> userPrivilege, IRoleRepository role)
         {
             _menu = menu;
             _userPrivilege = userPrivilege;
@@ -52,8 +53,8 @@ namespace AzR.Core.Services.Implementation
 
         public async Task<MenuViewModel> GetAsync(int id)
         {
-            var model = _menu.EntityFactory(await _menu.FindAsync(o => o.Id == id));
-            return model;
+            var model = await _menu.FindAsync(o => o.Id == id);
+            return model.ToMap<Menu, MenuViewModel>();
         }
 
         public async Task<List<DropDownItem>> LoadParentAsync()
@@ -85,7 +86,7 @@ namespace AzR.Core.Services.Implementation
 
             try
             {
-                var result = _menu.ModelFactory(model);
+                var result = model.ToMap<MenuViewModel, Menu>();
                 return await _menu.CreateAsync(result);
             }
             catch (Exception ex)
@@ -100,7 +101,7 @@ namespace AzR.Core.Services.Implementation
         {
             try
             {
-                var result = _menu.ModelFactory(model);
+                var result = model.ToMap<MenuViewModel, Menu>();
                 await _menu.UpdateAsync(result);
                 return result;
             }

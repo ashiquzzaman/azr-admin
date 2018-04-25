@@ -1,4 +1,5 @@
 ﻿using AzR.Core.AuditLogs;
+using AzR.Core.Config;
 using AzR.Core.Entities;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
@@ -17,11 +18,11 @@ namespace AzR.Core.Services.Implementation
     public class BaseService : IBaseService
     {
 
-        private ILoginHistoryRepository _login;
+        private IRepository<LoginHistory> _login;
         private IUserRepository _user;
-        private IBranchRepository _branch;
+        private IRepository<Branch> _branch;
         private IRoleRepository _role;
-        public BaseService(ILoginHistoryRepository login, IUserRepository user, IBranchRepository branch, IRoleRepository role)
+        public BaseService(IRepository<LoginHistory> login, IUserRepository user, IRepository<Branch> branch, IRoleRepository role)
         {
             _login = login;
             _user = user;

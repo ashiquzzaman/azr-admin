@@ -1,12 +1,13 @@
+using AzR.Core.Config;
+using AzR.Utilities.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AzR.Utilities.Attributes;
 
 namespace AzR.Core.AuditLogs
 {
     [IgnoreLog]
-    public class LoginHistory
+    public class LoginHistory : IBaseEntity
     {
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]

@@ -1,10 +1,10 @@
-﻿using AzR.Core.AuditLogs;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.IdentityConfig;
-using AzR.Core.Notifications;
+using AzR.Utilities.Attributes;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace AzR.Core.Config
 {
@@ -17,19 +17,6 @@ namespace AzR.Core.Config
         {
 
         }
-        #region General
-
-        public DbSet<AuditLog> AuditLogs { get; set; }
-        public DbSet<LoginHistory> LoginHistories { get; set; }
-        public DbSet<Branch> Branchs { get; set; }
-        public DbSet<Menu> Menus { get; set; }
-        public DbSet<UserMenu> UserMenus { get; set; }
-
-        public DbSet<Notification> Notifications { get; set; }
-
-        public DbSet<UserNotification> UserNotifications { get; set; }
-
-        #endregion
 
         public static ApplicationDbContext Create()
         {
@@ -45,6 +32,7 @@ namespace AzR.Core.Config
             }
 
             base.OnModelCreating(modelBuilder);
+            Database.SetInitializer<ApplicationDbContext>(null);
 
             //  Database.SetInitializer(new AppDatabaseInitializer());
 
@@ -57,7 +45,27 @@ namespace AzR.Core.Config
             //    .Configure(p => p.HasMaxLength(256));
 
 
+            var assList = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(s => s.FullName.Contains("AzR"))
+                .Where(s => s.FullName.Contains("Core"));
 
+            var builder = typeof(DbModelBuilder).GetMethod("Entity");
+
+            foreach (var assembly in assList)
+            {
+                var entityTypes = assembly
+                    .GetTypes()
+                    .Where(t => typeof(IBaseEntity).IsAssignableFrom(t)
+                                && !t.IsDefined(typeof(IgnoreEntityAttribute), false));
+
+                foreach (var type in entityTypes)
+                {
+                    builder.MakeGenericMethod(type)
+                        .Invoke(modelBuilder, new object[] { });
+                }
+
+
+            }
 
             modelBuilder.Entity<Branch>()
                 .HasOptional(p => p.Parent)

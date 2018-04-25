@@ -1,6 +1,9 @@
-﻿namespace AzR.Core.Config
+﻿using AzR.Utilities.Attributes;
+
+namespace AzR.Core.Config
 {
-    public interface IEntity<T>
+    [IgnoreEntity]
+    public interface IEntity<T> : IBaseEntity
     {
         T Id { get; set; }
         string LoginId { get; set; }

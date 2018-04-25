@@ -1,10 +1,11 @@
-﻿using AzR.Core.IdentityConfig;
+﻿using AzR.Core.Config;
+using AzR.Core.IdentityConfig;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AzR.Core.Entities
 {
-    public class UserMenu
+    public class UserMenu : IBaseEntity
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

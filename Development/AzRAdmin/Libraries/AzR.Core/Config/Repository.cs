@@ -57,6 +57,7 @@ namespace AzR.Core.Config
             get
             {
                 return _context.Set<TEntity>();
+
             }
         }
 
@@ -657,112 +658,112 @@ namespace AzR.Core.Config
         }
         public void LogNotifyList(IEnumerable<AuditLog> logList, IEnumerable<Notification> notifies)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var auditlog = _context.Set(typeof(AuditLog));
-                auditlog.AddRange(logList);
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var auditlog = _context.Set(typeof(AuditLog));
+            auditlog.AddRange(logList);
 
-                var notifications = _context.Set(typeof(Notification));
-                notifications.AddRange(notifies);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.AuditLogs.AddRange(logList);
-                    db.Notifications.AddRange(notifies);
-                    db.SaveChangesAsync();
-                }
-            }
+            var notifications = _context.Set(typeof(Notification));
+            notifications.AddRange(notifies);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.AuditLogs.AddRange(logList);
+            //        db.Notifications.AddRange(notifies);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         public void LogList(IEnumerable<AuditLog> logList)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var auditlog = _context.Set(typeof(AuditLog));
-                auditlog.AddRange(logList);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.AuditLogs.AddRange(logList);
-                    db.SaveChangesAsync();
-                }
-            }
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var auditlog = _context.Set(typeof(AuditLog));
+            auditlog.AddRange(logList);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.AuditLogs.AddRange(logList);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         public void NotifyList(IEnumerable<Notification> notifies)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var notifications = _context.Set(typeof(Notification));
-                notifications.AddRange(notifies);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.Notifications.AddRange(notifies);
-                    db.SaveChangesAsync();
-                }
-            }
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var notifications = _context.Set(typeof(Notification));
+            notifications.AddRange(notifies);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.Notifications.AddRange(notifies);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         public void LogNotify(AuditLog log, Notification notify)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var auditlog = _context.Set(typeof(AuditLog));
-                auditlog.Add(log);
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var auditlog = _context.Set(typeof(AuditLog));
+            auditlog.Add(log);
 
-                var notifications = _context.Set(typeof(Notification));
-                notifications.Add(notify);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.AuditLogs.Add(log);
-                    db.Notifications.Add(notify);
-                    db.SaveChangesAsync();
-                }
-            }
+            var notifications = _context.Set(typeof(Notification));
+            notifications.Add(notify);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.AuditLogs.Add(log);
+            //        db.Notifications.Add(notify);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         public void Log(AuditLog log)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var auditlog = _context.Set(typeof(AuditLog));
-                auditlog.Add(log);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.AuditLogs.Add(log);
-                    db.SaveChangesAsync();
-                }
-            }
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var auditlog = _context.Set(typeof(AuditLog));
+            auditlog.Add(log);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.AuditLogs.Add(log);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         public void Notify(Notification notify)
         {
-            if (_context.GetType() == typeof(ApplicationDbContext))
-            {
-                var notifications = _context.Set(typeof(Notification));
-                notifications.Add(notify);
-            }
-            else
-            {
-                using (var db = ApplicationDbContext.Create())
-                {
-                    db.Notifications.Add(notify);
-                    db.SaveChangesAsync();
-                }
-            }
+            //if (_context.GetType() == typeof(ApplicationDbContext))
+            //{
+            var notifications = _context.Set(typeof(Notification));
+            notifications.Add(notify);
+            //}
+            //else
+            //{
+            //    using (var db = ApplicationDbContext.Create())
+            //    {
+            //        db.Notifications.Add(notify);
+            //        db.SaveChangesAsync();
+            //    }
+            //}
 
         }
         #endregion

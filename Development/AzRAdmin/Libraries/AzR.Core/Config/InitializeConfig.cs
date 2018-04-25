@@ -1,5 +1,4 @@
-﻿using AzR.Core.Entities;
-using AzR.Core.IdentityConfig;
+﻿using AzR.Core.IdentityConfig;
 using AzR.Utilities.Exentions;
 using Microsoft.AspNet.Identity;
 using System;
@@ -11,29 +10,29 @@ namespace AzR.Core.Config
     public class InitializeConfig
     {
         public ApplicationDbContext Context { get; set; }
-        public void InitializeBranch()
-        {
-            #region Branch
+        //public void InitializeBranch()
+        //{
+        //    #region Branch
 
-            Context.Branchs.AddOrUpdate(i => i.Name,
-                new Branch
-                {
-                    BranchCode = "001",
-                    ParentId = null,
-                    Name = "AzR Admin",
-                    Email = "ashiquzzaman@outlook.com",
-                    Phone = "+8801841252600",
-                    Address = "AzR Admin",
-                    Created = DateTime.UtcNow.ToLong(),
-                    Expired = DateTime.UtcNow.AddDays(400).ToLong(),
-                    IsActive = true,
-                    IsBranch = false
-                });
+        //    Context.Branchs.AddOrUpdate(i => i.Name,
+        //        new Branch
+        //        {
+        //            BranchCode = "001",
+        //            ParentId = null,
+        //            Name = "AzR Admin",
+        //            Email = "ashiquzzaman@outlook.com",
+        //            Phone = "+8801841252600",
+        //            Address = "AzR Admin",
+        //            Created = DateTime.UtcNow.ToLong(),
+        //            Expired = DateTime.UtcNow.AddDays(400).ToLong(),
+        //            IsActive = true,
+        //            IsBranch = false
+        //        });
 
-            #endregion
-            Context.SaveChanges();
+        //    #endregion
+        //    Context.SaveChanges();
 
-        }
+        //}
 
         public void InitializeRole()
         {

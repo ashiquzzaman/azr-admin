@@ -1,9 +1,10 @@
+using AzR.Core.Config;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AzR.Core.IdentityConfig
 {
-    public class ApplicationUserRole : IdentityUserRole<int>
+    public class ApplicationUserRole : IdentityUserRole<int>, IBaseEntity
     {
 
         [ForeignKey("UserId")]

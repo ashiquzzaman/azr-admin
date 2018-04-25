@@ -84,8 +84,6 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositoies\Implementation\StudentRepository.cs" />
-    <Compile Include="Repositoies\Interface\IStudentRepository.cs" />
     <Compile Include="Services\Implementation\StudentService.cs" />
     <Compile Include="Services\Interface\IStudentService.cs" />
     <Compile Include="StudentDbContext.cs" />

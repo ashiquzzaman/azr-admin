@@ -26,9 +26,9 @@ namespace AzR.Core.Migrations
         protected override void Seed(ApplicationDbContext context)
         {
             var init = new InitializeConfig { Context = context };
-            // init.InitializeBranch();
-            // init.InitializeRole();
-            //init.InitializeAdmin();
+            init.InitializeBranch();
+            init.InitializeRole();
+            init.InitializeAdmin();
         }
     }
 

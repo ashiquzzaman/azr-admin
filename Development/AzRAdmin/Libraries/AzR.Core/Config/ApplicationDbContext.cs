@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Data.Entity.ModelConfiguration.Configuration;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace AzR.Core.Config
             //var pending = migrator.GetPendingMigrations();
 
 
-            var migratorBase = new DbMigrator(Activator.CreateInstance<TMigrationsConfiguration>());
+            var migratorBase = (MigratorBase)new DbMigrator(Activator.CreateInstance<TMigrationsConfiguration>());
             if (migratorBase.GetPendingMigrations().Any())
             {
                 migratorBase.Update();

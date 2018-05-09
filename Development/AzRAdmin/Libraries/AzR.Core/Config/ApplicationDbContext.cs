@@ -76,21 +76,18 @@ namespace AzR.Core.Config
 
             var builder = typeof(DbModelBuilder).GetMethod("Entity");
 
-            foreach (var assembly in assList)
-            {
-                var entityTypes = assembly
+            //LOAD ENTITY
+
+            var types = assList.SelectMany(assembly => assembly
                     .GetTypes()
                     .Where(t => typeof(IBaseEntity).IsAssignableFrom(t)
-                                && !t.IsDefined(typeof(IgnoreEntityAttribute), false));
+                                && !t.IsDefined(typeof(IgnoreEntityAttribute), false)))
+                .ToList();
 
-                foreach (var type in entityTypes)
-                {
-                    builder.MakeGenericMethod(type)
-                        .Invoke(modelBuilder, new object[] { });
-                }
+            types.ForEach(type => builder.MakeGenericMethod(type)
+                .Invoke(modelBuilder, new object[] { }));
 
 
-            }
 
             //FOR FLUENT API CONFIG
             var addMethod = typeof(ConfigurationRegistrar)

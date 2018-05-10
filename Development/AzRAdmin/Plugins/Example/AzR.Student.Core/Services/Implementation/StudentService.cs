@@ -1,4 +1,4 @@
-﻿using AzR.Student.Core.Repositoies.Interface;
+﻿using AzR.Core.Config;
 using AzR.Student.Core.Services.Interface;
 using AzR.Student.Core.ViewModels;
 using System.Linq;
@@ -8,9 +8,9 @@ namespace AzR.Student.Core.Services.Implementation
 {
     public class StudentService : IStudentService
     {
-        private IStudentRepository _student;
+        private IRepository<Models.Student> _student;
 
-        public StudentService(IStudentRepository student)
+        public StudentService(IRepository<Models.Student> student)
         {
             _student = student;
         }

@@ -15,7 +15,7 @@ namespace AzR.Core.Config
         {
             #region Branch
 
-            Context.Branchs.AddOrUpdate(i => i.Name,
+            Context.Set<Branch>().AddOrUpdate(i => i.Name,
                 new Branch
                 {
                     BranchCode = "001",

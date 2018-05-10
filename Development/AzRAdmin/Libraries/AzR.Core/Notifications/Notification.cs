@@ -1,4 +1,5 @@
-﻿using AzR.Core.Enumerations;
+﻿using AzR.Core.Config;
+using AzR.Core.Enumerations;
 using AzR.Utilities.Attributes;
 using AzR.Utilities.Exentions;
 using System;
@@ -11,7 +12,7 @@ using System.Linq;
 namespace AzR.Core.Notifications
 {
     [IgnoreLog]
-    public class Notification
+    public class Notification : IBaseEntity
     {
         public Notification()
         {

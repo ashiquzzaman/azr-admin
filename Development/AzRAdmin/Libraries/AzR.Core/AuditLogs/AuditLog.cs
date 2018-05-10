@@ -1,3 +1,4 @@
+using AzR.Core.Config;
 using AzR.Core.Enumerations;
 using AzR.Utilities.Attributes;
 using System.ComponentModel.DataAnnotations;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AzR.Core.AuditLogs
 {
     [IgnoreLog]
-    public class AuditLog
+    public class AuditLog : IBaseEntity
     {
 
         [Key]

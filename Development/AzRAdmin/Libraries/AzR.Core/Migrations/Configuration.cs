@@ -1,3 +1,4 @@
+using AzR.Core.Config;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Migrations;
@@ -5,7 +6,6 @@ using System.Data.Entity.SqlServer;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
-using AzR.Core.Config;
 
 namespace AzR.Core.Migrations
 {
@@ -37,7 +37,7 @@ namespace AzR.Core.Migrations
         protected override void Seed(ApplicationDbContext context)
         {
             var init = new InitializeConfig { Context = context };
-            init.InitializeBranch();
+            // init.InitializeBranch();
             init.InitializeRole();
             init.InitializeAdmin();
         }

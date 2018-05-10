@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -104,6 +107,7 @@
     <Reference Include="System.Data.SQLite.Linq, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Data.SQLite.Linq.1.0.108.0\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.4.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -118,10 +122,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config\AuditableEntity.cs" />
+    <Compile Include="Config\BaseEntity.cs" />
     <Compile Include="Config\Entity.cs" />
     <Compile Include="Config\EntityValue.cs" />
     <Compile Include="Config\IAppDbContext.cs" />
     <Compile Include="Config\IAuditableEntity.cs" />
+    <Compile Include="Config\IBaseEntity.cs" />
     <Compile Include="Config\IEntity.cs" />
     <Compile Include="Config\SqliteMigrationSqlGenerator.cs" />
     <Compile Include="Config\CustomHistoryContext.cs" />
@@ -154,21 +160,14 @@
     <Compile Include="Enumerations\PostStatus.cs" />
     <Compile Include="Enumerations\PostType.cs" />
     <Compile Include="Enumerations\UserRoleGroup.cs" />
+    <Compile Include="HelperModels\AutoMapperExtentions.cs" />
+    <Compile Include="IdentityConfig\IRoleRepository.cs" />
+    <Compile Include="IdentityConfig\IUserRepository.cs" />
     <Compile Include="Notifications\Notification.cs" />
     <Compile Include="Notifications\NotificationHub.cs" />
     <Compile Include="Notifications\UserNotification.cs" />
-    <Compile Include="Repositoies\Implementation\LoginHistoryRepository.cs" />
-    <Compile Include="Repositoies\Implementation\MenuRepository.cs" />
-    <Compile Include="Repositoies\Implementation\BranchRepository.cs" />
-    <Compile Include="Repositoies\Implementation\RoleRepository.cs" />
-    <Compile Include="Repositoies\Implementation\UserMenuRepository.cs" />
-    <Compile Include="Repositoies\Implementation\UserRepository.cs" />
-    <Compile Include="Repositoies\Interface\ILoginHistoryRepository.cs" />
-    <Compile Include="Repositoies\Interface\IMenuRepository.cs" />
-    <Compile Include="Repositoies\Interface\IBranchRepository.cs" />
-    <Compile Include="Repositoies\Interface\IRoleRepository.cs" />
-    <Compile Include="Repositoies\Interface\IUserMenuRepository.cs" />
-    <Compile Include="Repositoies\Interface\IUserRepository.cs" />
+    <Compile Include="IdentityConfig\RoleRepository.cs" />
+    <Compile Include="IdentityConfig\UserRepository.cs" />
     <Compile Include="Config\IRepository.cs" />
     <Compile Include="Config\AsyncPagedList.cs" />
     <Compile Include="IdentityConfig\ApplicationUserClaim.cs" />

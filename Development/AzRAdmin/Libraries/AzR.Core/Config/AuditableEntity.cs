@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AzR.Core.Config
 {
+    [IgnoreEntity]
     public abstract class AuditableEntity<T> : Entity<T>, IAuditableEntity
     {
         protected AuditableEntity()

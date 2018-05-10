@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppIdentity.cs" />
+    <Compile Include="Attributes\IgnoreEntityAttribute.cs" />
     <Compile Include="Attributes\IgnoreLogAttribute.cs" />
     <Compile Include="Attributes\IgnoreUpdateAttribute.cs" />
     <Compile Include="CultureHelpers\CultureHelper.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Exentions\ExceptionExtensions.cs" />
     <Compile Include="Exentions\ListExtensions.cs" />
     <Compile Include="Exentions\ObjectExtentions.cs" />
+    <Compile Include="Exentions\QueryableExtensions.cs" />
     <Compile Include="Exentions\StringExtensions.cs" />
     <Compile Include="Helpers\GeneralHelper.cs" />
     <Compile Include="Helpers\PcUniqueNumber.cs" />

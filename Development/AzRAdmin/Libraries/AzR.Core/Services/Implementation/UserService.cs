@@ -1,4 +1,6 @@
-﻿using AzR.Core.HelperModels;
+﻿using AzR.Core.Config;
+using AzR.Core.Entities;
+using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
@@ -17,9 +19,9 @@ namespace AzR.Core.Services.Implementation
     {
         private readonly IRoleRepository _roles;
         private readonly IUserRepository _user;
-        private readonly IBranchRepository _branch;
+        private readonly IRepository<Branch> _branch;
 
-        public UserService(IRoleRepository roles, IUserRepository user, IBranchRepository branch)
+        public UserService(IRoleRepository roles, IUserRepository user, IRepository<Branch> branch)
         {
             _roles = roles;
             _user = user;

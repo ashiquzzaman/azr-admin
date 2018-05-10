@@ -1,5 +1,8 @@
-﻿namespace AzR.Core.Config
+﻿using AzR.Utilities.Attributes;
+
+namespace AzR.Core.Config
 {
+    [IgnoreEntity]
     public interface IAuditableEntity
     {
         int CreatedBranch { get; set; }

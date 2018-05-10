@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AzR.Utilities.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace AzR.Core.Config
 {
-    public abstract class Entity<T> : IEntity<T>
+    [IgnoreEntity]
+    public abstract class Entity<T> : BaseEntity, IEntity<T>
     {
         public virtual T Id { get; set; }
         [Required]

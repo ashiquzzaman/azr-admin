@@ -1,42 +1,61 @@
-﻿using AzR.Core.AuditLogs;
-using AzR.Core.Entities;
+﻿using AzR.Core.Entities;
 using AzR.Core.IdentityConfig;
-using AzR.Core.Notifications;
+using AzR.Core.Migrations;
+using AzR.Utilities.Attributes;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Infrastructure;
+using System.Data.Entity.ModelConfiguration;
+using System.Data.Entity.ModelConfiguration.Configuration;
+using System.Linq;
 
 namespace AzR.Core.Config
 {
-    // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+    public class CheckAndMigrateDatabaseToLatestVersion<TContext, TMigrationsConfiguration>
+        : IDatabaseInitializer<TContext>
+        where TContext : DbContext
+        where TMigrationsConfiguration : DbMigrationsConfiguration<TContext>, new()
+    {
+        public virtual void InitializeDatabase(TContext context)
+        {
+            //var config = new DbMigrationsConfiguration<ApplicationDbContext>
+            //{
+            //    AutomaticMigrationsEnabled = true
+
+            //};
+
+            //var migrator = new DbMigrator(config);
+            //migrator.Update();
+
+            // var configuration = new Configuration();
+            //var migrator = new DbMigrator(configuration);
+
+            //var scriptor = new MigratorScriptingDecorator(migrator);
+            //var script = scriptor.ScriptUpdate(sourceMigration: null, targetMigration: null);
+            //migrator.Update();
+
+            //var pending = migrator.GetPendingMigrations();
+
+
+            var migratorBase = (MigratorBase)new DbMigrator(Activator.CreateInstance<TMigrationsConfiguration>());
+            if (migratorBase.GetPendingMigrations().Any())
+            {
+                migratorBase.Update();
+            }
+        }
+    }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole,
         int, ApplicationUserLogin, ApplicationUserRole, ApplicationUserClaim>
     {
         public ApplicationDbContext() : base("DefaultConnection")
         {
-
+            Database.SetInitializer<ApplicationDbContext>(
+                new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
+            Database.Initialize(false);
         }
-        #region General
-
-        public DbSet<AuditLog> AuditLogs { get; set; }
-        public DbSet<LoginHistory> LoginHistories { get; set; }
-        public DbSet<Branch> Branchs { get; set; }
-        public DbSet<Menu> Menus { get; set; }
-        public DbSet<UserMenu> UserMenus { get; set; }
-
-        public DbSet<Notification> Notifications { get; set; }
-
-        public DbSet<UserNotification> UserNotifications { get; set; }
-
-        #endregion
-
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
-
-
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             if (modelBuilder == null)
@@ -44,17 +63,57 @@ namespace AzR.Core.Config
                 throw new ArgumentNullException("modelBuilder");
             }
 
-            base.OnModelCreating(modelBuilder);
-
-            //  Database.SetInitializer(new AppDatabaseInitializer());
+            //modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            //Database.SetInitializer<ApplicationDbContext>(null);
 
             //modelBuilder.HasDefaultSchema("C##AZRADMIN");
-            //modelBuilder
-            //    .Properties()
-            //    .Where(p => p.PropertyType == typeof(string) &&
-            //                !p.Name.Contains("Id") &&
-            //                !p.Name.Contains("Provider"))
-            //    .Configure(p => p.HasMaxLength(256));
+
+            base.OnModelCreating(modelBuilder);
+
+            var assList = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(s => s.FullName.Contains("AzR"))
+                .Where(s => s.FullName.Contains("Core"));
+
+            var builder = typeof(DbModelBuilder).GetMethod("Entity");
+
+            //LOAD ENTITY
+
+            var types = assList.SelectMany(assembly => assembly
+                    .GetTypes()
+                    .Where(t => typeof(IBaseEntity).IsAssignableFrom(t)
+                                && !t.IsDefined(typeof(IgnoreEntityAttribute), false)))
+                .ToList();
+
+            types.ForEach(type => builder.MakeGenericMethod(type)
+                .Invoke(modelBuilder, new object[] { }));
+
+
+
+            //FOR FLUENT API CONFIG
+            var addMethod = typeof(ConfigurationRegistrar)
+                .GetMethods()
+                .Single(m =>
+                    m.Name == "Add"
+                    && m.GetGenericArguments().Any(a => a.Name == "TEntityType"));
+
+            foreach (var assembly in AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Where(a => a.GetName().Name != "EntityFramework"))
+            {
+                var configTypes = assembly
+                    .GetTypes()
+                    .Where(t => t.BaseType != null
+                                && t.BaseType.IsGenericType
+                                && t.BaseType.GetGenericTypeDefinition() == typeof(EntityTypeConfiguration<>));
+
+                foreach (var type in configTypes)
+                {
+                    var entityType = type.BaseType.GetGenericArguments().Single();
+                    var entityConfig = assembly.CreateInstance(type.FullName);
+                    addMethod.MakeGenericMethod(entityType)
+                        .Invoke(modelBuilder.Configurations, new object[] { entityConfig });
+                }
+            }
 
 
 

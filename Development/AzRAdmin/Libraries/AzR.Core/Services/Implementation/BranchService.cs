@@ -1,4 +1,5 @@
-﻿using AzR.Core.Entities;
+﻿using AzR.Core.Config;
+using AzR.Core.Entities;
 using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
 using AzR.Core.Repositoies.Implementation;
@@ -17,10 +18,10 @@ namespace AzR.Core.Services.Implementation
     public class BranchService : IBranchService
     {
 
-        private readonly IBranchRepository _branch;
+        private readonly IRepository<Branch> _branch;
         private IUserRepository _user;
         private RoleRepository _role;
-        public BranchService(IBranchRepository institution, IUserRepository user, RoleRepository role)
+        public BranchService(IRepository<Branch> institution, IUserRepository user, RoleRepository role)
         {
             _branch = institution;
             _user = user;
@@ -49,13 +50,14 @@ namespace AzR.Core.Services.Implementation
         public IQueryable<BranchViewModel> GetAllAsync()
         {
             var result = _branch.FindAll(p => p.IsActive)
-                .Select(_branch.ModelExpression).OrderBy(b => b.Id);
+                .NewModel().To<BranchViewModel>()
+                .OrderBy(b => b.Id);
             return result;
         }
         public async Task<BranchViewModel> GetAsync(int id)
         {
-            var model = _branch.EntityFactory(await _branch.FindAsync(o => o.Id == id));
-            return model;
+            var model = await _branch.FindAsync(o => o.Id == id);
+            return model.ToMap<Branch, BranchViewModel>();
         }
 
         public async Task<List<DropDownItem>> LoadParentAsync()
@@ -72,9 +74,8 @@ namespace AzR.Core.Services.Implementation
 
         public BranchViewModel GetOwner()
         {
-            var model = _branch.FirstOrDefault(i => i.Id == 1);
-            if (model == null) return new BranchViewModel();
-            return _branch.EntityFactory(model);
+            var model = _branch.FirstOrDefault(i => i.Id == 1).ToMap<Branch, BranchViewModel>();
+            return model ?? new BranchViewModel();
         }
 
         public IEnumerable<ApplicationUser> GetAllUserByRole(int orgId, string roleName)
@@ -95,7 +96,7 @@ namespace AzR.Core.Services.Implementation
 
             try
             {
-                var comapny = _branch.ModelFactory(model);
+                var comapny = model.ToMap<BranchViewModel, Branch>();
                 return await _branch.CreateAsync(comapny);
             }
             catch (Exception ex)
@@ -110,7 +111,7 @@ namespace AzR.Core.Services.Implementation
         {
             try
             {
-                var comapny = _branch.ModelFactory(model);
+                var comapny = model.ToMap<BranchViewModel, Branch>();
                 await _branch.UpdateAsync(comapny);
                 return comapny;
             }

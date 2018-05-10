@@ -1,4 +1,5 @@
-﻿using AzR.Core.Entities;
+﻿using AzR.Core.Config;
+using AzR.Core.Entities;
 using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
@@ -11,12 +12,12 @@ namespace AzR.Core.Services.Implementation
 {
     public class UserMenuService : IUserMenuService
     {
-        private IUserMenuRepository _userPrivilege;
+        private IRepository<UserMenu> _userPrivilege;
         private IUserRepository _user;
-        private IMenuRepository _menu;
-        public UserMenuService(IUserMenuRepository userPrivilege
+        private IRepository<Menu> _menu;
+        public UserMenuService(IRepository<UserMenu> userPrivilege
             , IUserRepository user
-            , IMenuRepository menu
+            , IRepository<Menu> menu
         )
         {
             _userPrivilege = userPrivilege;
@@ -207,8 +208,8 @@ namespace AzR.Core.Services.Implementation
 
         public List<PermittedUserViewModel> GetAllPermittedUsers(string moduleName)
         {
-            var result = _userPrivilege.GetAllPermittedUsers(moduleName);
-            return result;
+            // var result = null;_userPrivilege.GetAllPermittedUsers(moduleName);
+            return null;
         }
 
 

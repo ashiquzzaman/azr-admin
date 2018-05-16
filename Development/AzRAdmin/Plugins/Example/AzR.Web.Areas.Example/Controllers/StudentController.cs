@@ -1,10 +1,10 @@
 ﻿using AzR.Core.Config;
 using AzR.Student.Core.Services.Interface;
 using AzR.Student.Core.ViewModels;
-using AzR.Web.Root.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using AzR.WebFw.Controllers;
 
 namespace AzR.Web.Areas.Example.Controllers
 {

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace AzR.Web.Root.Views
+namespace AzR.WebFw.Views
 {
     public class CssViewResult : PartialViewResult
     {

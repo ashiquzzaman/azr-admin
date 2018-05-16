@@ -1,7 +1,7 @@
-﻿using AzR.Utilities.Securities;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using AzR.Utilities.Securities;
 
-namespace AzR.Web.Root.ViewPage
+namespace AzR.WebFw.ViewPage
 {
     public abstract class BaseViewPage : WebViewPage
     {

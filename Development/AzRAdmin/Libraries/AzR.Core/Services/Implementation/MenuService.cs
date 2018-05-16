@@ -2,7 +2,6 @@
 using AzR.Core.Entities;
 using AzR.Core.Enumerations;
 using AzR.Core.HelperModels;
-using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities.Exentions;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using AzR.Core.IdentityConfig;
 
 namespace AzR.Core.Services.Implementation
 {

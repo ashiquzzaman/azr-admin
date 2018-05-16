@@ -5,7 +5,7 @@ using System.Threading;
 using System.Web;
 using System.Web.Caching;
 
-namespace AzR.Web.Root.AppStart
+namespace AzR.WebFw.AppStart
 {
     public class RecycleConfig
     {

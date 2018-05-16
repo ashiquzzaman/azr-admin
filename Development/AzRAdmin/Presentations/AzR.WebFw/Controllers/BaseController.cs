@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web.Http;
 using System.Web.Mvc;
+using AzR.Utilities.Securities;
 
-namespace AzR.Web.Root.Controllers
+namespace AzR.WebFw.Controllers
 {
-    public abstract class BaseApiController : ApiController
+    public abstract class BaseController : Controller
     {
 
         protected IEnumerable<SelectListItem> Months
@@ -23,5 +23,10 @@ namespace AzR.Web.Root.Controllers
                        });
             }
         }
+        protected AppUserPrincipal CmsUser
+        {
+            get { return HttpContext.Items["AzRADMINUSER"] as AppUserPrincipal; }
+        }
+
     }
 }

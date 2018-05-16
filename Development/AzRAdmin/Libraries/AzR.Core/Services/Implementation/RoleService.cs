@@ -1,6 +1,5 @@
 ﻿using AzR.Core.HelperModels;
 using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities.Exentions;

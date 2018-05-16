@@ -13,6 +13,7 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Description;
 using AzR.Web.Areas.HelpPage.ModelDescriptions;
 using AzR.Web.Areas.HelpPage.Models;
+using AzR.Web.Areas.HelpPage.SampleGeneration;
 
 namespace AzR.Web.Areas.HelpPage
 {

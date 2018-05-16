@@ -1,9 +1,9 @@
 ﻿using AzR.Core.Config;
 using AzR.Student.Core.Services.Interface;
-using AzR.Web.Root.Controllers;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AzR.WebFw.Controllers;
 
 namespace AzR.Web.Areas.Example.Controllers
 {

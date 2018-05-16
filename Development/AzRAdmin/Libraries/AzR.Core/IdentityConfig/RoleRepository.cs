@@ -1,16 +1,14 @@
-﻿using AzR.Core.Config;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Interface;
-using AzR.Core.ViewModels.Admin;
-using Microsoft.AspNet.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using AzR.Core.Config;
+using AzR.Core.ViewModels.Admin;
+using Microsoft.AspNet.Identity;
 
-namespace AzR.Core.Repositoies.Implementation
+namespace AzR.Core.IdentityConfig
 {
     public class RoleRepository : Repository<ApplicationRole>, IRoleRepository
     {

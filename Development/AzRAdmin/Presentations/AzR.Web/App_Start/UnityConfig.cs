@@ -1,7 +1,5 @@
 using AzR.Core.Config;
 using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Implementation;
-using AzR.Core.Repositoies.Interface;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Data.Entity;

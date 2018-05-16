@@ -2,7 +2,6 @@
 using AzR.Core.Config;
 using AzR.Core.Entities;
 using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Utilities.Exentions;
 using AzR.Utilities.Helpers;

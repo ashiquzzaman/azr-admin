@@ -1,11 +1,10 @@
-﻿using AzR.Core.Config;
-using AzR.Core.IdentityConfig;
-using Microsoft.AspNet.Identity;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AzR.Core.Config;
+using Microsoft.AspNet.Identity;
 
-namespace AzR.Core.Repositoies.Interface
+namespace AzR.Core.IdentityConfig
 {
     public interface IUserRepository : IRepository<ApplicationUser>
     {

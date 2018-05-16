@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AzR.Web.Root")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("AzR.WebFw")]
+[assembly: AssemblyDescription("For more information visite www.azr-it.com")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AzR.Web.Root")]
+[assembly: AssemblyCompany("AzR IT")]
+[assembly: AssemblyProduct("AzR.WebFw")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

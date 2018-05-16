@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 
-namespace AzR.Web.Root.Caching
+namespace AzR.WebFw.Caching
 {
     public class ETagAttribute : ActionFilterAttribute
     {

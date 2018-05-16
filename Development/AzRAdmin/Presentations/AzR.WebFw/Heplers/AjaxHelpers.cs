@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 
-namespace AzR.Web.Root.Heplers
+namespace AzR.WebFw.Heplers
 {
     public static class AjaxHelpers
     {

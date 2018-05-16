@@ -1,11 +1,11 @@
-﻿using AzR.Utilities.Exentions;
-using AzR.Utilities.Helpers;
-using AzR.Utilities.Securities;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.WebPages;
+using AzR.Utilities.Exentions;
+using AzR.Utilities.Helpers;
+using AzR.Utilities.Securities;
 
-namespace AzR.Web.Root.AppStart
+namespace AzR.WebFw.AppStart
 {
     public class CookieAuthConfig
     {

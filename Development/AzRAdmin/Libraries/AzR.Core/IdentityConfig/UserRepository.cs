@@ -1,6 +1,4 @@
 ﻿using AzR.Core.Config;
-using AzR.Core.IdentityConfig;
-using AzR.Core.Repositoies.Interface;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +6,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace AzR.Core.Repositoies.Implementation
+namespace AzR.Core.IdentityConfig
 {
     public class UserRepository : Repository<ApplicationUser>, IUserRepository
     {

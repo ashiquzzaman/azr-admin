@@ -1,12 +1,12 @@
 ﻿using AzR.Core.Config;
 using AzR.Core.Entities;
-using AzR.Core.Repositoies.Interface;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.Admin;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using AzR.Core.IdentityConfig;
 
 namespace AzR.Core.Services.Implementation
 {

@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace AzR.Web.Root.Heplers
+namespace AzR.WebFw.Heplers
 {
     public static class DynamicBundles
     {

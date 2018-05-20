@@ -16,3 +16,6 @@
 20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
 20/Mar/2018 11:38:: Repository.cs:: MoveNext::482 :: The underlying provider failed on Open.
 20/Mar/2018 11:38:: Repository.cs:: MoveNext::484 :: A TransactionScope must be disposed on the same thread that it was created.
+20/May/2018 11:26:: PcUniqueNumber.cs:: get_GetUserAgentInfo::157 :: Object reference not set to an instance of an object.
+20/May/2018 13:56:: PcUniqueNumber.cs:: get_GetUserAgentInfo::157 :: Object reference not set to an instance of an object.
+20/May/2018 13:56:: PcUniqueNumber.cs:: get_GetUserAgentInfo::157 :: Object reference not set to an instance of an object.

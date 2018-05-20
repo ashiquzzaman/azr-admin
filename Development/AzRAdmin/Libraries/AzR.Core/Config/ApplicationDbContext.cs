@@ -56,6 +56,12 @@ namespace AzR.Core.Config
                 new MigrateDatabaseToLatestVersion<ApplicationDbContext, Configuration>());
             Database.Initialize(false);
         }
+
+        public static ApplicationDbContext Create()
+        {
+            return new ApplicationDbContext();
+        }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             if (modelBuilder == null)

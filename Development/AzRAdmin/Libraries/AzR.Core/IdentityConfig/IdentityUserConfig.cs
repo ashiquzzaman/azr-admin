@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AzR.Core.Config;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using System;
 using System.Data.Entity;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AzR.Core.Config;
+using System.Web;
 
 namespace AzR.Core.IdentityConfig
 {
@@ -19,6 +21,7 @@ namespace AzR.Core.IdentityConfig
             : base(context)
         {
         }
+
     }
     public class ApplicationUserManager : UserManager<ApplicationUser, int>
     {
@@ -91,6 +94,7 @@ namespace AzR.Core.IdentityConfig
             manager.EmailService = new EmailService();
             manager.SmsService = new SmsService();
         }
+
     }
 
 
@@ -111,6 +115,34 @@ namespace AzR.Core.IdentityConfig
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
         }
+
+
     }
 
+
+    public static class UserManagerExtensions
+    {
+        public static async Task<IdentityResult> RemoveFromRole<TUser, TKey>(this UserManager<TUser, TKey> manager, TKey userId,
+            string role)
+            where TKey : IEquatable<TKey>
+            where TUser : class, IUser<TKey>
+        {
+            if (manager == null)
+            {
+                throw new ArgumentNullException("manager");
+            }
+
+            return await manager.RemoveFromRoleAsync(userId, role);
+        }
+
+        public static IOwinContext FindOwinContext(this HttpRequestMessage request)
+        {
+            var context = request.Properties["MS_HttpContext"] as HttpContextWrapper;
+            if (context != null)
+            {
+                return HttpContextBaseExtensions.GetOwinContext(context.Request);
+            }
+            return null;
+        }
+    }
 }

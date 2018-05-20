@@ -132,7 +132,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppStart\CookieAuthConfig.cs" />
+    <Compile Include="AppStart\AuthConfig.cs" />
     <Compile Include="AppStart\RecycleConfig.cs" />
     <Compile Include="Caching\ETagAttribute.cs" />
     <Compile Include="Caching\TwoLevelViewCache.cs" />

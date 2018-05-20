@@ -1,11 +1,10 @@
 ﻿using AzR.Core.IdentityConfig;
+using AzR.Utilities.Securities;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AzR.Web.Providers
@@ -30,7 +29,7 @@ namespace AzR.Web.Providers
 
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            var user = await userManager.FindAsync(context.UserName, context.Password);
 
             if (user == null)
             {
@@ -38,20 +37,23 @@ namespace AzR.Web.Providers
                 return;
             }
 
-            ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
+            var oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
-            ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
+
+            var cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.UserName);
-            AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
+            var properties = CreateProperties(user.AppUser());
+
+            var ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
+
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
         }
 
         public override Task TokenEndpoint(OAuthTokenEndpointContext context)
         {
-            foreach (KeyValuePair<string, string> property in context.Properties.Dictionary)
+            foreach (var property in context.Properties.Dictionary)
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
@@ -74,7 +76,7 @@ namespace AzR.Web.Providers
         {
             if (context.ClientId == _publicClientId)
             {
-                Uri expectedRootUri = new Uri(context.Request.Uri, "/");
+                var expectedRootUri = new Uri(context.Request.Uri, "/");
 
                 if (expectedRootUri.AbsoluteUri == context.RedirectUri)
                 {
@@ -85,12 +87,17 @@ namespace AzR.Web.Providers
             return Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string userName)
+        //public static AuthenticationProperties CreateProperties(string userName)
+        //{
+        //    IDictionary<string, string> data = new Dictionary<string, string>
+        //    {
+        //        { "userName", userName }
+        //    };
+        //    return new AuthenticationProperties(data);
+        //}
+        public static AuthenticationProperties CreateProperties(IAppUserPrincipal user)
         {
-            IDictionary<string, string> data = new Dictionary<string, string>
-            {
-                { "userName", userName }
-            };
+            var data = user.GetByName();
             return new AuthenticationProperties(data);
         }
     }

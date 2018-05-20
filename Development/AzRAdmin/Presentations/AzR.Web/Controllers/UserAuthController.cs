@@ -5,6 +5,7 @@ using AzR.Core.ViewModels.MvcAuth;
 using AzR.Utilities.Exentions;
 using AzR.Utilities.Helpers;
 using AzR.Utilities.Securities;
+using AzR.WebFw.Controllers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -13,7 +14,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using AzR.WebFw.Controllers;
 
 namespace AzR.Web.Controllers
 {
@@ -92,7 +92,7 @@ namespace AzR.Web.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    _general.SetCookie(model.UserName);
+                    //_general.SetCookie(model.UserName);
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -186,8 +186,6 @@ namespace AzR.Web.Controllers
                     UserManager.AddToRole(user.Id, "SUBSCRIBER");
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     RemoveCookie();
-                    _general.SetCookie(model.Email);
-
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     //Send an email with this link
                     //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -373,6 +371,7 @@ namespace AzR.Web.Controllers
         private const string XsrfKey = "XsrfId";
         private void RemoveCookie()
         {
+
             _general.LogOutTime(User.Identity.GetUserId<int>());
             var cookie = new ManageCookie();
             cookie.RemoveCookie("AzRADMINUSER");

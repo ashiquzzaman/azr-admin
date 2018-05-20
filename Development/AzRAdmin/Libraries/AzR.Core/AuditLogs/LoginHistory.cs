@@ -1,4 +1,5 @@
 using AzR.Core.Config;
+using AzR.Core.IdentityConfig;
 using AzR.Utilities.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,9 @@ namespace AzR.Core.AuditLogs
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [StringLength(128)]
         public string Id { get; set; }
-        public long UserId { get; set; }
+        public int UserId { get; set; }
+        [ForeignKey("UserId")]
+        public ApplicationUser User { get; set; }
         public int UserBranchId { get; set; }
         public long LoginTime { get; set; }
         public long? LogoutTime { get; set; }

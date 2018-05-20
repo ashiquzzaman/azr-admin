@@ -113,33 +113,58 @@ namespace AzR.Utilities.Securities
             }
         }
 
-        public Dictionary<string, object> GetDictionary(AppUserPrincipal user)
+
+        public Dictionary<string, object> GetBySerial()
         {
             var result = new Dictionary<string, object>
             {
-                {"1",user.Id },
-                {"2",user.UserId },
-                {"3",user.UserName },
-                {"4",user.Name },
-                {"5",user.Phone },
-                {"6",user.Email },
-                {"7",user.Expired },
-                {"8",user.ActiveBranchId },
-                {"9",user.ParentBranchId },
-                {"10",user.ActiveRoleName },
-                {"11",user.RoleNames },
-                {"12",user.ActiveRoleId },
-                {"13",user.RoleIds },
-                {"14",user.PermittedBranchs },
-                {"15",user.UniqueName },
-                {"16",user.BranchId },
+                {"1",Id },
+                {"2",UserId },
+                {"3",UserName },
+                {"4",Name },
+                {"5",Phone },
+                {"6",Email },
+                {"7",Expired },
+                {"8",ActiveBranchId },
+                {"9",ParentBranchId },
+                {"10",ActiveRoleName },
+                {"11",RoleNames },
+                {"12",ActiveRoleId },
+                {"13",RoleIds },
+                {"14",PermittedBranchs },
+                {"15",UniqueName },
+                {"16",BranchId },
 
 
             };
             return result;
         }
 
+        public Dictionary<string, string> GetByName()
+        {
+            var result = new Dictionary<string, string>
+            {
+                {"Id",Id },
+                {"UserId",UserId.ToString() },
+                {"UserName",UserName },
+                {"Name",Name },
+                {"Phone",Phone },
+                {"Email",Email },
+                {"Expired",Expired.ToString() },
+                {"ActiveBranchId",ActiveBranchId.ToString() },
+                {"ParentBranchId",ParentBranchId.ToString() },
+                {"ActiveRoleName",ActiveRoleName },
+                {"RoleNames",RoleNames },
+                {"ActiveRoleId",ActiveRoleId.ToString() },
+                {"RoleIds",RoleIds },
+                {"PermittedBranchs",PermittedBranchs },
+                {"UniqueName",UniqueName },
+                {"BranchId",BranchId.ToString() },
 
+
+            };
+            return result;
+        }
 
     }
 }

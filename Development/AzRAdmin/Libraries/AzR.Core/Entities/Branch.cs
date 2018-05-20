@@ -15,7 +15,7 @@ namespace AzR.Core.Entities
         [StringLength(50)]
         public string BranchCode { get; set; }
         public int? ParentId { get; set; }
-        public Branch Parent { get; set; }
+        public virtual Branch Parent { get; set; }
         [Required]
         [StringLength(256)]
         public string Name { get; set; }
@@ -34,7 +34,7 @@ namespace AzR.Core.Entities
         public long Created { get; set; }
         public long Expired { get; set; }
 
-        public IList<Branch> Children { get; set; }
+        public virtual IList<Branch> Children { get; set; }
         public IList<ApplicationUser> Users { get; set; }
 
     }

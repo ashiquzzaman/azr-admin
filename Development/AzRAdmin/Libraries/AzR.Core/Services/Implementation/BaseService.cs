@@ -58,7 +58,7 @@ namespace AzR.Core.Services.Implementation
 
         public void LogOutTime(int userId)
         {
-            var loginId = _login.MaxFunc(u => u.Id.ToString(), u => u.UserId == userId);
+            var loginId = AppIdentity.AppUser.Id;
             if (!string.IsNullOrEmpty(loginId))
             {
                 var model = _login.First(o => o.Id == loginId);
@@ -89,7 +89,7 @@ namespace AzR.Core.Services.Implementation
         {
             var login = LoginTime(userName);
             var user = AppUser(login);
-            var userCookie = user.GetDictionary(user);
+            var userCookie = user.GetBySerial();
             var cookie = new ManageCookie();
             cookie.RemoveCookie("AzRADMINUSER");
             cookie.SetCookie("AzRADMINUSER", userCookie);
@@ -99,14 +99,13 @@ namespace AzR.Core.Services.Implementation
         public AppUserPrincipal AppUser(LoginHistory login)
         {
             var user = _user.Find(u => u.Id == login.UserId);
-            var roles = GetAllRoleByUsers(user.Id);
-            var applicationRoles = roles as List<ApplicationRole> ?? roles.ToList();
-            var branch = _branch.Find(i => i.Id == user.BranchId);
+            var applicationRoles = user.Roles.Select(s => s.Role).ToList();
+            var branch = user.Branch;
             var role = applicationRoles.FirstOrDefault() ?? new ApplicationRole("UNKNOWN");
             List<int> branches;
             if (branch.ParentId == null)
             {
-                branches = _branch.FindAll(s => s.Id == user.BranchId || s.ParentId == user.BranchId)
+                branches = user.Branch.Children
                     .Select(s => s.Id)
                     .ToList();
                 branches.Insert(0, 0);

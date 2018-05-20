@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
 
 namespace AzR.Utilities.Securities
 {
@@ -21,5 +22,7 @@ namespace AzR.Utilities.Securities
         string RoleNames { get; set; }
         bool HasAllPermission { get; }
         string PermittedBranchs { get; set; }
+        Dictionary<string, object> GetBySerial();
+        Dictionary<string, string> GetByName();
     }
 }

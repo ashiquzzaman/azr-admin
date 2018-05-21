@@ -1,7 +1,11 @@
 using AzR.Core.Config;
 using AzR.Core.IdentityConfig;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler;
+using Microsoft.Owin.Security.DataHandler.Serializer;
+using Microsoft.Owin.Security.DataProtection;
 using System.Data.Entity;
 using System.Web;
 using System.Web.Http;
@@ -28,11 +32,6 @@ namespace AzR.Web
                 WithMappings.FromMatchingInterface, //Matches Interfaces to implementations by name
                 WithName.Default);
 
-            //container.RegisterTypes(
-            //    AllClasses.FromAssemblies(typeof(WebApiApplication).Assembly),
-            //    WithMappings.FromMatchingInterface,
-            //    WithName.Default);
-
             DependencyResolver.SetResolver(new Unity.Mvc5.UnityDependencyResolver(container));
             GlobalConfiguration.Configuration.DependencyResolver = new Unity.WebApi.UnityDependencyResolver(container);
 
@@ -45,9 +44,6 @@ namespace AzR.Web
             container.RegisterType<IUserStore<ApplicationUser, int>, ApplicationUserStore>();
             container.RegisterType<IRoleStore<ApplicationRole, int>, ApplicationRoleStore>();
 
-            //container.RegisterType<IUserStore<ApplicationUser, int>, ApplicationUserStore>(new InjectionConstructor(new ResolvedParameter<ApplicationDbContext>(typeof(DbContext).Name)));
-            //container.RegisterType<IRoleStore<ApplicationRole, int>, ApplicationRoleStore>(new InjectionConstructor(new ResolvedParameter<ApplicationDbContext>(typeof(DbContext).Name)));
-
             container.RegisterType<IUser>(new InjectionFactory(c => c.Resolve<IUser>()));
             container.RegisterType<UserManager<ApplicationUser, int>>(new HierarchicalLifetimeManager());
 
@@ -57,7 +53,16 @@ namespace AzR.Web
             container.RegisterType<IIdentityMessageService, EmailService>();
 
             container.RegisterType<IAuthenticationManager>(new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
+            container.RegisterType<IOwinContext>(new InjectionFactory(o => HttpContext.Current.GetOwinContext()));
             container.RegisterType<ApplicationSignInManager>();
+
+            container.RegisterType(typeof(ISecureDataFormat<>), typeof(SecureDataFormat<>));
+            container.RegisterType<ISecureDataFormat<AuthenticationTicket>, SecureDataFormat<AuthenticationTicket>>();
+            container.RegisterType<ISecureDataFormat<AuthenticationTicket>, TicketDataFormat>();
+            container.RegisterType<IDataSerializer<AuthenticationTicket>, TicketSerializer>();
+            container.RegisterType<IDataProtector>(
+                new InjectionFactory(c => new DpapiDataProtectionProvider().Create("ASP.NET Identity")));
+
 
             container.RegisterType(typeof(IRepository<>), typeof(Repository<>));
 

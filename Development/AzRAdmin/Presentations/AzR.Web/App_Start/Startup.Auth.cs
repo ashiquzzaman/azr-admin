@@ -61,6 +61,7 @@ namespace AzR.Web
             {
                 TokenEndpointPath = new PathString("/api/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
+                RefreshTokenProvider = new RefreshTokenProvider(),
                 AuthorizeEndpointPath = new PathString("/api/UserAuth/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false

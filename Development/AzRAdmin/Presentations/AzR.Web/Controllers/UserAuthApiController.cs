@@ -1,19 +1,21 @@
 ﻿using AzR.Core.IdentityConfig;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.ApiAuth;
+using AzR.WebFw.Controllers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using AzR.WebFw.Controllers;
 
 namespace AzR.Web.Controllers
 {
@@ -66,6 +68,62 @@ namespace AzR.Web.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
+        [HttpGet]
+        [Route("test/{id}")]
+        public async Task<IHttpActionResult> Test(string id)
+        {
+            ticket.Properties.Dictionary
+
+            var identity = User.Identity as ClaimsIdentity;
+
+            identity.RemoveClaim(identity.FindFirst("Expired"));
+            identity.AddClaim(new Claim("Expired", id));
+
+            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            authenticationManager.SignOut(identity.AuthenticationType);
+            authenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, new ClaimsIdentity(identity));
+
+
+            var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
+                .Claims
+                .Select(x => new { Key = x.Type, Value = x.Value })
+                .ToDictionary(t => t.Key, t => t.Value);
+
+            string token;
+
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:61218/api/token")
+                {
+                    Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                    {   {"grant_type", "refresh_token"},
+                        //{"client_id", "your client_id"},
+                        {"refresh_token",claims["refresh_token"]},
+                    })
+                };
+                var response = await client.SendAsync(request);
+                response.EnsureSuccessStatusCode();
+
+                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
+                token = payload.Value<string>("access_token");
+            }
+
+
+
+
+            return Ok(token);
+        }
+        [HttpGet]
+        [Route("test")]
+        public IHttpActionResult Test()
+        {
+            var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
+                .Claims
+                .Select(x => new { Key = x.Type, Value = x.Value })
+                .ToDictionary(t => t.Key, t => t.Value);
+            return Ok(claims);
+        }
+
 
         // POST api/UserAuth/Logout
         [Route("Logout")]

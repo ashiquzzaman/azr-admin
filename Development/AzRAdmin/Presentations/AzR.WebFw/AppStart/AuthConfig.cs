@@ -42,7 +42,7 @@ namespace AzR.WebFw.AppStart
                     Name = claims["Name"],
                     Phone = claims["Phone"],
                     Email = claims["Email"],
-                    Expired = claims["Expired"].AsInt(),
+                    Expired = claims["Expired"].As<long>(),
                     ActiveBranchId = claims["ActiveBranchId"].AsInt(),
                     ParentBranchId = claims["ParentBranchId"].AsInt(),
                     ActiveRoleName = claims["ActiveRoleName"],

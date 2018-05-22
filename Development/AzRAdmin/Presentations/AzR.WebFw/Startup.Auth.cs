@@ -1,5 +1,5 @@
 ﻿using AzR.Core.IdentityConfig;
-using AzR.Web.Providers;
+using AzR.WebFw.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -9,7 +9,7 @@ using Owin;
 using System;
 using System.Web.Mvc;
 
-namespace AzR.Web
+namespace AzR.WebFw
 {
     public partial class Startup
     {
@@ -60,9 +60,12 @@ namespace AzR.Web
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/api/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
                 AuthorizeEndpointPath = new PathString("/api/UserAuth/ExternalLogin"),
+                Provider = new ApplicationOAuthProvider(PublicClientId),
+                RefreshTokenProvider = new RefreshTokenProvider(),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthorizationCodeExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthenticationType = OAuthDefaults.AuthenticationType,
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true
             };

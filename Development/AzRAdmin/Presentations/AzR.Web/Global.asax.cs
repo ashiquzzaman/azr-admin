@@ -13,7 +13,7 @@ namespace AzR.Web
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
 
-            AuthConfig.Initialize();
+            AuthConfig.ClaimAuth();
         }
         protected void Application_Start()
         {

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace AzR.Web.Filters
+namespace AzR.WebFw.Filters
 {
     public class HttpModelValidatorAttribute : ActionFilterAttribute
     {

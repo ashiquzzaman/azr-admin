@@ -1,19 +1,21 @@
 ﻿using AzR.Core.IdentityConfig;
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.ApiAuth;
+using AzR.WebFw.Controllers;
+using AzR.WebFw.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using AzR.WebFw.Controllers;
 
 namespace AzR.Web.Controllers
 {
@@ -66,6 +68,36 @@ namespace AzR.Web.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
+
+        [HttpGet]
+        [Route("UpdateClaim/{key}/{value}")]
+        public IHttpActionResult UpdateClaim(string key, string value)
+        {
+
+            var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
+                .Claims
+                .Select(x => new { Key = x.Type, Value = x.Value })
+                .ToDictionary(t => t.Key, t => t.Value);
+            if (claims.ContainsKey(key))
+            {
+                claims[key] = value;
+            }
+
+            var tst = LocalTokenProvider.GenerateLocalAccessTokenResponse(claims);
+
+            return Ok(tst);
+        }
+        [HttpGet]
+        [Route("CurrentClaim")]
+        public IHttpActionResult CurrentClaim()
+        {
+            var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
+                .Claims
+                .Select(x => new { Key = x.Type, Value = x.Value })
+                .ToDictionary(t => t.Key, t => t.Value);
+            return Ok(claims);
+        }
+
 
         // POST api/UserAuth/Logout
         [Route("Logout")]

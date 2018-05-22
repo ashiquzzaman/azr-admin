@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace AzR.Web.Results
+namespace AzR.WebFw.Results
 {
     public class ChallengeResult : IHttpActionResult
     {

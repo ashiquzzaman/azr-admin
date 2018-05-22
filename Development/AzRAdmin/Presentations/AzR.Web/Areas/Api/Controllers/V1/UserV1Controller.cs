@@ -2,13 +2,13 @@
 using AzR.Core.ViewModels.Admin;
 using AzR.Utilities.Exentions;
 using AzR.Web.Controllers;
-using AzR.Web.Filters;
 using PagedList;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 using AzR.WebFw.Controllers;
+using AzR.WebFw.Filters;
 
 namespace AzR.Web.Areas.Api.Controllers.V1
 {

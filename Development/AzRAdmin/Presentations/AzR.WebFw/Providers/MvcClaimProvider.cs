@@ -5,9 +5,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 
-namespace AzR.Web.Providers
+namespace AzR.WebFw.Providers
 {
-    public static class CustomClaimProvider
+    public static class MvcClaimProvider
     {
         public static void AddUpdateClaim(this IPrincipal currentPrincipal, string key, string value)
         {
@@ -64,7 +64,12 @@ namespace AzR.Web.Providers
             // add new claim
             identity.AddClaim(new Claim(key, value));
             var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
-            authenticationManager.AuthenticationResponseGrant = new AuthenticationResponseGrant(new ClaimsPrincipal(identity), new AuthenticationProperties() { IsPersistent = true });
+
+            authenticationManager.AuthenticationResponseGrant =
+                new AuthenticationResponseGrant(
+                    new ClaimsPrincipal(identity),
+                    new AuthenticationProperties { IsPersistent = true }
+                );
         }
 
         public static string GetClaimValue(this IPrincipal currentPrincipal, string key)

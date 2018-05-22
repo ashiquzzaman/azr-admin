@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzR.Web.Handlers
+namespace AzR.WebFw.Handlers
 {
     public class PreflightRequestsHandler : DelegatingHandler
     {

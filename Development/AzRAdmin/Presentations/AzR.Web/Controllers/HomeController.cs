@@ -1,5 +1,4 @@
-﻿using AzR.Web.Providers;
-using AzR.WebFw.Controllers;
+﻿using AzR.WebFw.Controllers;
 using System.Web.Mvc;
 
 namespace AzR.Web.Controllers
@@ -19,10 +18,6 @@ namespace AzR.Web.Controllers
             return PartialView();
         }
 
-        public string Test(string id)
-        {
-            User.UpdateClaim("Expired", id);
-            return "Test";
-        }
+
     }
 }

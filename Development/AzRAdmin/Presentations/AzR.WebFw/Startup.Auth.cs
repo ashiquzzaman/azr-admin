@@ -1,5 +1,5 @@
 ﻿using AzR.Core.IdentityConfig;
-using AzR.Web.Providers;
+using AzR.WebFw.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -9,7 +9,7 @@ using Owin;
 using System;
 using System.Web.Mvc;
 
-namespace AzR.Web
+namespace AzR.WebFw
 {
     public partial class Startup
     {

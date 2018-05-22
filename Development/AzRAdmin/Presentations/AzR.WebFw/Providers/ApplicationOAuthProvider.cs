@@ -1,13 +1,13 @@
-﻿using AzR.Core.IdentityConfig;
+﻿using System;
+using System.Threading.Tasks;
+using AzR.Core.IdentityConfig;
 using AzR.Utilities.Securities;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
-using System;
-using System.Threading.Tasks;
 
-namespace AzR.Web.Providers
+namespace AzR.WebFw.Providers
 {
     public class ApplicationOAuthProvider : OAuthAuthorizationServerProvider
     {
@@ -38,7 +38,7 @@ namespace AzR.Web.Providers
             }
 
             var oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-                Startup.OAuthOptions.AuthenticationType);
+                WebFw.Startup.OAuthOptions.AuthenticationType);
 
             var cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);

@@ -2,12 +2,11 @@
 using AzR.Core.Services.Interface;
 using AzR.Core.ViewModels.ApiAuth;
 using AzR.WebFw.Controllers;
+using AzR.WebFw.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.Infrastructure;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,76 +68,22 @@ namespace AzR.Web.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
-        public JObject GenerateLocalAccessTokenResponse(Dictionary<string, string> claims)
-        {
-            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
-            authenticationManager.SignOut(Startup.OAuthOptions.AuthenticationType);
-
-            var identity = new ClaimsIdentity(Startup.OAuthOptions.AuthenticationType);
-            identity.AddClaims(claims.Select(item => new Claim(item.Key, item.Value.ToString())));
-
-
-            var newClaims = identity
-                .Claims
-                .Where(s => !s.Type.Contains("http://") && !s.Type.Contains("SecurityStamp"));
-
-            var properties = new AuthenticationProperties(newClaims.ToDictionary(t => t.Type, t => t.Value))
-            {
-                IssuedUtc = DateTime.UtcNow,
-                ExpiresUtc = DateTime.UtcNow.Add(Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan)
-            };
-
-            var ticket = new AuthenticationTicket(identity, properties);
-            var accessToken = Startup.OAuthOptions.AccessTokenFormat.Protect(ticket);
-
-
-            var context = new AuthenticationTokenCreateContext(Request.GetOwinContext(), AccessTokenFormat, ticket);
-            Startup.OAuthOptions.RefreshTokenProvider.Create(context);
-            properties.Dictionary.Add("refresh_token", context.Token);
-
-
-            context.Request.Context.Authentication.SignIn(properties, identity);
-
-            //Request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
-
-            var authList = new List<JProperty>
-            {
-                new JProperty("access_token", accessToken),
-                new JProperty("token_type", "bearer"),
-                new JProperty("refresh_token", ticket.Properties.Dictionary["refresh_token"]),
-                new JProperty("expires_in", Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan.TotalSeconds.ToString())
-            };
-
-            authList.AddRange(newClaims.Select(s => new JProperty(s.Type, s.Value)).ToList());
-
-            authList.AddRange(new List<JProperty>
-            {
-                new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
-                new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
-            });
-
-
-            var tokenResponse = new JObject(authList.ToArray());
-
-            return tokenResponse;
-        }
-
 
         [HttpGet]
-        [Route("test/{id}")]
-        public async Task<IHttpActionResult> Test(string id)
+        [Route("UpdateClaim/{key}/{value}")]
+        public IHttpActionResult UpdateClaim(string key, string value)
         {
-
-            var identity = User.Identity as ClaimsIdentity;
-            identity.RemoveClaim(identity.FindFirst("Expired"));
-            identity.AddClaim(new Claim("Expired", id));
 
             var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
                 .Claims
                 .Select(x => new { Key = x.Type, Value = x.Value })
                 .ToDictionary(t => t.Key, t => t.Value);
+            if (claims.ContainsKey(key))
+            {
+                claims[key] = value;
+            }
 
-            var tst = GenerateLocalAccessTokenResponse(claims);
+            var tst = LocalTokenProvider.GenerateLocalAccessTokenResponse(claims);
 
             return Ok(tst);
         }

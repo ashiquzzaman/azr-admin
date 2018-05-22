@@ -1,10 +1,10 @@
-﻿using AzR.Web;
+﻿using AzR.WebFw;
 using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace AzR.Web
+namespace AzR.WebFw
 {
     public partial class Startup
     {

@@ -1,10 +1,10 @@
-﻿using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Infrastructure;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.Infrastructure;
 
-namespace AzR.Web.Providers
+namespace AzR.WebFw.Providers
 {
     public class RefreshTokenProvider : IAuthenticationTokenProvider
     {
@@ -35,7 +35,7 @@ namespace AzR.Web.Providers
             var refreshTokenProperties = new AuthenticationProperties(context.Ticket.Properties.Dictionary)
             {
                 IssuedUtc = context.Ticket.Properties.IssuedUtc,
-                ExpiresUtc = DateTime.UtcNow.Add(Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan)
+                ExpiresUtc = DateTime.UtcNow.Add(WebFw.Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan)
             };
             var refreshTokenTicket = new AuthenticationTicket(context.Ticket.Identity, refreshTokenProperties);
 

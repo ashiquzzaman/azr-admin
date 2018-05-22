@@ -15,18 +15,16 @@ namespace AzR.WebFw.AppStart
         public static void ClaimAuth()
         {
             var user = HttpContext.Current.User.Identity;
-            if (user.IsAuthenticated)
-            {
-                //var principal = actionContext.Request.GetRequestContext().Principal as ClaimsPrincipal;
-                var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
-                    .Claims
-                    .Select(x => new { Key = x.Type, Value = x.Value })
-                    .ToDictionary(t => t.Key, t => t.Value);
+            if (!user.IsAuthenticated) return;
+            //var principal = actionContext.Request.GetRequestContext().Principal as ClaimsPrincipal;
+            var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
+                .Claims
+                .Select(x => new { Key = x.Type, Value = x.Value })
+                .ToDictionary(t => t.Key, t => t.Value);
 
-                var newUser = AppUser(user.Name, claims);
-                HttpContext.Current.Items["AzRADMINUSER"] = newUser;
-                Thread.CurrentPrincipal = newUser;
-            }
+            var newUser = AppUser(user.Name, claims);
+            HttpContext.Current.Items["AzRADMINUSER"] = newUser;
+            Thread.CurrentPrincipal = newUser;
 
         }
         public static AppUserPrincipal AppUser(string userName, Dictionary<string, string> claims)

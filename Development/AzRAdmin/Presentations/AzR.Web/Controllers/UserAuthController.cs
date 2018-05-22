@@ -6,6 +6,7 @@ using AzR.Utilities.Exentions;
 using AzR.Utilities.Helpers;
 using AzR.Utilities.Securities;
 using AzR.WebFw.Controllers;
+using AzR.WebFw.Providers;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -58,6 +59,12 @@ namespace AzR.Web.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        public string UpdateClaim(string key, string value)
+        {
+            User.UpdateClaim(key, value);
+            return User.GetClaimValue(key);
         }
 
         //

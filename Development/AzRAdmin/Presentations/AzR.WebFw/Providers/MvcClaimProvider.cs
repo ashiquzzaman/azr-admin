@@ -5,9 +5,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 
-namespace AzR.Web.Providers
+namespace AzR.WebFw.Providers
 {
-    public static class CustomClaimProvider
+    public static class MvcClaimProvider
     {
         public static void AddUpdateClaim(this IPrincipal currentPrincipal, string key, string value)
         {

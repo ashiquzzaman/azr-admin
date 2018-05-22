@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Infrastructure;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -68,50 +69,78 @@ namespace AzR.Web.Controllers
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
         }
+        public JObject GenerateLocalAccessTokenResponse(Dictionary<string, string> claims)
+        {
+            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
+            authenticationManager.SignOut(Startup.OAuthOptions.AuthenticationType);
+
+            var identity = new ClaimsIdentity(Startup.OAuthOptions.AuthenticationType);
+            identity.AddClaims(claims.Select(item => new Claim(item.Key, item.Value.ToString())));
+
+
+            var newClaims = identity
+                .Claims
+                .Where(s => !s.Type.Contains("http://") && !s.Type.Contains("SecurityStamp"));
+
+            var properties = new AuthenticationProperties(newClaims.ToDictionary(t => t.Type, t => t.Value))
+            {
+                IssuedUtc = DateTime.UtcNow,
+                ExpiresUtc = DateTime.UtcNow.Add(Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan)
+            };
+
+            var ticket = new AuthenticationTicket(identity, properties);
+            var accessToken = Startup.OAuthOptions.AccessTokenFormat.Protect(ticket);
+
+
+            var context = new AuthenticationTokenCreateContext(Request.GetOwinContext(), AccessTokenFormat, ticket);
+            Startup.OAuthOptions.RefreshTokenProvider.Create(context);
+            properties.Dictionary.Add("refresh_token", context.Token);
+
+
+            context.Request.Context.Authentication.SignIn(properties, identity);
+
+            //Request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", accessToken);
+
+            var authList = new List<JProperty>
+            {
+                new JProperty("access_token", accessToken),
+                new JProperty("token_type", "bearer"),
+                new JProperty("refresh_token", ticket.Properties.Dictionary["refresh_token"]),
+                new JProperty("expires_in", Startup.OAuthOptions.AuthorizationCodeExpireTimeSpan.TotalSeconds.ToString())
+            };
+
+            authList.AddRange(newClaims.Select(s => new JProperty(s.Type, s.Value)).ToList());
+
+            authList.AddRange(new List<JProperty>
+            {
+                new JProperty(".issued", ticket.Properties.IssuedUtc.ToString()),
+                new JProperty(".expires", ticket.Properties.ExpiresUtc.ToString())
+            });
+
+
+            var tokenResponse = new JObject(authList.ToArray());
+
+            return tokenResponse;
+        }
+
+
         [HttpGet]
         [Route("test/{id}")]
         public async Task<IHttpActionResult> Test(string id)
         {
-            ticket.Properties.Dictionary
 
             var identity = User.Identity as ClaimsIdentity;
-
             identity.RemoveClaim(identity.FindFirst("Expired"));
             identity.AddClaim(new Claim("Expired", id));
-
-            var authenticationManager = HttpContext.Current.GetOwinContext().Authentication;
-            authenticationManager.SignOut(identity.AuthenticationType);
-            authenticationManager.SignIn(new AuthenticationProperties { IsPersistent = true }, new ClaimsIdentity(identity));
-
 
             var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
                 .Claims
                 .Select(x => new { Key = x.Type, Value = x.Value })
                 .ToDictionary(t => t.Key, t => t.Value);
 
-            string token;
+            var tst = GenerateLocalAccessTokenResponse(claims);
 
-            using (var client = new HttpClient())
-            {
-                var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:61218/api/token")
-                {
-                    Content = new FormUrlEncodedContent(new Dictionary<string, string>
-                    {   {"grant_type", "refresh_token"},
-                        //{"client_id", "your client_id"},
-                        {"refresh_token",claims["refresh_token"]},
-                    })
-                };
-                var response = await client.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
-                var payload = JObject.Parse(await response.Content.ReadAsStringAsync());
-                token = payload.Value<string>("access_token");
-            }
-
-
-
-
-            return Ok(token);
+            return Ok(tst);
         }
         [HttpGet]
         [Route("test")]

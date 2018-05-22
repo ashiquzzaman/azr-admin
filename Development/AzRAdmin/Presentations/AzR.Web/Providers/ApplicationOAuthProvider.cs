@@ -38,7 +38,7 @@ namespace AzR.Web.Providers
             }
 
             var oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
-               OAuthDefaults.AuthenticationType);
+                Startup.OAuthOptions.AuthenticationType);
 
             var cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);

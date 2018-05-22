@@ -213,6 +213,7 @@
     <Compile Include="HelperModels\RadioButtonHelper.cs" />
     <Compile Include="HelperModels\ReportHeader.cs" />
     <Compile Include="HelperModels\SelectDropDownItem.cs" />
+    <Compile Include="ViewModels\ApiAuth\Token.cs" />
     <Compile Include="ViewModels\MvcAuth\AddPhoneNumberViewModel.cs" />
     <Compile Include="ViewModels\MvcAuth\ChangePasswordViewModel.cs" />
     <Compile Include="ViewModels\MvcAuth\ConfigureTwoFactorViewModel.cs" />

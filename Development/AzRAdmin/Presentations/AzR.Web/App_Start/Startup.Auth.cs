@@ -60,10 +60,12 @@ namespace AzR.Web
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/api/Token"),
+                AuthorizeEndpointPath = new PathString("/api/UserAuth/ExternalLogin"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
                 RefreshTokenProvider = new RefreshTokenProvider(),
-                AuthorizeEndpointPath = new PathString("/api/UserAuth/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthorizationCodeExpireTimeSpan = TimeSpan.FromDays(14),
+                AuthenticationType = OAuthDefaults.AuthenticationType,
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true
             };

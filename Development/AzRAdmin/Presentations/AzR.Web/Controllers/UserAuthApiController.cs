@@ -88,8 +88,8 @@ namespace AzR.Web.Controllers
             return Ok(tst);
         }
         [HttpGet]
-        [Route("test")]
-        public IHttpActionResult Test()
+        [Route("CurrentClaim")]
+        public IHttpActionResult CurrentClaim()
         {
             var claims = ((ClaimsIdentity)HttpContext.Current.User.Identity)
                 .Claims

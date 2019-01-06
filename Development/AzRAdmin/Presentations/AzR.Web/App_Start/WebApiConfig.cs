@@ -1,8 +1,10 @@
-﻿using Microsoft.Owin.Security.OAuth;
+﻿using AzR.WebFw.Handlers;
+using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Serialization;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Http.Cors;
-using AzR.WebFw.Handlers;
 
 namespace AzR.Web
 {
@@ -29,6 +31,16 @@ namespace AzR.Web
                 defaults: new { id = RouteParameter.Optional }
             );
             config.Formatters.JsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
+
+            //Return Json n CamelCase
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+
+            //Remove xml for return JSON result only
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(config.Formatters
+                .XmlFormatter
+                .SupportedMediaTypes
+                .FirstOrDefault(t => t.MediaType == "application/xml"));
+
         }
     }
 }

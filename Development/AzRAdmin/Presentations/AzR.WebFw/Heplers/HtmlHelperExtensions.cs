@@ -1,17 +1,16 @@
-﻿using System;
+﻿using AzR.Core.HelperModels;
+using PagedList;
+using PagedList.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
-using AzR.Core.HelperModels;
-using PagedList;
-using PagedList.Mvc;
 using HtmlHelper = System.Web.Mvc.HtmlHelper;
 
 namespace AzR.WebFw.Heplers
@@ -213,36 +212,33 @@ namespace AzR.WebFw.Heplers
         /// <returns>An HTML select element for each value in the enumeration that is represented by the expression and the predicate.</returns>
         /// <exception cref="ArgumentNullException">If expression is null.</exception>
         /// <exception cref="ArgumentException">If TEnum is not Enum Type.</exception>
-        public static MvcHtmlString EnumComboBoxListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, Func<TEnum, bool> predicate, string optionLabel, object htmlAttributes) where TEnum : struct, IConvertible
+        public static MvcHtmlString EnumComboBoxListFor<TModel, TEnum>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TEnum>> expression, Func<TEnum, bool> predicate=null, string optionLabel = null, object htmlAttributes = null) where TEnum : struct, IConvertible
         {
-            if (expression == null)
-            {
-                throw new ArgumentNullException("expression");
-            }
-
-            if (!typeof(TEnum).IsEnum)
-            {
-                throw new ArgumentException("TEnum");
-            }
-
-            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
-            IList<SelectListItem> selectList = Enum.GetValues(typeof(TEnum))
+            var enumList = predicate == null ? Enum.GetValues(typeof(TEnum))
+                .Cast<TEnum>()
+                : Enum.GetValues(typeof(TEnum))
                     .Cast<TEnum>()
-                    .Where(e => predicate(e))
-                    .Select(e => new SelectListItem
-                    {
-                        Value = Convert.ToUInt64(e).ToString(),
-                        Text = ((Enum)(object)e).GetDisplayName(),
-                    }).ToList();
+                    .Where(e => predicate(e));
+
+            var selectList = enumList
+                .Select(e => new SelectListItem
+                {
+                    Value = Convert.ToUInt64(e).ToString(),
+                    Text = ((Enum)(object)e).GetDisplayName(),
+                }).ToList();
+
+
             if (!string.IsNullOrEmpty(optionLabel))
             {
                 selectList.Insert(0, new SelectListItem
                 {
-                    Text = optionLabel,
+                    Text = optionLabel
                 });
             }
 
-            return htmlHelper.DropDownListFor(expression, selectList, htmlAttributes);
+            return htmlAttributes == null
+                ? htmlHelper.DropDownListFor(expression, selectList)
+                : htmlHelper.DropDownListFor(expression, selectList, htmlAttributes);
         }
 
         /// <summary>
@@ -252,23 +248,19 @@ namespace AzR.WebFw.Heplers
         /// <returns>A name string in the <see cref="DisplayAttribute"/> of the Enum.</returns>
         public static string GetDisplayName(this Enum enumeration)
         {
-            Type enumType = enumeration.GetType();
-            string enumName = Enum.GetName(enumType, enumeration);
-            string displayName = enumName;
-            try
+            var enumType = enumeration.GetType();
+            var enumName = Enum.GetName(enumType, enumeration);
+            var member = enumType.GetMember(enumName)[0];
+
+            var attributes = member.GetCustomAttributes(typeof(DisplayAttribute), false);
+            var attribute = (DisplayAttribute)attributes[0];
+            var displayName = attribute.Name;
+
+            if (attribute.ResourceType != null)
             {
-                MemberInfo member = enumType.GetMember(enumName)[0];
-
-                object[] attributes = member.GetCustomAttributes(typeof(DisplayAttribute), false);
-                DisplayAttribute attribute = (DisplayAttribute)attributes[0];
-                displayName = attribute.Name;
-
-                if (attribute.ResourceType != null)
-                {
-                    displayName = attribute.GetName();
-                }
+                displayName = attribute.GetName();
             }
-            catch { }
+
             return displayName;
         }
 
